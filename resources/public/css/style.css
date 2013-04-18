@@ -1,0 +1,8 @@
+body {
+    background-color: #000000;
+    font-family: Helvetica;
+    color: #FFFFFF;
+}
+#game {
+    border: solid 1px #FFFFFF;
+}
