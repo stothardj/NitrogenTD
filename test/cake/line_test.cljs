@@ -1,6 +1,6 @@
-(ns cake.core-test
+(ns cake.line-test
   (:use clojure.test
-        cake.core))
+        cake.line))
 
 (deftest a-test
   (testing "FIXME, I fail."

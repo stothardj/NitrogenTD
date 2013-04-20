@@ -19,7 +19,7 @@
   "Like setInterval, except terminates if the function ever crashes"
   [f interval]
   (let [crashed (atom false)]
-    (def ^:dynamic handle nil) ;; chicken, meet egg
+    (def ^:dynamic handle) ;; chicken, meet egg
     (binding
         [handle (js/setInterval
                  (fn []
@@ -30,3 +30,11 @@
                        (f)
                        (reset! crashed false)))) interval)]
       handle)))
+
+(defn loud
+  "Takes a function. Output the return value of that function to the console, then return it. For debugging. Also outputs useful identifier in same line"
+  [s fn]
+  (let [ret (fn)]
+    (.log js/console "HEllo")
+    (.log js/console s ret)
+    ret))

@@ -22260,8 +22260,7 @@ cake.util.to_radians = function to_radians(degrees) {
 };
 cake.util.crashingInterval = function crashingInterval(f, interval) {
   var crashed = cljs.core.atom.call(null, false);
-  cake.util.handle = null;
-  var handle17104 = cake.util.handle;
+  var handle10303 = cake.util.handle;
   try {
     cake.util.handle = setInterval(function() {
       if(cljs.core.truth_(cljs.core.deref.call(null, crashed))) {
@@ -22274,29 +22273,200 @@ cake.util.crashingInterval = function crashingInterval(f, interval) {
     }, interval);
     return cake.util.handle
   }finally {
-    cake.util.handle = handle17104
+    cake.util.handle = handle10303
+  }
+};
+cake.util.loud = function loud(s, fn) {
+  var ret = fn.call(null);
+  console.log("HEllo");
+  console.log(s, ret);
+  return ret
+};
+goog.provide("cake.line");
+goog.require("cljs.core");
+goog.require("cake.util");
+cake.line.infinity_QMARK_ = function infinity_QMARK_(n) {
+  var or__3943__auto__ = cljs.core._EQ_.call(null, n, Infinity);
+  if(or__3943__auto__) {
+    return or__3943__auto__
+  }else {
+    return cljs.core._EQ_.call(null, n, -Infinity)
+  }
+};
+cake.line.slope = function slope(x1, y1, x2, y2) {
+  return(y2 - y1) / (x2 - x1)
+};
+cake.line.perp_slope = function perp_slope(slope) {
+  return-(1 / slope)
+};
+cake.line.intersection = function intersection(line0, line1) {
+  while(true) {
+    var vec__11572 = line0;
+    var m0 = cljs.core.nth.call(null, vec__11572, 0, null);
+    var x0 = cljs.core.nth.call(null, vec__11572, 1, null);
+    var y0 = cljs.core.nth.call(null, vec__11572, 2, null);
+    var vec__11573 = line1;
+    var m1 = cljs.core.nth.call(null, vec__11573, 0, null);
+    var x1 = cljs.core.nth.call(null, vec__11573, 1, null);
+    var y1 = cljs.core.nth.call(null, vec__11573, 2, null);
+    if(cljs.core._EQ_.call(null, m0, m1)) {
+      return null
+    }else {
+      if(cljs.core.truth_(cake.line.infinity_QMARK_.call(null, m0))) {
+        var G__11574 = line1;
+        var G__11575 = line0;
+        line0 = G__11574;
+        line1 = G__11575;
+        continue
+      }else {
+        if(cljs.core.truth_(cake.line.infinity_QMARK_.call(null, m1))) {
+          var xi = x1;
+          var yi = m0 * (xi - x0) + y0;
+          return cljs.core.PersistentVector.fromArray([xi, yi], true)
+        }else {
+          if("\ufdd0'else") {
+            var xi = (m1 * x1 + -y1 + -(m0 * x0) + y0) / (m1 - m0);
+            var yi = m0 * (xi - x0) + y0;
+            return cljs.core.PersistentVector.fromArray([xi, yi], true)
+          }else {
+            return null
+          }
+        }
+      }
+    }
+    break
+  }
+};
+cake.line.sq_point_to_point_dist = function sq_point_to_point_dist(p0, p1) {
+  var vec__11578 = p0;
+  var x0 = cljs.core.nth.call(null, vec__11578, 0, null);
+  var y0 = cljs.core.nth.call(null, vec__11578, 1, null);
+  var vec__11579 = p1;
+  var x1 = cljs.core.nth.call(null, vec__11579, 0, null);
+  var y1 = cljs.core.nth.call(null, vec__11579, 1, null);
+  var xdiff = x1 - x0;
+  var ydiff = y1 - y0;
+  return xdiff * xdiff + ydiff * ydiff
+};
+cake.line.between_QMARK_ = function between_QMARK_(a, b, c) {
+  var or__3943__auto__ = function() {
+    var and__3941__auto__ = a <= b;
+    if(and__3941__auto__) {
+      return b <= c
+    }else {
+      return and__3941__auto__
+    }
+  }();
+  if(cljs.core.truth_(or__3943__auto__)) {
+    return or__3943__auto__
+  }else {
+    var and__3941__auto__ = a >= b;
+    if(and__3941__auto__) {
+      return b >= c
+    }else {
+      return and__3941__auto__
+    }
+  }
+};
+cake.line.on_segment_QMARK_ = function on_segment_QMARK_(point, segment) {
+  var vec__11582 = point;
+  var x0 = cljs.core.nth.call(null, vec__11582, 0, null);
+  var y0 = cljs.core.nth.call(null, vec__11582, 1, null);
+  var vec__11583 = segment;
+  var x1 = cljs.core.nth.call(null, vec__11583, 0, null);
+  var y1 = cljs.core.nth.call(null, vec__11583, 1, null);
+  var x2 = cljs.core.nth.call(null, vec__11583, 2, null);
+  var y2 = cljs.core.nth.call(null, vec__11583, 3, null);
+  var and__3941__auto__ = cake.line.between_QMARK_.call(null, x1, x0, x2);
+  if(cljs.core.truth_(and__3941__auto__)) {
+    return cake.line.between_QMARK_.call(null, y1, y0, y2)
+  }else {
+    return and__3941__auto__
+  }
+};
+cake.line.closest_point_on_line = function closest_point_on_line(point, line) {
+  var vec__11586 = point;
+  var x0 = cljs.core.nth.call(null, vec__11586, 0, null);
+  var y0 = cljs.core.nth.call(null, vec__11586, 1, null);
+  var vec__11587 = line;
+  var m1 = cljs.core.nth.call(null, vec__11587, 0, null);
+  var x1 = cljs.core.nth.call(null, vec__11587, 1, null);
+  var y1 = cljs.core.nth.call(null, vec__11587, 2, null);
+  var m0 = cake.line.perp_slope.call(null, m1);
+  return cake.line.intersection.call(null, line, cljs.core.PersistentVector.fromArray([m0, x0, y0], true))
+};
+cake.line.sq_point_to_line_dist = function sq_point_to_line_dist(point, line) {
+  return cake.line.sq_point_to_point_dist.call(null, point, cake.line.closest_point_on_line.call(null, point, line))
+};
+cake.line.get_line = function get_line(segment) {
+  var vec__11589 = segment;
+  var x1 = cljs.core.nth.call(null, vec__11589, 0, null);
+  var y1 = cljs.core.nth.call(null, vec__11589, 1, null);
+  var x2 = cljs.core.nth.call(null, vec__11589, 2, null);
+  var y2 = cljs.core.nth.call(null, vec__11589, 3, null);
+  return cljs.core.PersistentVector.fromArray([cake.line.slope.call(null, x1, y1, x2, y2), x1, y1], true)
+};
+cake.line.point_on_thick_line_segment_QMARK_ = function point_on_thick_line_segment_QMARK_(point, segment, width) {
+  var vec__11592 = point;
+  var x0 = cljs.core.nth.call(null, vec__11592, 0, null);
+  var y0 = cljs.core.nth.call(null, vec__11592, 1, null);
+  var vec__11593 = segment;
+  var x1 = cljs.core.nth.call(null, vec__11593, 0, null);
+  var y1 = cljs.core.nth.call(null, vec__11593, 1, null);
+  var x2 = cljs.core.nth.call(null, vec__11593, 2, null);
+  var y2 = cljs.core.nth.call(null, vec__11593, 3, null);
+  var cpol = cake.line.closest_point_on_line.call(null, point, cake.line.get_line.call(null, segment));
+  var hwidth = width / 2;
+  console.log("Closest point on line", cpol);
+  var and__3941__auto__ = cake.line.on_segment_QMARK_.call(null, cpol, segment);
+  if(cljs.core.truth_(and__3941__auto__)) {
+    return cake.util.loud.call(null, "distance", function() {
+      return cake.line.sq_point_to_point_dist.call(null, cpol, point)
+    }) <= hwidth * hwidth
+  }else {
+    return and__3941__auto__
+  }
+};
+cake.line.point_on_thick_path_QMARK_ = function point_on_thick_path_QMARK_(point, path, width) {
+  if(cljs.core.count.call(null, path) < 2) {
+    return false
+  }else {
+    var vec__11596 = cljs.core.first.call(null, path);
+    var x1 = cljs.core.nth.call(null, vec__11596, 0, null);
+    var y1 = cljs.core.nth.call(null, vec__11596, 1, null);
+    var vec__11597 = cljs.core.second.call(null, path);
+    var x2 = cljs.core.nth.call(null, vec__11597, 0, null);
+    var y2 = cljs.core.nth.call(null, vec__11597, 1, null);
+    console.log("Checking from", cljs.core.PersistentVector.fromArray([x1, y1], true), "to", cljs.core.PersistentVector.fromArray([x2, y2], true));
+    var or__3943__auto__ = cake.line.point_on_thick_line_segment_QMARK_.call(null, point, cljs.core.PersistentVector.fromArray([x1, y1, x2, y2], true), width);
+    if(cljs.core.truth_(or__3943__auto__)) {
+      return or__3943__auto__
+    }else {
+      return point_on_thick_path_QMARK_.call(null, point, cljs.core.rest.call(null, path), width)
+    }
   }
 };
 goog.provide("cake.drawing");
 goog.require("cljs.core");
+goog.require("cake.line");
 goog.require("cake.util");
 cake.drawing.canvas = cake.util.by_id.call(null, "game");
 cake.drawing.ctx = cake.drawing.canvas.getContext("2d");
-cake.drawing.drawPath = function drawPath(points) {
+cake.drawing.draw_path = function draw_path(points) {
   cake.drawing.ctx.beginPath();
-  var vec__14428_14431 = cljs.core.first.call(null, points);
-  var x_14432 = cljs.core.nth.call(null, vec__14428_14431, 0, null);
-  var y_14433 = cljs.core.nth.call(null, vec__14428_14431, 1, null);
-  cake.drawing.ctx.moveTo(x_14432, y_14433);
-  var G__14429 = cljs.core.seq.call(null, cljs.core.rest.call(null, points));
+  var vec__8513_8516 = cljs.core.first.call(null, points);
+  var x_8517 = cljs.core.nth.call(null, vec__8513_8516, 0, null);
+  var y_8518 = cljs.core.nth.call(null, vec__8513_8516, 1, null);
+  cake.drawing.ctx.moveTo(x_8517, y_8518);
+  var G__8514 = cljs.core.seq.call(null, cljs.core.rest.call(null, points));
   while(true) {
-    if(G__14429) {
-      var vec__14430 = cljs.core.first.call(null, G__14429);
-      var x = cljs.core.nth.call(null, vec__14430, 0, null);
-      var y = cljs.core.nth.call(null, vec__14430, 1, null);
+    if(G__8514) {
+      var vec__8515 = cljs.core.first.call(null, G__8514);
+      var x = cljs.core.nth.call(null, vec__8515, 0, null);
+      var y = cljs.core.nth.call(null, vec__8515, 1, null);
       cake.drawing.ctx.lineTo(x, y);
-      var G__14434 = cljs.core.next.call(null, G__14429);
-      G__14429 = G__14434;
+      var G__8519 = cljs.core.next.call(null, G__8514);
+      G__8514 = G__8519;
       continue
     }else {
       return null
@@ -22304,7 +22474,7 @@ cake.drawing.drawPath = function drawPath(points) {
     break
   }
 };
-cake.drawing.clearCanvas = function clearCanvas() {
+cake.drawing.clear_canvas = function clear_canvas() {
   var w = cake.drawing.canvas.width;
   var h = cake.drawing.canvas.height;
   return cake.drawing.ctx.clearRect(0, 0, w, h)
@@ -22334,6 +22504,44 @@ cake.drawing.draw_at = function() {
   draw_at.cljs$lang$arity$4 = draw_at__4;
   return draw_at
 }();
+cake.drawing.draw_creep_path = function draw_creep_path(path) {
+  cake.drawing.ctx.strokeStyle = "rgba(255,255,255,0.1)";
+  cake.drawing.ctx.lineWidth = 50;
+  cake.drawing.draw_path.call(null, path);
+  return cake.drawing.ctx.stroke()
+};
+cake.drawing.draw_debug_info = function draw_debug_info(mouse_pos, creep_path) {
+  cake.drawing.ctx.fillStyle = "rgb(255,0,0)";
+  var vec__8524_8528 = mouse_pos;
+  var x_8529 = cljs.core.nth.call(null, vec__8524_8528, 0, null);
+  var y_8530 = cljs.core.nth.call(null, vec__8524_8528, 1, null);
+  cake.drawing.ctx.fillRect(x_8529 - 5, y_8530 - 5, 10, 10);
+  cake.drawing.ctx.strokeStyle = "rgb(255,0,0)";
+  cake.drawing.ctx.lineWidth = 2;
+  cake.drawing.draw_path.call(null, creep_path);
+  cake.drawing.ctx.stroke();
+  var path = creep_path;
+  while(true) {
+    if(cljs.core.count.call(null, path) < 2) {
+      return null
+    }else {
+      var vec__8525 = cljs.core.first.call(null, path);
+      var x1 = cljs.core.nth.call(null, vec__8525, 0, null);
+      var y1 = cljs.core.nth.call(null, vec__8525, 1, null);
+      var vec__8526 = cljs.core.second.call(null, path);
+      var x2 = cljs.core.nth.call(null, vec__8526, 0, null);
+      var y2 = cljs.core.nth.call(null, vec__8526, 1, null);
+      var vec__8527 = cake.line.closest_point_on_line.call(null, mouse_pos, cake.line.get_line.call(null, cljs.core.PersistentVector.fromArray([x1, y1, x2, y2], true)));
+      var xi = cljs.core.nth.call(null, vec__8527, 0, null);
+      var yi = cljs.core.nth.call(null, vec__8527, 1, null);
+      cake.drawing.ctx.fillRect(xi - 3, yi - 3, 6, 6);
+      var G__8531 = cljs.core.rest.call(null, path);
+      path = G__8531;
+      continue
+    }
+    break
+  }
+};
 goog.provide("cake.tower");
 goog.require("cljs.core");
 cake.tower.Tower = {};
@@ -22433,6 +22641,7 @@ goog.require("cljs.core");
 goog.require("cake.lasertower");
 goog.require("cake.spawnling");
 goog.require("cake.drawing");
+goog.require("cake.line");
 goog.require("cake.util");
 goog.require("cake.tower");
 goog.require("cake.creep");
@@ -22443,38 +22652,54 @@ goog.require("cake.spawnling");
 goog.require("cake.lasertower");
 cake.hello.towers = cljs.core.PersistentVector.fromArray([new cake.lasertower.LaserTower(200, 300), new cake.lasertower.LaserTower(100, 400)], true);
 cake.hello.creeps = cljs.core.PersistentVector.fromArray([new cake.spawnling.Spawnling(150, 100)], true);
-clojure.browser.event.listen.call(null, cake.drawing.canvas, "click", function(ev) {
-  console.log("Clicked!");
-  console.log(ev);
+cake.hello.mouse_pos = cljs.core.atom.call(null);
+cake.hello.creep_path = cljs.core.with_meta(cljs.core.list(cljs.core.with_meta(cljs.core.list(30, 40), cljs.core.hash_map("\ufdd0'line", 21, "\ufdd0'column", 19)), cljs.core.with_meta(cljs.core.list(70, 90), cljs.core.hash_map("\ufdd0'line", 21, "\ufdd0'column", 27)), cljs.core.with_meta(cljs.core.list(70, 200), cljs.core.hash_map("\ufdd0'line", 21, "\ufdd0'column", 35)), cljs.core.with_meta(cljs.core.list(300, 200), cljs.core.hash_map("\ufdd0'line", 21, "\ufdd0'column", 44))), cljs.core.hash_map("\ufdd0'line", 
+21, "\ufdd0'column", 18));
+cake.hello.relative_mouse_pos = function relative_mouse_pos(ev) {
   var x = ev.offsetX - cake.drawing.canvas.offsetLeft;
   var y = ev.offsetY - cake.drawing.canvas.offsetTop;
-  console.log(x);
-  console.log(y);
-  return cake.hello.towers = cljs.core.cons.call(null, new cake.lasertower.LaserTower(x, y), cake.hello.towers)
+  return cljs.core.PersistentVector.fromArray([x, y], true)
+};
+clojure.browser.event.listen.call(null, cake.drawing.canvas, "click", function(ev) {
+  var vec__11061 = cake.hello.relative_mouse_pos.call(null, ev);
+  var x = cljs.core.nth.call(null, vec__11061, 0, null);
+  var y = cljs.core.nth.call(null, vec__11061, 1, null);
+  console.log("Mouse pos", x, y);
+  if(cljs.core.truth_(cake.line.point_on_thick_path_QMARK_.call(null, cljs.core.PersistentVector.fromArray([x, y], true), cake.hello.creep_path, 50))) {
+    return console.log("Not allowed placing on creep path")
+  }else {
+    return cake.hello.towers = cljs.core.cons.call(null, new cake.lasertower.LaserTower(x, y), cake.hello.towers)
+  }
+});
+clojure.browser.event.listen.call(null, cake.drawing.canvas, "mousemove", function(ev) {
+  var p = cake.hello.relative_mouse_pos.call(null, ev);
+  return cljs.core.reset_BANG_.call(null, cake.hello.mouse_pos, p)
 });
 cake.util.crashingInterval.call(null, function() {
-  cake.drawing.clearCanvas.call(null);
+  cake.drawing.clear_canvas.call(null);
+  cake.drawing.draw_creep_path.call(null, cake.hello.creep_path);
+  cake.drawing.draw_debug_info.call(null, cljs.core.deref.call(null, cake.hello.mouse_pos), cake.hello.creep_path);
   var date = new Date;
   var time = date.getTime();
-  var G__14015_14017 = cljs.core.seq.call(null, cake.hello.towers);
+  var G__11062_11064 = cljs.core.seq.call(null, cake.hello.towers);
   while(true) {
-    if(G__14015_14017) {
-      var tower_14018 = cljs.core.first.call(null, G__14015_14017);
-      cake.tower.draw.call(null, tower_14018, time);
-      var G__14019 = cljs.core.next.call(null, G__14015_14017);
-      G__14015_14017 = G__14019;
+    if(G__11062_11064) {
+      var tower_11065 = cljs.core.first.call(null, G__11062_11064);
+      cake.tower.draw.call(null, tower_11065, time);
+      var G__11066 = cljs.core.next.call(null, G__11062_11064);
+      G__11062_11064 = G__11066;
       continue
     }else {
     }
     break
   }
-  var G__14016 = cljs.core.seq.call(null, cake.hello.creeps);
+  var G__11063 = cljs.core.seq.call(null, cake.hello.creeps);
   while(true) {
-    if(G__14016) {
-      var creep = cljs.core.first.call(null, G__14016);
+    if(G__11063) {
+      var creep = cljs.core.first.call(null, G__11063);
       cake.creep.draw.call(null, creep, time);
-      var G__14020 = cljs.core.next.call(null, G__14016);
-      G__14016 = G__14020;
+      var G__11067 = cljs.core.next.call(null, G__11063);
+      G__11063 = G__11067;
       continue
     }else {
       return null
