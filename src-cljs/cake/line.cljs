@@ -1,5 +1,4 @@
 (ns cake.line
-  (:require [cake.util :as util])
   )
 
 ;; All mathematics relating to lines that I'll need
@@ -87,8 +86,7 @@
         [x1 y1 x2 y2] segment
         cpol (closest-point-on-line point (get-line segment))
         hwidth (/ width 2)]
-    (.log js/console "Closest point on line" cpol)
-    (and (on-segment? cpol segment) (<= (util/loud "distance" #(sq-point-to-point-dist cpol point)) (* hwidth hwidth)))))
+    (and (on-segment? cpol segment) (<= (sq-point-to-point-dist cpol point) (* hwidth hwidth)))))
 
 (defn point-on-thick-path?
   "Similar to above. Path is a list of points on the path. Ex path: '((1 2) (5 7) (3 4))"
@@ -97,7 +95,6 @@
     false
     (let [[x1 y1] (first path)
           [x2 y2] (second path)]
-      (.log js/console "Checking from" [x1 y1] "to" [x2 y2])
       (or (point-on-thick-line-segment? point [x1 y1 x2 y2] width)
            (point-on-thick-path? point (rest path) width)))))
 

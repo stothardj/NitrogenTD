@@ -7,7 +7,7 @@
             )
   )
 
-(deftype Spawnling [x y]
+(deftype Spawnling [x y path]
   Creep
   (draw [this time]
     (set! (.-fillStyle ctx) "rgba(0, 255, 255, 0.2)")
@@ -16,4 +16,7 @@
           w (* 2 u) ;; pun
           ]
       (drawing/draw-at #(.fillRect ctx (- u) -8 w 16) x y)
-      )))
+      ))
+  (move [this]
+    (Spawnling. (inc x) y path))
+  )

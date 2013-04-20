@@ -35,6 +35,5 @@
   "Takes a function. Output the return value of that function to the console, then return it. For debugging. Also outputs useful identifier in same line"
   [s fn]
   (let [ret (fn)]
-    (.log js/console "HEllo")
     (.log js/console s ret)
     ret))

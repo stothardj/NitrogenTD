@@ -43,23 +43,3 @@
   (draw-path path)
   (.stroke ctx)
   )
-
-(defn draw-debug-info
-  [mouse-pos creep-path]
-  (set! (.-fillStyle ctx) "rgb(255,0,0)")
-  (let [[x y] mouse-pos]
-    (.fillRect ctx (- x 5) (- y 5) 10 10))
-  (set! (.-strokeStyle ctx) "rgb(255,0,0)")
-  (set! (.-lineWidth ctx) 2)
-  (draw-path creep-path)
-  (.stroke ctx)
-  (loop [path creep-path]
-    (if (< (count path) 2)
-      nil
-      (let [[x1 y1] (first path)
-            [x2 y2] (second path)
-            [xi yi] (line/closest-point-on-line mouse-pos (line/get-line [x1 y1 x2 y2]))
-            ]
-        (.fillRect ctx (- xi 3) (- yi 3) 6 6)
-        (recur (rest path)))))
-  )
