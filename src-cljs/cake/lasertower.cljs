@@ -7,6 +7,7 @@
             )
   )
 
+
 (deftype LaserTower [x y]
   Tower
   (draw [this time]
