@@ -13,11 +13,13 @@
           num-spawned (min want-to-spawn n)
           creep-left (- n num-spawned)
           new-creep (repeat num-spawned
-                            (Spawnling. x y path))
+                            (let [cx (+ x (rand-int 20) -10)
+                                  cy (+ y (rand-int 20) -10)]
+                              (Spawnling. cx cy path)))
           ]
       (if (zero? creep-left)
         {:creep new-creep}
         {:creep new-creep
-         :pool (SpawnlingPool. x y creep-left prob)})
+         :pool (SpawnlingPool. x y creep-left prob path)})
       )
     ))
