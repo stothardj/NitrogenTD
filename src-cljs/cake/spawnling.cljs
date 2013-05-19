@@ -10,12 +10,12 @@
 (deftype Spawnling [x y path]
   Creep
   (draw [this time]
-    (set! (.-fillStyle ctx) "rgba(0, 255, 255, 0.2)")
-    (let [t (util/to-radians (mod (/ time 5) 360))
+    (set! (.-fillStyle ctx) "rgba(255, 0, 255, 0.3)")
+    (let [t (util/to-radians (mod (/ time 3) 360))
           u (* 4 (Math/sin t))
           w (* 2 u) ;; pun
           ]
-      (drawing/draw-at #(.fillRect ctx (- u) -8 w 16) x y)
+      (drawing/draw-at #(.fillRect ctx (- u) -4 w 8) x y)
       ))
   (move [this]
     (Spawnling. (inc x) y path))

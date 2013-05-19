@@ -9,9 +9,10 @@
   (html5
    [:head
     (include-css "/css/style.css")
-    [:title "Open"]]
+    [:title "OpenTD"]]
    [:body
-    [:h1 "Open"]
-    [:canvas#game {:width "800" :height "600"}]
+    [:div#container
+     [:h1 "OpenTD"]
+     [:canvas#game {:width "800" :height "600"}]]
     (include-js "/js/main.js")
     ]))

@@ -38,8 +38,11 @@
 
 (defn draw-creep-path
   [path]
-  (set! (.-strokeStyle ctx) "rgba(255,255,255,0.1)")
-  (set! (.-lineWidth ctx) 50)
   (draw-path path)
+  (set! (.-strokeStyle ctx) "rgb(255,255,255)")
+  (set! (.-lineWidth ctx) 50)
+  (.stroke ctx)
+  (set! (.-strokeStyle ctx) "rgb(20,20,50)")
+  (set! (.-lineWidth ctx) 45)
   (.stroke ctx)
   )
