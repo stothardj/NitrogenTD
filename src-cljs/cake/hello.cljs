@@ -50,11 +50,10 @@
          ]
      (doseq [tower towers]
        (tower/draw tower time))
-     (reset! creeps
-             (doall (for [creep @creeps]
-                      (do
-                        (creep/draw creep time)
-                        (creep/move creep)))))
+     (doseq [creep @creeps]
+       (creep/draw creep time))
+     (swap! creeps #(for [creep %] (creep/move creep)))
+
      )
    )
  40)
