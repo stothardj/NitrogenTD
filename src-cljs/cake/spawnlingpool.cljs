@@ -4,21 +4,20 @@
         )
   )
 
-;; Spawns n spawnlings near position x, y. Produces 1 spawnling per freq milliseconds. Start-time is when this pool started spawning.
+;; Spawns n spawnlings near position x, y. Each time called has a probability of prob to spawn a creep. Start-time is when this pool started spawning.
 (deftype SpawnlingPool
-    [x y n freq start-time]
+    [x y n prob path]
   Spawner
   (spawn-creep [this time]
-    (let [time-diff (- time start-time)
-          spawn-in-time (inc (/ time-diff freq)) ;; todo: rounding
-          num-spawned (min spawn-in-time n)
+    (let [want-to-spawn (if (< (rand-int 100) prob) 1 0)
+          num-spawned (min want-to-spawn n)
           creep-left (- n num-spawned)
           new-creep (repeat num-spawned
-                            (Spawnling. x y nil))
+                            (Spawnling. x y path))
           ]
       (if (zero? creep-left)
         {:creep new-creep}
         {:creep new-creep
-         :pool (SpawnlingPool. x y creep-left freq time)})
+         :pool (SpawnlingPool. x y creep-left prob)})
       )
     ))

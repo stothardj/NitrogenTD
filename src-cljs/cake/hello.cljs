@@ -22,7 +22,7 @@
                    (Spawnling. 100 200 creep-path)
                    ]))
 ;; TODO: Make list
-(def spawner (atom (SpawnlingPool. 51 100 100 1000 (.getTime (js/Date.)))))
+(def spawner (atom (SpawnlingPool. 51 100 8 2 creep-path)))
 
 (def mouse-pos (atom nil))
 
