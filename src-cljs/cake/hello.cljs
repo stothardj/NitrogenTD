@@ -24,8 +24,9 @@
 
 (defn relative-mouse-pos
   [ev]
-  (let [x (- (.-offsetX ev) (.-offsetLeft canvas))
-        y (- (.-offsetY ev) (.-offsetTop canvas))]
+  (let [rect (.getBoundingClientRect canvas)
+        x (- (.-clientX ev) (.-left rect))
+        y (- (.-clientY ev) (.-top rect))]
     [x y]))
 
 (event/listen canvas "click"
