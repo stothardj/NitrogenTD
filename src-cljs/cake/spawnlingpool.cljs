@@ -1,5 +1,5 @@
 (ns cake.spawnlingpool
-  (:use [cake.spawner :only [Spawner]]
+  (:use [cake.pool :only [Pool]]
         [cake.spawnling :only [Spawnling]]
         )
   )
@@ -7,7 +7,7 @@
 ;; Spawns n spawnlings near position x, y. Each time called has a probability of prob to spawn a creep. Start-time is when this pool started spawning.
 (deftype SpawnlingPool
     [x y n prob path]
-  Spawner
+  Pool
   (spawn-creep [this time]
     (let [want-to-spawn (if (< (rand-int 100) prob) 1 0)
           num-spawned (min want-to-spawn n)

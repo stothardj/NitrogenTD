@@ -8,7 +8,7 @@
             [cake.drawing :as drawing]
             [cake.creep :as creep]
             [cake.tower :as tower]
-            [cake.spawner :as spawner]
+            [cake.pool :as pool]
             [cake.util :as util]
             [cake.line :as line]
             )
@@ -22,7 +22,7 @@
                    (Spawnling. 100 200 creep-path)
                    ]))
 ;; TODO: Make list
-(def spawner (atom (SpawnlingPool. 51 100 8 2 creep-path)))
+(def pool (atom (SpawnlingPool. 51 100 8 2 creep-path)))
 
 (def mouse-pos (atom nil))
 
@@ -57,13 +57,13 @@
      (doseq [creep @creeps]
        (creep/draw creep time))
      (swap! creeps #(for [creep %] (creep/move creep)))
-     (when @spawner
-       (let [r (spawner/spawn-creep @spawner time)
+     (when @pool
+       (let [r (pool/spawn-creep @pool time)
              new-creep (:creep r)
              new-pool (if (contains? r :pool) (:pool r) nil)
              ]
          (swap! creeps #(concat % new-creep))
-         (reset! spawner new-pool)))
+         (reset! pool new-pool)))
      )
    )
  40)
