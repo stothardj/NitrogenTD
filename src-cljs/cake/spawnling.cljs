@@ -18,8 +18,6 @@
           ]
       (drawing/draw-at #(.fillRect ctx (- u) -4 w 8) x y)
       ))
-  ;; TODO: Handle move returning back nil to mean Spawnling reaches
-  ;; destination
   ;; TODO: Move math to line.js
   (move [this]
     (when-not (empty? path)

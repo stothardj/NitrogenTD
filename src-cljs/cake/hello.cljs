@@ -56,7 +56,9 @@
        (tower/draw tower time))
      (doseq [creep @creeps]
        (creep/draw creep time))
-     (swap! creeps #(for [creep %] (creep/move creep)))
+     (swap! creeps #(for [creep %
+                          :let [new-creep (creep/move creep)]
+                          :when (not (nil? new-creep))] new-creep))
      (when @pool
        (let [r (pool/spawn-creep @pool time)
              new-creep (:creep r)
