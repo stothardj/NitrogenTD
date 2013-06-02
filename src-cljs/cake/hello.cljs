@@ -46,8 +46,6 @@
                 (let [p (relative-mouse-pos  ev)]
                   (reset! mouse-pos p))))
 
-
-
 (util/crashingInterval
  (fn []
    (drawing/clear-canvas)
@@ -67,11 +65,13 @@
             (fn [creeps]
               (filter
                (fn [creep]
-                 (not-any? (fn [tower]
-                             (let [dist (line/sq-point-to-point-dist
-                                         (point/get-point creep)
-                                         (point/get-point tower))]
-                               (< dist 2000))) towers)) creeps)))
+                 (not-any?
+                  (fn [tower]
+                    (< (line/sq-point-to-point-dist
+                        (point/get-point creep)
+                        (point/get-point tower)) 2000))
+                  towers))
+               creeps)))
 
      (when @pool
        (let [r (pool/spawn-creep @pool time)
