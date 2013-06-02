@@ -10,7 +10,7 @@
 
 (defn slope
   "Returns the slope of the given line segment"
-  [x1 y1 x2 y2]
+  [[x1 y1] [x2 y2]]
   (/ (- y2 y1) (- x2 x1)))
 
 (defn perp-slope
@@ -37,10 +37,8 @@
 
 (defn sq-point-to-point-dist
   "Returns the distance between two points, squared"
-  [p0 p1]
-  (let [[x0 y0] p0
-        [x1 y1] p1
-        xdiff (- x1 x0)
+  [[x0 y0] [x1 y1]]
+  (let [xdiff (- x1 x0)
         ydiff (- y1 y0)]
     (+ (* xdiff xdiff) (* ydiff ydiff))))
 
@@ -53,7 +51,7 @@
   "Given a line segment and a point on the overall line, returns if that point is on the given segment"
   [point segment]
   (let [[x0 y0] point
-        [x1 y1 x2 y2] segment]
+        [[x1 y1] [x2 y2]] segment]
     (and (between? x1 x0 x2) (between? y1 y0 y2))))
 
 ;; Logic:
@@ -76,15 +74,14 @@
 (defn get-line
   "Given a segment return the full line"
   [segment]
-  (let [[x1 y1 x2 y2] segment]
-    [(slope x1 y1 x2 y2) x1 y1]))
+  (let [[p1 p2] segment
+        [x1 y1] p1]
+    [(slope p1 p2) x1 y1]))
 
 (defn point-on-thick-line-segment?
   "Given a line segment with a width, and a point, return whether the point is on that thick line"
   [point segment width]
-  (let [[x0 y0] point
-        [x1 y1 x2 y2] segment
-        cpol (closest-point-on-line point (get-line segment))
+  (let [cpol (closest-point-on-line point (get-line segment))
         hwidth (/ width 2)]
     (and (on-segment? cpol segment) (<= (sq-point-to-point-dist cpol point) (* hwidth hwidth)))))
 
@@ -93,8 +90,8 @@
   [point path width]
   (if (< (count path) 2)
     false
-    (let [[x1 y1] (first path)
-          [x2 y2] (second path)]
-      (or (point-on-thick-line-segment? point [x1 y1 x2 y2] width)
+    (let [p1 (first path)
+          p2 (second path)]
+      (or (point-on-thick-line-segment? point [p1 p2] width)
            (point-on-thick-path? point (rest path) width)))))
 
