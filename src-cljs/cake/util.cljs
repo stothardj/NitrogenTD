@@ -31,9 +31,8 @@
                        (reset! crashed false)))) interval)]
       handle)))
 
-(defn loud
-  "Takes a function. Output the return value of that function to the console, then return it. For debugging. Also outputs useful identifier in same line"
-  [s fn]
-  (let [ret (fn)]
-    (.log js/console s ret)
-    ret))
+(defn log
+  "Displays s followed by obj, then returns obj"
+  [s obj]
+  (.log js/console s obj)
+  obj)

@@ -1,6 +1,7 @@
 (ns cake.spawnling
   (:use [cake.creep :only [Creep]]
         [cake.drawing :only [ctx]]
+        [cake.point :only [Point]]
         )
   (:require [cake.util :as util]
             [cake.drawing :as drawing]
@@ -37,4 +38,6 @@
             ]
         (Spawnling. newx newy new-path)
         )))
+  Point
+  (get-point [this] [x y])
   )
