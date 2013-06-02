@@ -95,3 +95,11 @@
       (or (point-on-thick-line-segment? point [p1 p2] width)
            (point-on-thick-path? point (rest path) width)))))
 
+(defn angle-to-point
+  "The angle to move from src point to dest point"
+  [src dest]
+  (let [[dx dy] (map - dest src)
+        at (Math/atan (/ dy dx))]
+    (if (> 0 dx)
+      (+ at Math/PI)
+      at)))
