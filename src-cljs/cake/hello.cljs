@@ -78,7 +78,7 @@
    (when @pool
      (let [r (pool/spawn-creep @pool)
            new-creep (:creep r)
-           new-pool (if (contains? r :pool) (:pool r) nil)
+           new-pool (:pool r)
            ]
        (swap! creeps #(concat % new-creep))
        (reset! pool new-pool)))
