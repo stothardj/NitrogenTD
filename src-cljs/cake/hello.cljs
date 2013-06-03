@@ -13,6 +13,7 @@
             [cake.line :as line]
             [cake.point :as point]
             [cake.animation :as animation]
+            [cake.gamestate :as gamestate]
             )
   )
 
@@ -52,37 +53,34 @@
  (fn []
    (drawing/clear-canvas)
    (drawing/draw-creep-path creep-path)
-   (let [date (js/Date.)
-         time (.getTime date)
-         ]
-     (doseq [tower towers]
-       (tower/draw tower time))
-     (doseq [creep @creeps]
-       (creep/draw creep time))
-                      
-     (swap! creeps #(for [creep %
-                          :let [new-creep (creep/move creep)]
-                          :when (not (nil? new-creep))] new-creep))
-     ;; "Kill" creeps which get close to towers
-     (swap! creeps
-            (fn [creeps]
-              (filter
-               (fn [creep]
-                 (not-any?
-                  (fn [tower]
-                    (< (line/sq-point-to-point-dist
-                        (point/get-point creep)
-                        (point/get-point tower)) 2000))
-                  towers))
-               creeps)))
+   (set! gamestate/time (.getTime (js/Date.)))
+   (doseq [tower towers]
+     (tower/draw tower))
+   (doseq [creep @creeps]
+     (creep/draw creep))
+   
+   (swap! creeps #(for [creep %
+                        :let [new-creep (creep/move creep)]
+                        :when (not (nil? new-creep))] new-creep))
+   ;; "Kill" creeps which get close to towers
+   (swap! creeps
+          (fn [creeps]
+            (filter
+             (fn [creep]
+               (not-any?
+                (fn [tower]
+                  (< (line/sq-point-to-point-dist
+                      (point/get-point creep)
+                      (point/get-point tower)) 2000))
+                towers))
+             creeps)))
 
-     (when @pool
-       (let [r (pool/spawn-creep @pool time)
-             new-creep (:creep r)
-             new-pool (if (contains? r :pool) (:pool r) nil)
-             ]
-         (swap! creeps #(concat % new-creep))
-         (reset! pool new-pool)))
-     )
+   (when @pool
+     (let [r (pool/spawn-creep @pool)
+           new-creep (:creep r)
+           new-pool (if (contains? r :pool) (:pool r) nil)
+           ]
+       (swap! creeps #(concat % new-creep))
+       (reset! pool new-pool)))
    )
  40)

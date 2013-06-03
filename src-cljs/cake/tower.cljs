@@ -2,5 +2,5 @@
 
 (defprotocol Tower
   "A tower defense tower"
-  (draw [this time] "Draws the tower"))
+  (draw [this] "Draws the tower"))
 

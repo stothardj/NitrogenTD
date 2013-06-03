@@ -2,6 +2,7 @@
   (:use [cake.creep :only [Creep]]
         [cake.drawing :only [ctx]]
         [cake.point :only [Point]]
+        [cake.gamestate :only [time]]
         )
   (:require [cake.util :as util]
             [cake.drawing :as drawing]
@@ -11,7 +12,7 @@
 
 (deftype Spawnling [x y path]
   Creep
-  (draw [this time]
+  (draw [this]
     (set! (.-fillStyle ctx) "rgba(255, 0, 255, 0.3)")
     (let [t (util/to-radians (mod (/ time 3) 360))
           u (* 4 (Math/sin t))
