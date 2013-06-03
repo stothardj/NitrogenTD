@@ -12,6 +12,7 @@
             [cake.util :as util]
             [cake.line :as line]
             [cake.point :as point]
+            [cake.animation :as animation]
             )
   )
 
@@ -22,6 +23,7 @@
 (def creeps (atom [(Spawnling. 150 100 creep-path)
                    (Spawnling. 100 200 creep-path)
                    ]))
+
 ;; TODO: Make list
 (def pool (atom (SpawnlingPool. 51 100 8 2 creep-path)))
 
@@ -57,6 +59,7 @@
        (tower/draw tower time))
      (doseq [creep @creeps]
        (creep/draw creep time))
+                      
      (swap! creeps #(for [creep %
                           :let [new-creep (creep/move creep)]
                           :when (not (nil? new-creep))] new-creep))
