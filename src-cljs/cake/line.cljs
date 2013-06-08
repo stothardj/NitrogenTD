@@ -1,5 +1,4 @@
-(ns cake.line
-  )
+(ns cake.line)
 
 ;; All mathematics relating to lines that I'll need
 
