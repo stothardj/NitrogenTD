@@ -37,50 +37,54 @@
         y (- (.-clientY ev) (.-top rect))]
     [x y]))
 
-(event/listen canvas "click"
-              (fn [ev]
-                (let [[x y] (relative-mouse-pos ev)]
-                  (when-not (line/point-on-thick-path? [x y] creep-path 50)
-                    (set! towers (cons (LaserTower. x y) towers)))
-                  )))
+(when canvas
 
-(event/listen canvas "mousemove"
-              (fn [ev]
-                (let [p (relative-mouse-pos  ev)]
-                  (reset! mouse-pos p))))
+  (event/listen canvas "click"
+                (fn [ev]
+                  (let [[x y] (relative-mouse-pos ev)]
+                    (when-not (line/point-on-thick-path? [x y] creep-path 50)
+                      (set! towers (cons (LaserTower. x y) towers)))
+                    )))
 
-(util/crashingInterval
- (fn []
-   (drawing/clear-canvas)
-   (drawing/draw-creep-path creep-path)
-   (set! gamestate/time (.getTime (js/Date.)))
-   (doseq [tower towers]
-     (tower/draw tower))
-   (doseq [creep @creeps]
-     (creep/draw creep))
-   
-   (swap! creeps #(for [creep %
-                        :let [new-creep (creep/move creep)]
-                        :when (not (nil? new-creep))] new-creep))
-   ;; "Kill" creeps which get close to towers
-   (swap! creeps
-          (fn [creeps]
-            (filter
-             (fn [creep]
-               (not-any?
-                (fn [tower]
-                  (< (line/sq-point-to-point-dist
-                      (point/get-point creep)
-                      (point/get-point tower)) 2000))
-                towers))
-             creeps)))
+  (event/listen canvas "mousemove"
+                (fn [ev]
+                  (let [p (relative-mouse-pos  ev)]
+                    (reset! mouse-pos p))))
 
-   (when @pool
-     (let [r (pool/spawn-creep @pool)
-           new-creep (:creep r)
-           new-pool (:pool r)
-           ]
-       (swap! creeps #(concat % new-creep))
-       (reset! pool new-pool)))
-   )
- 40)
+  (util/crashingInterval
+   (fn []
+     (drawing/clear-canvas)
+     (drawing/draw-creep-path creep-path)
+     (set! gamestate/time (.getTime (js/Date.)))
+     (doseq [tower towers]
+       (tower/draw tower))
+     (doseq [creep @creeps]
+       (creep/draw creep))
+     
+     (swap! creeps #(for [creep %
+                          :let [new-creep (creep/move creep)]
+                          :when (not (nil? new-creep))] new-creep))
+     ;; "Kill" creeps which get close to towers
+     (swap! creeps
+            (fn [creeps]
+              (filter
+               (fn [creep]
+                 (not-any?
+                  (fn [tower]
+                    (< (line/sq-point-to-point-dist
+                        (point/get-point creep)
+                        (point/get-point tower)) 2000))
+                  towers))
+               creeps)))
+
+     (when @pool
+       (let [r (pool/spawn-creep @pool)
+             new-creep (:creep r)
+             new-pool (:pool r)
+             ]
+         (swap! creeps #(concat % new-creep))
+         (reset! pool new-pool)))
+     )
+   40)
+
+  )

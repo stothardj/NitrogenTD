@@ -8,7 +8,7 @@
 ;; enought to *out* for stdout that it seemed like a good idea
 ;; to give it the same semantics
 (def ^:dynamic canvas (util/by-id "game"))
-(def ^:dynamic ctx (.getContext canvas "2d"))
+(def ^:dynamic ctx (when canvas (.getContext canvas "2d")))
 
 (defn draw-path
   "Given a list of points '((x y) (x y) ...) draw the polygon on the given context. Does not close the path for you. Does not call stroke or fill for you"

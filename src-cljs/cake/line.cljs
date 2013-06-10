@@ -9,8 +9,10 @@
 
 (defn slope
   "Returns the slope of the given line segment"
-  [[x1 y1] [x2 y2]]
-  (/ (- y2 y1) (- x2 x1)))
+  [point1 point2]
+  (let [[x1 y1] point1
+        [x2 y2] point2]
+    (/ (- y2 y1) (- x2 x1))))
 
 (defn perp-slope
   "Returns the slope of a line perpendicular to one with given slope"
@@ -47,7 +49,8 @@
   (or (<= a b c) (>= a b c)))
 
 (defn on-segment?
-  "Given a line segment and a point on the overall line, returns if that point is on the given segment"
+  "Given a line segment and a point on the overall line,
+   returns if that point is on the given segment"
   [point segment]
   (let [[x0 y0] point
         [[x1 y1] [x2 y2]] segment]
@@ -78,7 +81,8 @@
     [(slope p1 p2) x1 y1]))
 
 (defn point-on-thick-line-segment?
-  "Given a line segment with a width, and a point, return whether the point is on that thick line"
+  "Given a line segment with a width, and a point,
+   return whether the point is on that thick line"
   [point segment width]
   (let [cpol (closest-point-on-line point (get-line segment))
         hwidth (/ width 2)]
