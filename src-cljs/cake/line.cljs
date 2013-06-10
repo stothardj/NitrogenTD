@@ -37,11 +37,11 @@
        [xi yi]))))
 
 (defn sq-point-to-point-dist
-  "Returns the distance between two points, squared"
-  [[x0 y0] [x1 y1]]
-  (let [xdiff (- x1 x0)
-        ydiff (- y1 y0)]
-    (+ (* xdiff xdiff) (* ydiff ydiff))))
+  "Returns the distance between two points, squared. Should work in any finite dimensions"
+  [point1 point2]
+  (let [diffs (map - point1 point2)
+        sq-diffs (map #(* % %) diffs)]
+    (apply + sq-diffs)))
 
 (defn- between?
   "Returns true if a<=b<=c or a>=b>=c. That is, returns true if b is between a and c"

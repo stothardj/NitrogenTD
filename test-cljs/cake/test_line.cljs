@@ -33,3 +33,6 @@
          (line/intersection [1 1 2]
                             [inf 2 8]))))
 
+(deftest sq-dist
+  (is (= 25 (line/sq-point-to-point-dist [1 2] [4 -2]))))
+
