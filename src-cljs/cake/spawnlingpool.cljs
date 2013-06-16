@@ -16,7 +16,7 @@
           new-creep (repeat num-spawned
                             (let [cx (+ x (rand-int 20) -10)
                                   cy (+ y (rand-int 20) -10)]
-                              (Spawnling. cx cy path)))
+                              (Spawnling. cx cy 1000 path)))
           ]
       (if (zero? creep-left)
         {:creep new-creep}

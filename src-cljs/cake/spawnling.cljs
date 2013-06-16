@@ -10,7 +10,7 @@
             )
   )
 
-(deftype Spawnling [x y path]
+(deftype Spawnling [x y health path]
   Creep
   (draw [this]
     (set! (.-fillStyle ctx) "rgba(255, 0, 255, 0.3)")
@@ -32,8 +32,12 @@
                        (rest path)
                        path)
             ]
-        (Spawnling. newx newy new-path)
+        (Spawnling. newx newy health new-path)
         )))
+  (damage [this force]
+    (let [new-health (- health force)]
+      (when (> new-health 0)
+        (Spawnling. x y new-health path))))
   Point
   (get-point [this] [x y])
   )

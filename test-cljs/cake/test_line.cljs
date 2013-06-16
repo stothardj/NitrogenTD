@@ -36,3 +36,8 @@
 (deftest sq-dist
   (is (= 25 (line/sq-point-to-point-dist [1 2] [4 -2]))))
 
+(deftest horizontal-sq-dist
+  (is (= 100 (line/sq-point-to-point-dist [5 7] [15 7]))))
+
+(deftest vertical-sq-dist
+  (is (= 100 (line/sq-point-to-point-dist [5 7] [5 -3]))))

@@ -19,13 +19,12 @@
 
 (def creep-path '((30 40) (70 90) (70 200) (300 200) (500 400) (600 500) (700 250) (600 100) (500 200)  ))
 
-;; TODO: Use atoms for these
-(def towers [(LaserTower. 200 300) (LaserTower. 100 400)])
-(def creeps (atom [(Spawnling. 150 100 creep-path)
-                   (Spawnling. 100 200 creep-path)
+(def towers (atom [(LaserTower. 200 300) (LaserTower. 100 400)]))
+(def creeps (atom [(Spawnling. 150 100 1000 creep-path)
+                   (Spawnling. 100 200 1000 creep-path)
                    ]))
 
-;; TODO: Make list
+;; TODO: Make sequence
 (def pool (atom (SpawnlingPool. 51 100 8 2 creep-path)))
 
 (def mouse-pos (atom nil))
@@ -37,13 +36,28 @@
         y (- (.-clientY ev) (.-top rect))]
     [x y]))
 
+(defn attack-in-range
+  [towers creeps]
+  (loop [unprocessed towers
+         processed []
+         c creeps
+         ]
+    (if-let [tseq (seq unprocessed)]
+      (let [tf (first tseq)
+            tr (rest tseq)
+            m (tower/attack tf c)
+            nc (:creeps m)
+            nt (:tower m)]
+        (recur tr (conj processed nt) nc))
+      {:creeps c :towers processed})))
+
 (when canvas
 
   (event/listen canvas "click"
                 (fn [ev]
                   (let [[x y] (relative-mouse-pos ev)]
                     (when-not (line/point-on-thick-path? [x y] creep-path 50)
-                      (set! towers (cons (LaserTower. x y) towers)))
+                      (swap! towers #(cons (LaserTower. x y) %)))
                     )))
 
   (event/listen canvas "mousemove"
@@ -56,26 +70,20 @@
      (drawing/clear-canvas)
      (drawing/draw-creep-path creep-path)
      (set! gamestate/time (.getTime (js/Date.)))
-     (doseq [tower towers]
+     (doseq [tower @towers]
        (tower/draw tower))
      (doseq [creep @creeps]
        (creep/draw creep))
      
      (swap! creeps #(for [creep %
                           :let [new-creep (creep/move creep)]
-                          :when (not (nil? new-creep))] new-creep))
-     ;; "Kill" creeps which get close to towers
-     (swap! creeps
-            (fn [creeps]
-              (filter
-               (fn [creep]
-                 (not-any?
-                  (fn [tower]
-                    (< (line/sq-point-to-point-dist
-                        (point/get-point creep)
-                        (point/get-point tower)) 2000))
-                  towers))
-               creeps)))
+                          :when new-creep] new-creep))
+
+     (let [m (attack-in-range @towers @creeps)
+           nt (:towers m)
+           nc (:creeps m)]
+       (reset! towers nt)
+       (reset! creeps nc))
 
      (when @pool
        (let [r (pool/spawn-creep @pool)
