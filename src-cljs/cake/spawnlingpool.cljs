@@ -5,22 +5,21 @@
         )
   )
 
-;; Spawns n spawnlings near position x, y. Each time called has a probability of prob to spawn a creep. Start-time is when this pool started spawning.
+;; Spawns n spawnlings at the start of the path. Each time called has a probability of prob to spawn a creep
 (deftype SpawnlingPool
-    [x y n prob path]
+    [n prob path]
   Pool
   (spawn-creep [this]
     (let [want-to-spawn (if (< (rand-int 100) prob) 1 0)
           num-spawned (min want-to-spawn n)
           creep-left (- n num-spawned)
           new-creep (repeat num-spawned
-                            (let [cx (+ x (rand-int 20) -10)
-                                  cy (+ y (rand-int 20) -10)]
+                            (let [[[cx cy]] path]
                               (Spawnling. cx cy 1000 path)))
           ]
       (if (zero? creep-left)
         {:creep new-creep}
         {:creep new-creep
-         :pool (SpawnlingPool. x y creep-left prob path)})
+         :pool (SpawnlingPool. creep-left prob path)})
       )
     ))

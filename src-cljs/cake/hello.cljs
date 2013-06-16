@@ -26,7 +26,7 @@
 (def animations (atom []))
 
 ;; TODO: Make sequence
-(def pool (atom (SpawnlingPool. 51 100 8 2 creep-path)))
+(def pool (atom (SpawnlingPool. 8 2 creep-path)))
 
 (def mouse-pos (atom nil))
 
@@ -52,9 +52,9 @@
 
   (util/crashingInterval
    (fn []
+     (set! gamestate/time (.getTime (js/Date.)))
      (drawing/clear-canvas)
      (drawing/draw-creep-path creep-path)
-     (set! gamestate/time (.getTime (js/Date.)))
      (doseq [tower @towers]
        (tower/draw tower))
      (doseq [creep @creeps]
@@ -62,9 +62,10 @@
      (doseq [anim @animations]
        (animation/draw anim))
      
-     (swap! creeps #(for [creep %
-                          :let [new-creep (creep/move creep)]
-                          :when new-creep] new-creep))
+     (swap! creeps
+            #(->> %
+                  (map creep/move)
+                  (filter (complement nil?))))
 
      (let [{na :animations
             nc :creeps

@@ -99,8 +99,9 @@
 (defn angle-to-point
   "The angle to move from src point to dest point"
   [src dest]
-  (let [[dx dy] (map - dest src)
-        at (Math/atan (/ dy dx))]
-    (if (> 0 dx)
-      (+ at Math/PI)
-      at)))
+  (if (= src dest) 0
+      (let [[dx dy] (map - dest src)
+            at (Math/atan (/ dy dx))]
+        (if (> 0 dx)
+          (+ at Math/PI)
+          at))))
