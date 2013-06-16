@@ -36,7 +36,7 @@
         )))
   (damage [this force]
     (let [new-health (- health force)]
-      (when (> new-health 0)
+      (when (pos? new-health)
         (Spawnling. x y new-health path))))
   Point
   (get-point [this] [x y])

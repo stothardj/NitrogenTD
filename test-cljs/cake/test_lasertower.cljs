@@ -22,9 +22,17 @@
 (deftest horizontal-in-range
   (is (let [cx    5
             cy    7
-            tx    (+ cx lasertower/range -1)
+            tx    (+ cx lasertower/attack-range -1)
             ty    cy
             tower (lasertower/LaserTower. tx ty)
             creep (MockCreep. cx cy)
             ]
         (lasertower/in-range? tower creep))))
+
+(deftest merging-attacks
+  (is (=
+       (lasertower/merge-attacks [{:creep 'c1}
+                                  {:creep 'c2 :animation 'a1}
+                                  {:creep 'c3 :animation 'a2}
+                                  {:creep nil :animation 'a4}])
+       {:creeps ['c1 'c2 'c3] :animations ['a1 'a2 'a4]})))

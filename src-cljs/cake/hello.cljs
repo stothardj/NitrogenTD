@@ -23,6 +23,7 @@
 (def creeps (atom [(Spawnling. 150 100 1000 creep-path)
                    (Spawnling. 100 200 1000 creep-path)
                    ]))
+(def animations (atom []))
 
 ;; TODO: Make sequence
 (def pool (atom (SpawnlingPool. 51 100 8 2 creep-path)))
@@ -59,6 +60,8 @@
        (tower/draw tower))
      (doseq [creep @creeps]
        (creep/draw creep))
+     (doseq [anim @animations]
+       (animation/draw anim))
      
      (swap! creeps #(for [creep %
                           :let [new-creep (creep/move creep)]
@@ -66,9 +69,13 @@
 
      (let [m (tower/attack-all @towers @creeps)
            nt (:towers m)
-           nc (:creeps m)]
+           nc (:creeps m)
+           na (:animations m)]
        (reset! towers nt)
-       (reset! creeps nc))
+       (reset! creeps nc)
+       (swap! animations (partial concat na)))
+
+     (swap! animations (partial filter animation/continues?))
 
      (when @pool
        (let [r (pool/spawn-creep @pool)

@@ -2,6 +2,7 @@
   (:use [cake.tower :only [Tower]]
         [cake.drawing :only [ctx]]
         [cake.point :only [Point]]
+        [cake.laseranimation :only [LaserAnimation]]
         [cake.gamestate :only [time]]
         )
   (:require [cake.util :as util]
@@ -12,6 +13,32 @@
             )
   )
 
+(def attack-range 40)
+
+;; Make range param and move to tower?
+(defn in-range?
+  [tower creep]
+  (let [creep-p (point/get-point creep)
+        tower-p (point/get-point tower)
+        r2 (* attack-range attack-range)]
+    (< (line/sq-point-to-point-dist creep-p tower-p) r2)))
+
+(defn attack-creep
+  "Attack a single creep if in range. Returns new creep and animations"
+  [tower creep]
+  (if (in-range? tower creep)
+    {:creep (creep/damage creep 300)
+     :animation (LaserAnimation. time tower creep)}
+    {:creep creep}))   
+
+(defn merge-attacks [attack-results]
+  (letfn [(extract-present [m keyword]
+            (->> m
+                 (map keyword)
+                 (filter (complement nil?))))]
+    {:animations (extract-present attack-results :animation)
+     :creeps     (extract-present attack-results :creep)}))
+
 (deftype LaserTower [x y]
   Tower
   (draw [this]
@@ -21,26 +48,12 @@
       (set! (.-fillStyle ctx) "rgba(255, 255, 255, 0.5)")
       (drawing/draw-at #(.fillRect ctx -5 -5 10 10) x y (- angle))))
   (attack [this creeps]
-    (let [nc (for [c creeps
-                   :let [new-creep
-                         (if (in-range? this c)
-                           (creep/damage c 300)
-                           c)
-                         ]
-                   :when new-creep] new-creep)]
-      {:tower this
-       :creeps nc}))
+    (assoc
+        (->> creeps
+             (map (partial attack-creep this))
+             (merge-attacks)
+             )
+      :tower this))
   Point
   (get-point [this] [x y])
   )
-
-(def range 40)
-
-;; Make range param and move to tower?
-(defn in-range?
-  [tower creep]
-  (let [creep-p (point/get-point creep)
-        tower-p (point/get-point tower)
-        r2 (* range range)]
-    (< (line/sq-point-to-point-dist creep-p tower-p) r2)))
-

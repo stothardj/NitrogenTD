@@ -19,17 +19,17 @@
   "Like setInterval, except terminates if the function ever crashes"
   [f interval]
   (let [crashed (atom false)]
-    (def ^:dynamic handle) ;; chicken, meet egg
+    (declare ^:dynamic *handle*)
     (binding
-        [handle (js/setInterval
+        [*handle* (js/setInterval
                  (fn []
                    (if @crashed
-                     (js/clearInterval handle)
+                     (js/clearInterval *handle*)
                      (do
                        (compare-and-set! crashed false true)
                        (f)
                        (reset! crashed false)))) interval)]
-      handle)))
+      *handle*)))
 
 (defn log
   "Displays s followed by obj, then returns obj"
