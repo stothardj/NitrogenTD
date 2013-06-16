@@ -43,12 +43,11 @@
                 (fn [ev]
                   (let [[x y] (relative-mouse-pos ev)]
                     (when-not (line/point-on-thick-path? [x y] creep-path 50)
-                      (swap! towers #(cons (LaserTower. x y) %)))
-                    )))
+                      (swap! towers (partial cons (LaserTower. x y)))))))
 
   (event/listen canvas "mousemove"
                 (fn [ev]
-                  (let [p (relative-mouse-pos  ev)]
+                  (let [p (relative-mouse-pos ev)]
                     (reset! mouse-pos p))))
 
   (util/crashingInterval
@@ -82,7 +81,7 @@
              new-creep (:creep r)
              new-pool (:pool r)
              ]
-         (swap! creeps #(concat % new-creep))
+         (swap! creeps (partial concat new-creep))
          (reset! pool new-pool)))
      )
    40)
