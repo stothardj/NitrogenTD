@@ -91,12 +91,10 @@
 (defn point-on-thick-path?
   "Similar to above. Path is a list of points on the path. Ex path: '((1 2) (5 7) (3 4))"
   [point path width]
-  (if (< (count path) 2)
-    false
-    (let [p1 (first path)
-          p2 (second path)]
+  (when (>= (count path) 2)
+    (let [[p1 p2] path]
       (or (point-on-thick-line-segment? point [p1 p2] width)
-           (point-on-thick-path? point (rest path) width)))))
+          (point-on-thick-path? point (rest path) width)))))
 
 (defn angle-to-point
   "The angle to move from src point to dest point"

@@ -66,10 +66,9 @@
                           :let [new-creep (creep/move creep)]
                           :when new-creep] new-creep))
 
-     (let [m (tower/attack-all @towers @creeps)
-           nt (:towers m)
-           nc (:creeps m)
-           na (:animations m)]
+     (let [{na :animations
+            nc :creeps
+            nt :towers} (tower/attack-all @towers @creeps)]
        (reset! towers nt)
        (reset! creeps nc)
        (swap! animations (partial concat na)))
@@ -77,12 +76,10 @@
      (swap! animations (partial filter animation/continues?))
 
      (when @pool
-       (let [r (pool/spawn-creep @pool)
-             new-creep (:creep r)
-             new-pool (:pool r)
-             ]
-         (swap! creeps (partial concat new-creep))
-         (reset! pool new-pool)))
+       (let [{nc :creep
+              np :pool} (pool/spawn-creep @pool)]
+         (swap! creeps (partial concat nc))
+         (reset! pool np)))
      )
    40)
   )

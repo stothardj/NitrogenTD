@@ -18,11 +18,9 @@
          animations []
          ]
     (if-let [tseq (seq unprocessed)]
-      (let [tf (first tseq)
-            tr (rest tseq)
-            m (attack tf c)
-            nc (:creeps m)
-            nt (:tower m)
-            na (:animations m)]
+      (let [[tf & tr] tseq
+            {nc :creeps
+             nt :tower
+             na :animations} (attack tf c)]
         (recur tr (conj processed nt) nc (concat animations na)))
       {:creeps c :towers processed :animations animations})))
