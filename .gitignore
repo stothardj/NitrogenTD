@@ -10,6 +10,7 @@ pom.xml.asc
 !/runners/phantomjs.js
 .*
 !.gitignore
+*~
 \#*\#
 .lein-deps-sum
 .lein-failures

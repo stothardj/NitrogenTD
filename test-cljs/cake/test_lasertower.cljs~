@@ -1,6 +1,0 @@
-(ns cake.test.test-lasertower
-  (:require-macros [cemerick.cljs.test :refer (is deftest run-tests)])
-  (:require [cemerick.cljs.test :as t]
-            [cake.lasertower :as lasertower]))
-
-

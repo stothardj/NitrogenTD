@@ -36,21 +36,6 @@
         y (- (.-clientY ev) (.-top rect))]
     [x y]))
 
-(defn attack-in-range
-  [towers creeps]
-  (loop [unprocessed towers
-         processed []
-         c creeps
-         ]
-    (if-let [tseq (seq unprocessed)]
-      (let [tf (first tseq)
-            tr (rest tseq)
-            m (tower/attack tf c)
-            nc (:creeps m)
-            nt (:tower m)]
-        (recur tr (conj processed nt) nc))
-      {:creeps c :towers processed})))
-
 (when canvas
 
   (event/listen canvas "click"
@@ -79,7 +64,7 @@
                           :let [new-creep (creep/move creep)]
                           :when new-creep] new-creep))
 
-     (let [m (attack-in-range @towers @creeps)
+     (let [m (tower/attack-all @towers @creeps)
            nt (:towers m)
            nc (:creeps m)]
        (reset! towers nt)
@@ -94,5 +79,4 @@
          (reset! pool new-pool)))
      )
    40)
-
   )
