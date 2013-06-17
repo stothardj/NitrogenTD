@@ -29,10 +29,11 @@
   "Attack a single creep if in range. Returns new creep and animations"
   [tower creep]
   (if (in-range? tower creep)
-    (let [[x y] (point/get-point creep)]
-      {:creep (creep/damage creep 300)
+    (let [[x y] (point/get-point creep)
+          damage (+ 200 (rand-int 200))]
+      {:creep (creep/damage creep damage)
        :animation [(LaserAnimation. time tower creep)
-                   (NumberAnimation. time 300 x y)]})
+                   (NumberAnimation. time damage x y)]})
     {:creep creep}))
 
 (defn merge-attacks [attack-results]
