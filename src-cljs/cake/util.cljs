@@ -36,3 +36,9 @@
   [s obj]
   (.log js/console s obj)
   obj)
+
+(defn log-js
+  "Displays s follewed by obj after converting it to js. Then returns obj"
+  [s obj]
+  (.log js/console s (clj->js obj))
+  obj)

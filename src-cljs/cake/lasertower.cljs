@@ -29,16 +29,18 @@
   [tower creep]
   (if (in-range? tower creep)
     {:creep (creep/damage creep 300)
-     :animation (LaserAnimation. time tower creep)}
-    {:creep creep}))   
+     :animation [(LaserAnimation. time tower creep)]
+     }
+    {:creep creep}))
 
 (defn merge-attacks [attack-results]
-  (letfn [(extract-present [m keyword]
-            (->> m
-                 (map keyword)
-                 (filter (complement nil?))))]
-    {:animations (extract-present attack-results :animation)
-     :creeps     (extract-present attack-results :creep)}))
+  {:animations (->> attack-results
+                    (map :animation)
+                    (filter (complement nil?))
+                    (apply concat))
+  :creeps (->> attack-results
+                     (map :creep)
+                     (filter (complement nil?)))})
 
 (deftype LaserTower [x y cooldown-start]
   Tower

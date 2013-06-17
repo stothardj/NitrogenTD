@@ -11,7 +11,7 @@
   )
 
 ;; In milliseconds
-(def animation-length 10)
+(def animation-length 200)
 
 ;; Draws a simple laser animation from the tower to the creep
 (deftype LaserAnimation [start-time t c]
