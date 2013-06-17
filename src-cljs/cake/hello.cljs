@@ -19,7 +19,7 @@
 
 (def creep-path '((30 40) (70 90) (70 200) (300 200) (500 400) (600 500) (700 250) (600 100) (500 200)  ))
 
-(def towers (atom [(LaserTower. 200 300) (LaserTower. 100 400)]))
+(def towers (atom [(LaserTower. 200 300 0) (LaserTower. 100 400 0)]))
 (def creeps (atom [(Spawnling. 150 100 1000 creep-path)
                    (Spawnling. 100 200 1000 creep-path)
                    ]))
@@ -43,7 +43,7 @@
                 (fn [ev]
                   (let [[x y] (relative-mouse-pos ev)]
                     (when-not (line/point-on-thick-path? [x y] creep-path 50)
-                      (swap! towers (partial cons (LaserTower. x y)))))))
+                      (swap! towers (partial cons (LaserTower. x y 0)))))))
 
   (event/listen canvas "mousemove"
                 (fn [ev]

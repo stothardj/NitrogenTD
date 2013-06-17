@@ -14,6 +14,7 @@
   )
 
 (def attack-range 40)
+(def attack-cooldown 1000)
 
 ;; Make range param and move to tower?
 (defn in-range?
@@ -39,7 +40,7 @@
     {:animations (extract-present attack-results :animation)
      :creeps     (extract-present attack-results :creep)}))
 
-(deftype LaserTower [x y]
+(deftype LaserTower [x y cooldown-start]
   Tower
   (draw [this]
     (let [angle (util/to-radians (mod (/ time 5) 360))]
@@ -48,12 +49,15 @@
       (set! (.-fillStyle ctx) "rgba(255, 255, 255, 0.5)")
       (drawing/draw-at #(.fillRect ctx -5 -5 10 10) x y (- angle))))
   (attack [this creeps]
-    (assoc
-        (->> creeps
-             (map (partial attack-creep this))
-             (merge-attacks)
-             )
-      :tower this))
+    (if (> time (+ cooldown-start attack-cooldown))
+      (assoc
+          (->> creeps
+               (map (partial attack-creep this))
+               (merge-attacks)
+               )
+        :tower (LaserTower. x y time))
+      {:creeps creeps
+       :tower this}))
   Point
   (get-point [this] [x y])
   )
