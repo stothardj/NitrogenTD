@@ -3,7 +3,6 @@
         [cake.drawing :only [ctx]]
         [cake.point :only [Point]]
         [cake.laseranimation :only [LaserAnimation]]
-        [cake.numberanimation :only [NumberAnimation]]
         [cake.gamestate :only [time]]
         )
   (:require [cake.util :as util]
@@ -30,10 +29,10 @@
   [tower creep]
   (if (in-range? tower creep)
     (let [[x y] (point/get-point creep)
-          damage (+ 200 (rand-int 200))]
-      {:creep (creep/damage creep damage)
-       :animation [(LaserAnimation. time tower creep)
-                   (NumberAnimation. time damage x y)]})
+          force (+ 200 (rand-int 200))
+          {new-creep :creep anims :animation} (creep/damage creep force)]
+      {:creep new-creep
+       :animation (conj anims (LaserAnimation. time tower creep))})
     {:creep creep}))
 
 (defn merge-attacks [attack-results]

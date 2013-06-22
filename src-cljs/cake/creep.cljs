@@ -7,5 +7,7 @@
   (damage [this force] "Does damage of a certain amount of force.
                         Force is only one factor in how much health the creep loses.
                         The type of creep, status effects, etc. could also play a roll.
-                        Returns a new creep.")
+                        Returns
+                          {:creep new creep
+                           :animation [new animations]}")
   )

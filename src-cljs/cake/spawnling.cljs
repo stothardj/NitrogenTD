@@ -3,6 +3,7 @@
         [cake.drawing :only [ctx]]
         [cake.point :only [Point]]
         [cake.gamestate :only [time]]
+        [cake.numberanimation :only [NumberAnimation]]
         )
   (:require [cake.util :as util]
             [cake.drawing :as drawing]
@@ -37,7 +38,8 @@
   (damage [this force]
     (let [new-health (- health force)]
       (when (pos? new-health)
-        (Spawnling. x y new-health path))))
+        {:creep (Spawnling. x y new-health path)
+         :animation [(NumberAnimation. time force x y)]})))
   Point
   (get-point [this] [x y])
   )
