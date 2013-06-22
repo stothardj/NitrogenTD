@@ -32,7 +32,7 @@
 (deftest merging-attacks
   (is (=
        (lasertower/merge-attacks [{:creep 'c1}
-                                  {:creep 'c2 :animation 'a1}
-                                  {:creep 'c3 :animation 'a2}
-                                  {:creep nil :animation 'a4}])
-       {:creeps ['c1 'c2 'c3] :animations ['a1 'a2 'a4]})))
+                                  {:creep 'c2 :animation ['a1]}
+                                  {:creep 'c3 :animation ['a2 'a3]}
+                                  {:creep nil :animation ['a4]}])
+       {:creeps ['c1 'c2 'c3] :animations ['a1 'a2 'a3 'a4]})))
