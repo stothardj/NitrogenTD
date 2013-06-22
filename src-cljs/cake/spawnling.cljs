@@ -21,18 +21,14 @@
           ]
       (drawing/draw-at #(.fillRect ctx (- u) -4 w 8) x y)
       ))
-  ;; TODO: Move math to line.js
   (move [this]
     (when-not (empty? path)
       (let [goal (first path)
-            angle (line/angle-to-point [x y] goal)
-            newx (+ x (Math/cos angle))
-            newy (+ y (Math/sin angle))
+            [newx newy] (line/move-towards [x y] goal 1)
             sq-dist (line/sq-point-to-point-dist (list newx newy) goal)
             new-path (if (< sq-dist 100)
                        (rest path)
-                       path)
-            ]
+                       path)]
         (Spawnling. newx newy health new-path)
         )))
   (damage [this force]

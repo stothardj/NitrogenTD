@@ -105,3 +105,13 @@
         (if (> 0 dx)
           (+ at Math/PI)
           at))))
+
+(defn move-towards [src dest dist]
+  "Moves from src to dest a distance of dist. May overshoot dest"
+  (let [angle (angle-to-point src dest)
+        [sx sy] src
+        [dx dy] dest
+        dir [(Math/cos angle) (Math/sin angle)]
+        move (map #(* dist %) dir)]
+    (map + src move)))
+        
