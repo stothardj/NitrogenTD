@@ -19,18 +19,16 @@
           u (* 4 (Math/sin t))
           w (* 2 u) ;; pun
           ]
-      (drawing/draw-at #(.fillRect ctx (- u) -4 w 8) x y)
-      ))
+      (drawing/draw-at #(.fillRect ctx (- u) -4 w 8) x y)))
   (move [this]
     (when-not (empty? path)
       (let [goal (first path)
-            [newx newy] (line/move-towards [x y] goal 1)
-            sq-dist (line/sq-point-to-point-dist (list newx newy) goal)
+            [newx newy :as newp] (line/move-towards [x y] goal 1)
+            sq-dist (line/sq-point-to-point-dist newp goal)
             new-path (if (< sq-dist 100)
                        (rest path)
                        path)]
-        (Spawnling. newx newy health new-path)
-        )))
+        (Spawnling. newx newy health new-path))))
   (damage [this force]
     (let [new-health (- health force)]
       (when (pos? new-health)

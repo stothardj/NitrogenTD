@@ -1,6 +1,7 @@
 (ns cake.hello
   (:use [cake.lasertower :only [LaserTower]]
         [cake.spawnling :only [Spawnling]]
+        [cake.spideree :only [Spideree]]
         [cake.spawnlingpool :only [SpawnlingPool]]
         [cake.drawing :only [canvas]]
         )
@@ -22,6 +23,7 @@
 (def towers (atom [(LaserTower. 200 300 0) (LaserTower. 100 400 0)]))
 (def creeps (atom [(Spawnling. 150 100 1000 creep-path)
                    (Spawnling. 100 200 1000 creep-path)
+                   (Spideree. 250 250 1200 creep-path)
                    ]))
 (def animations (atom []))
 
