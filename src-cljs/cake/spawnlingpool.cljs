@@ -1,9 +1,6 @@
 (ns cake.spawnlingpool
   (:use [cake.pool :only [Pool]]
-        [cake.spawnling :only [Spawnling]]
-        [cake.gamestate :only [time]]
-        )
-  )
+        [cake.spawnling :only [Spawnling]]))
 
 ;; Spawns n spawnlings at the start of the path. Each time called has a probability of prob to spawn a creep
 (deftype SpawnlingPool

@@ -3,6 +3,7 @@
         [cake.spawnling :only [Spawnling]]
         [cake.spideree :only [Spideree]]
         [cake.spawnlingpool :only [SpawnlingPool]]
+        [cake.spidereenest :only [SpidereeNest]]
         [cake.drawing :only [canvas]]
         )
   (:require [clojure.browser.event :as event]
@@ -28,7 +29,7 @@
 (def animations (atom []))
 
 ;; TODO: Make sequence
-(def pool (atom (SpawnlingPool. 8 2 creep-path)))
+(def pool (atom (SpidereeNest. 23 2 creep-path)))
 
 (def mouse-pos (atom nil))
 
