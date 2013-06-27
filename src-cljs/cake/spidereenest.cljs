@@ -3,19 +3,26 @@
         [cake.spideree :only [Spideree]]
         [cake.gamestate :only [time]]))
 
+(defn- add-noise-to-path [path]
+  (map (fn [[x y]]
+         [(+ x -10 (rand-int 20))
+          (+ y -10 (rand-int 20))])
+       path))
+
 (deftype SpidereeNest
     [n prob path]
   Pool
   (spawn-creep [this]
-    (let [want-to-spawn (if (< (rand-int 200) prob) 5 0)
+    (let [want-to-spawn (if (< (rand-int 1000) prob) 5 0)
           num-spawned (min want-to-spawn n)
           creep-left (- n num-spawned)
           new-creep (repeatedly num-spawned
                                 #(let [[[cx cy]] path
                                        nx (+ cx -25 (rand-int 50))
                                        ny (+ cy -25 (rand-int 50))
+                                       p (add-noise-to-path path)
                                        ]
-                                   (Spideree. nx ny 1000 path time)))
+                                   (Spideree. nx ny 1000 p time)))
           ]
       (if (zero? creep-left)
         {:creep new-creep}

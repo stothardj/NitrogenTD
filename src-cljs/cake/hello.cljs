@@ -29,7 +29,7 @@
 (def animations (atom []))
 
 ;; TODO: Make sequence
-(def pool (atom (SpidereeNest. 23 2 creep-path)))
+(def pool (atom (SpidereeNest. 23 4 creep-path)))
 
 (def mouse-pos (atom nil))
 
