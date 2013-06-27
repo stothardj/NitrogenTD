@@ -11,7 +11,10 @@
             )
   )
 
-(deftype Spideree [x y health path]
+(defn- scuttle-now? [time]
+  (< (mod time 2000) 1000))
+
+(deftype Spideree [x y health path spawn-time]
   Creep
   (draw [this]
     (set! (.-fillStyle ctx) "rgba(255, 0, 0, 0.3)")
@@ -35,17 +38,19 @@
   (move [this]
     (when-not (empty? path)
       (let [goal (first path)
-            [newx newy :as newp] (line/move-towards [x y] goal 1)
+            [newx newy :as newp] (if (scuttle-now? (- time spawn-time))
+                                   (line/move-towards [x y] goal 3)
+                                   [x y])
             sq-dist (line/sq-point-to-point-dist newp goal)
             new-path (if (< sq-dist 100)
                        (rest path)
                        path)]
-        (Spideree. newx newy health new-path))))
+        (Spideree. newx newy health new-path spawn-time))))
   (damage [this force]
     (let [hit (min force 300)
           new-health (- health hit)]
       (when (pos? new-health)
-        {:creep (Spideree. x y new-health path)
+        {:creep (Spideree. x y new-health path spawn-time)
          :animation [(NumberAnimation. time hit x y)]})))
   Point
   (get-point [this] [x y]))

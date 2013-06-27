@@ -23,7 +23,7 @@
 (def towers (atom [(LaserTower. 200 300 0) (LaserTower. 100 400 0)]))
 (def creeps (atom [(Spawnling. 150 100 1000 creep-path)
                    (Spawnling. 100 200 1000 creep-path)
-                   (Spideree. 250 250 1200 creep-path)
+                   (Spideree. 250 250 1200 creep-path 0)
                    ]))
 (def animations (atom []))
 
