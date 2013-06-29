@@ -30,8 +30,8 @@
                    ]))
 (def animations (atom []))
 
-;; TODO: Make sequence
-(def pool (atom (SpidereeNest. 23 4 creep-path)))
+(def pools (atom [(SpidereeNest. 23 4 creep-path)
+                  (SpawnlingPool. 8 2 creep-path)]))
 
 (def mouse-pos (atom nil))
 
@@ -41,6 +41,19 @@
         x (- (.-clientX ev) (.-left rect))
         y (- (.-clientY ev) (.-top rect))]
     [x y]))
+
+(defn- combine-spawns
+  [v]
+  (reduce
+   (fn [accum spawn-result]
+     (let [{:keys [creep pool]} spawn-result
+           {:keys [creeps pools]} accum
+           new-creeps (concat creep creeps)
+           new-pools (if pool (conj pools pool) pools)
+           ]
+       {:creeps new-creeps
+        :pools new-pools}))
+   {} v))
 
 (when canvas
 
@@ -81,11 +94,12 @@
 
      (swap! animations (partial filter animation/continues?))
 
-     (when @pool
-       (let [{nc :creep
-              np :pool} (pool/spawn-creep @pool)]
-         (swap! creeps (partial concat nc))
-         (reset! pool np)))
+     (let [{new-creeps :creeps
+            new-pools :pools} (-> (map pool/spawn-creep @pools)
+                                  (combine-spawns))]
+       (swap! creeps (partial concat new-creeps))
+       (reset! pools new-pools))
      )
    40)
   )
+
