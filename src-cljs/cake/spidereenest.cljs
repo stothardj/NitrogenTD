@@ -1,7 +1,6 @@
 (ns cake.spidereenest
   (:use [cake.pool :only [Pool]]
-        [cake.spideree :only [Spideree]]
-        [cake.gamestate :only [time]]))
+        [cake.spideree :only [spawn-spideree]]))
 
 (defn- add-noise-to-path [path]
   (map (fn [[x y]]
@@ -20,10 +19,8 @@
                                 #(let [[[cx cy]] path
                                        nx (+ cx -25 (rand-int 50))
                                        ny (+ cy -25 (rand-int 50))
-                                       p (add-noise-to-path path)
-                                       fudged-time (+ time (rand-int 1000)) ;; TODO: Move into spideree
-                                       ]
-                                   (Spideree. nx ny 1000 p fudged-time)))
+                                       p (add-noise-to-path path)]
+                                   (spawn-spideree nx ny p)))
           ]
       (if (zero? creep-left)
         {:creep new-creep}

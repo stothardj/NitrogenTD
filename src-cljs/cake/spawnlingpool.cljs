@@ -1,6 +1,6 @@
 (ns cake.spawnlingpool
   (:use [cake.pool :only [Pool]]
-        [cake.spawnling :only [Spawnling]]))
+        [cake.spawnling :only [spawn-spawnling]]))
 
 ;; Spawns n spawnlings at the start of the path. Each time called has a probability of prob to spawn a creep
 (deftype SpawnlingPool
@@ -12,7 +12,7 @@
           creep-left (- n num-spawned)
           new-creep (repeat num-spawned
                             (let [[[cx cy]] path]
-                              (Spawnling. cx cy 1000 path)))
+                              (spawn-spawnling. cx cy path)))
           ]
       (if (zero? creep-left)
         {:creep new-creep}

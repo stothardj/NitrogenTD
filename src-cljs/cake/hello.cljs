@@ -1,7 +1,7 @@
 (ns cake.hello
-  (:use [cake.lasertower :only [LaserTower]]
-        [cake.spawnling :only [Spawnling]]
-        [cake.spideree :only [Spideree]]
+  (:use [cake.lasertower :only [construct-lasertower]]
+        [cake.spawnling :only [spawn-spawnling]]
+        [cake.spideree :only [spawn-spideree]]
         [cake.spawnlingpool :only [SpawnlingPool]]
         [cake.spidereenest :only [SpidereeNest]]
         [cake.drawing :only [canvas]]
@@ -19,12 +19,14 @@
             )
   )
 
+(gamestate/tick)
+
 (def creep-path '((30 40) (70 90) (70 200) (300 200) (500 400) (600 500) (700 250) (600 100) (500 200)  ))
 
-(def towers (atom [(LaserTower. 200 300 0) (LaserTower. 100 400 0)]))
-(def creeps (atom [(Spawnling. 150 100 1000 creep-path)
-                   (Spawnling. 100 200 1000 creep-path)
-                   (Spideree. 250 250 1200 creep-path 0)
+(def towers (atom [(construct-lasertower 200 300) (construct-lasertower 100 400)]))
+(def creeps (atom [(spawn-spawnling 150 100 creep-path)
+                   (spawn-spawnling 100 200 creep-path)
+                   (spawn-spideree 250 250 creep-path)
                    ]))
 (def animations (atom []))
 
@@ -46,7 +48,7 @@
                 (fn [ev]
                   (let [[x y] (relative-mouse-pos ev)]
                     (when-not (line/point-on-thick-path? [x y] creep-path 50)
-                      (swap! towers (partial cons (LaserTower. x y 0)))))))
+                      (swap! towers (partial cons (construct-lasertower x y)))))))
 
   (event/listen canvas "mousemove"
                 (fn [ev]
@@ -55,7 +57,7 @@
 
   (util/crashingInterval
    (fn []
-     (set! gamestate/time (.getTime (js/Date.)))
+     (gamestate/tick)
      (drawing/clear-canvas)
      (drawing/draw-creep-path creep-path)
      (doseq [tower @towers]

@@ -37,3 +37,9 @@
   Point
   (get-point [this] [x y])
   )
+
+(defn spawn-spawnling
+  "Create and return Spawnling with given params."
+  [x y path]
+  (let [health 1000]
+    (Spawnling. x y health path)))

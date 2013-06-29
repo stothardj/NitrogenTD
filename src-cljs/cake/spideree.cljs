@@ -54,3 +54,10 @@
          :animation [(NumberAnimation. time hit x y)]})))
   Point
   (get-point [this] [x y]))
+
+(defn spawn-spideree
+  "Create and return a spideree with given params"
+  [x y path]
+  (let [health 12000
+        fudged-time (+ time (rand-int 1000))] ;; So not completely synchronized
+        (Spideree. x y health path fudged-time)))

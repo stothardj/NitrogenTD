@@ -65,3 +65,9 @@
   Point
   (get-point [this] [x y])
   )
+
+(defn construct-lasertower
+  "Constructs and returns a laser tower"
+  [x y]
+  (let [cooldown-start 0]
+    (LaserTower. x y cooldown-start)))

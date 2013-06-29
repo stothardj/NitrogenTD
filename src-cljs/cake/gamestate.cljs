@@ -14,3 +14,8 @@
 ;; an object and basing actions on time differences mutating the underlying
 ;; object can often be avoided.
 (def ^:dynamic time)
+
+(defn tick
+  "Updates the current time"
+  []
+  (set! time (.getTime (js/Date.))))
