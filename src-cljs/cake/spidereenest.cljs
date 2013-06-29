@@ -21,8 +21,9 @@
                                        nx (+ cx -25 (rand-int 50))
                                        ny (+ cy -25 (rand-int 50))
                                        p (add-noise-to-path path)
+                                       fudged-time (+ time (rand-int 1000)) ;; TODO: Move into spideree
                                        ]
-                                   (Spideree. nx ny 1000 p time)))
+                                   (Spideree. nx ny 1000 p fudged-time)))
           ]
       (if (zero? creep-left)
         {:creep new-creep}
