@@ -3,7 +3,7 @@
         [cake.drawing :only [ctx]]
         [cake.point :only [Point]]
         [cake.laseranimation :only [LaserAnimation]]
-        [cake.gamestate :only [time]]
+        [cake.gamestate :only [time time-passed?]]
         )
   (:require [cake.util :as util]
             [cake.drawing :as drawing]
@@ -53,7 +53,7 @@
       (set! (.-fillStyle ctx) "rgba(255, 255, 255, 0.5)")
       (drawing/draw-at #(.fillRect ctx -5 -5 10 10) x y (- angle))))
   (attack [this creeps]
-    (if (> time (+ cooldown-start attack-cooldown))
+    (if (time-passed? cooldown-start attack-cooldown)
       (assoc
           (->> creeps
                (map (partial attack-creep this))
