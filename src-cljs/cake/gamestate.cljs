@@ -19,3 +19,8 @@
   "Updates the current time"
   []
   (set! time (.getTime (js/Date.))))
+
+(defn time-passed?
+  "Returns true if duration time has passed since start-time"
+  [start-time duration]
+  (< (+ start-time duration) time))

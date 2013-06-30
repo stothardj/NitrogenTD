@@ -30,7 +30,7 @@
                    ]))
 (def animations (atom []))
 
-(def pools (atom [(SpidereeNest. 23 4 creep-path)
+(def pools (atom [(SpidereeNest. 23 creep-path 0)
                   (SpawnlingPool. 8 2 creep-path)]))
 
 (def mouse-pos (atom nil))
