@@ -2,7 +2,7 @@
   (:use [cake.lasertower :only [construct-lasertower]]
         [cake.spawnling :only [spawn-spawnling]]
         [cake.spideree :only [spawn-spideree]]
-        [cake.spawnlingpool :only [SpawnlingPool]]
+        [cake.spawnlingpool :only [create-spawnling-pool]]
         [cake.spidereenest :only [create-spideree-nest]]
         [cake.drawing :only [canvas]]
         )
@@ -31,7 +31,7 @@
 (def animations (atom []))
 
 (def pools (atom [(create-spideree-nest 23 creep-path)
-                  (SpawnlingPool. 8 2 creep-path)]))
+                  (create-spawnling-pool 8 creep-path)]))
 
 (def mouse-pos (atom nil))
 
