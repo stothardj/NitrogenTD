@@ -15,6 +15,7 @@
 
 (def attack-range 40)
 (def attack-cooldown 1000)
+(def max-targeted 3)
 
 ;; Make range param and move to tower?
 (defn in-range?
@@ -25,15 +26,13 @@
     (< (line/sq-point-to-point-dist creep-p tower-p) r2)))
 
 (defn attack-creep
-  "Attack a single creep if in range. Returns new creep and animations"
+  "Attack a single creep. Returns new creep and animations"
   [tower creep]
-  (if (in-range? tower creep)
-    (let [[x y] (point/get-point creep)
-          force (+ 200 (rand-int 200))
-          {new-creep :creep anims :animation} (creep/damage creep force)]
-      {:creep new-creep
-       :animation (conj anims (LaserAnimation. time tower creep))})
-    {:creep creep}))
+  (let [[x y] (point/get-point creep)
+        force (+ 200 (rand-int 200))
+        {new-creep :creep anims :animation} (creep/damage creep force)]
+    {:creep new-creep
+     :animation (conj anims (LaserAnimation. time tower creep))}))
 
 (defn merge-attacks [attack-results]
   {:animations (->> attack-results
@@ -53,15 +52,22 @@
       (set! (.-fillStyle ctx) "rgba(255, 255, 255, 0.5)")
       (drawing/draw-at #(.fillRect ctx -5 -5 10 10) x y (- angle))))
   (attack [this creeps]
-    (if (time-passed? cooldown-start attack-cooldown)
-      (assoc
-          (->> creeps
-               (map (partial attack-creep this))
-               (merge-attacks)
-               )
-        :tower (LaserTower. x y time))
-      {:creeps creeps
-       :tower this}))
+    (if-not (time-passed? cooldown-start attack-cooldown)
+      {:creeps creeps :tower this}
+      (let [in-range-of-tower? (partial in-range? this)
+            in-range-creep (filter in-range-of-tower? creeps)
+            out-of-range-creep (remove in-range-of-tower? creeps)
+            [attacked safe] (split-at max-targeted in-range-creep)
+            
+            {:keys [animations creeps]}
+            (->> attacked
+                 (map (partial attack-creep this))
+                 (merge-attacks))]
+        
+        {:animations animations
+         :creeps (concat creeps safe out-of-range-creep)
+         :tower (LaserTower. x y time)}
+        )))
   Point
   (get-point [this] [x y])
   )
