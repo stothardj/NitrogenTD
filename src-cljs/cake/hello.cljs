@@ -1,5 +1,6 @@
 (ns cake.hello
   (:use [cake.lasertower :only [construct-lasertower]]
+        [cake.chargetower :only [construct-chargetower]]
         [cake.spawnling :only [spawn-spawnling]]
         [cake.spideree :only [spawn-spideree]]
         [cake.spawnlingpool :only [create-spawnling-pool]]
@@ -23,7 +24,10 @@
 
 (def creep-path '((30 40) (70 90) (70 200) (300 200) (500 400) (600 500) (700 250) (600 100) (500 200)  ))
 
-(def towers (atom [(construct-lasertower 200 300) (construct-lasertower 100 400)]))
+(def towers (atom [(construct-lasertower 200 300)
+                   (construct-lasertower 100 400)
+                   (construct-chargetower 150 150)
+                   ]))
 (def creeps (atom [(spawn-spawnling 150 100 creep-path)
                    (spawn-spawnling 100 200 creep-path)
                    (spawn-spideree 250 250 creep-path)
@@ -61,7 +65,7 @@
                 (fn [ev]
                   (let [[x y] (relative-mouse-pos ev)]
                     (when-not (line/point-on-thick-path? [x y] creep-path 50)
-                      (swap! towers (partial cons (construct-lasertower x y)))))))
+                      (swap! towers (partial cons (construct-chargetower x y)))))))
 
   (event/listen canvas "mousemove"
                 (fn [ev]
