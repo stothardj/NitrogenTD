@@ -29,3 +29,8 @@
           {:creep new-creep}
           {:creep new-creep
            :pool (SpidereeNest. creep-left path time)})))))
+
+(defn create-spideree-nest
+  [n path]
+  (let [last-spawn time]
+    (SpidereeNest. n path last-spawn)))
