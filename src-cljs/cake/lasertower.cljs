@@ -16,7 +16,7 @@
 
 (def attack-range 40)
 (def attack-cooldown 1000)
-(def max-targeted 3)
+(def max-targets 3)
 
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
@@ -36,15 +36,6 @@
                      (map :creep)
                      (filter (complement nil?)))})
 
-(defn choose-targets
-  "Split creep on whether they should be attacked based on range and max-targeted"
-  [tower attack-range max-targeted creeps]
-  (let [in-range-of-tower? (partial tower/in-range? attack-range tower)
-        in-range-creep (filter in-range-of-tower? creeps)
-        out-of-range-creep (remove in-range-of-tower? creeps)
-        [attacked safe] (split-at max-targeted (shuffle in-range-creep))]
-    [attacked (concat safe out-of-range-creep)]))
-
 
 (deftype LaserTower [x y cooldown-start]
   Tower
@@ -57,16 +48,14 @@
   (attack [this creeps]
     (if-not (time-passed? cooldown-start attack-cooldown)
       {:creeps creeps :tower this}
-      (let [[attacked safe] (choose-targets this attack-range max-targeted creeps)
-            {:keys [animations creeps]}
-            (->> attacked
-                 (map (partial attack-creep this))
-                 (merge-attacks))]
-        
+      (let [[attacked safe] (tower/choose-targets this (partial tower/in-range? attack-range)
+                                                  shuffle max-targets creeps)
+            {:keys [animations creeps]} (->> attacked
+                                             (map (partial attack-creep this))
+                                             (merge-attacks))]
         {:animations animations
          :creeps (concat creeps safe)
-         :tower (LaserTower. x y time)}
-        )))
+         :tower (LaserTower. x y time)})))
   Point
   (get-point [this] [x y])
   )

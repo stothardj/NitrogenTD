@@ -8,6 +8,10 @@
             [cake.line :as line]
             [cake.creep :as creep]))
 
+(def attack-range 100)
+(def attack-cooldown 2500)
+(def max-targets 1)
+
 (deftype ChargeTower [x y cooldown-start]
   Tower
   (draw [this]
