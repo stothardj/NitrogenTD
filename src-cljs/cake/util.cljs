@@ -11,6 +11,11 @@
      (let [num' (+ num step)]
        (if (> num' max) 0 num'))))
 
+(defn rand-between
+  "Random int between min (inclusive) and max (inclusive)"
+  [min max]
+  (+ min (rand-int (- (inc max) min))))
+
 (defn to-radians
   [degrees]
   (* degrees (/ Math/PI 180)))

@@ -17,12 +17,14 @@
 (def attack-range 40)
 (def attack-cooldown 1000)
 (def max-targets 3)
+(def min-force 200)
+(def max-force 400)
 
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
   [tower creep]
   (let [[x y] (point/get-point creep)
-        force (+ 200 (rand-int 200))
+        force (util/rand-between min-force max-force)
         {new-creep :creep anims :animation} (creep/damage creep force)]
     {:creep new-creep
      :animation (conj anims (LaserAnimation. time tower creep))}))
