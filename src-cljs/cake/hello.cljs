@@ -24,7 +24,7 @@
 
 (def creep-path '((30 40) (70 90) (70 200) (300 200) (500 400) (600 500) (700 250) (600 100) (500 200)  ))
 
-(def towers (atom [(construct-lasertower 200 300)
+(def towers (atom [(construct-lasertower 290 240)
                    (construct-lasertower 100 400)
                    (construct-chargetower 150 150)
                    ]))
