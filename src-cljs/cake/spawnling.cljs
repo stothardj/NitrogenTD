@@ -32,8 +32,8 @@
   (damage [this force]
     (let [new-health (- health force)]
       (when (pos? new-health)
-        {:creep (Spawnling. x y new-health path)
-         :animation [(NumberAnimation. time force x y)]})))
+        {:creeps [(Spawnling. x y new-health path)]
+         :animations [(NumberAnimation. time force x y)]})))
   Point
   (get-point [this] [x y])
   )

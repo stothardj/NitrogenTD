@@ -20,24 +20,16 @@
 (def min-force 200)
 (def max-force 400)
 
+(def ^:private map-merge (partial merge-with concat))
+
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
   [tower creep]
   (let [[x y] (point/get-point creep)
-        force (util/rand-between min-force max-force)
-        {new-creep :creep anims :animation} (creep/damage creep force)]
-    {:creep new-creep
-     :animation (conj anims (LaserAnimation. time tower creep))}))
-
-(defn merge-attacks [attack-results]
-  {:animations (->> attack-results
-                    (map :animation)
-                    (filter (complement nil?))
-                    (apply concat))
-  :creeps (->> attack-results
-                     (map :creep)
-                     (filter (complement nil?)))})
-
+        force (util/rand-between min-force max-force)]
+    (map-merge
+     (creep/damage creep force)
+     {:animations [(LaserAnimation. time tower creep)]})))
 
 (deftype LaserTower [x y cooldown-start]
   Tower
@@ -52,12 +44,12 @@
       {:creeps creeps :tower this}
       (let [[attacked safe] (tower/choose-targets this (partial tower/in-range? attack-range)
                                                   shuffle max-targets creeps)
-            {:keys [animations creeps]} (->> attacked
-                                             (map (partial attack-creep this))
-                                             (merge-attacks))]
-        {:animations animations
-         :creeps (concat creeps safe)
-         :tower (LaserTower. x y time)})))
+            attacked-map (->> attacked
+                              (map (partial attack-creep this))
+                              (apply map-merge))]
+        (assoc (map-merge attacked-map
+                          {:creeps safe})
+          :tower (LaserTower. x y time)))))
   Point
   (get-point [this] [x y])
   )

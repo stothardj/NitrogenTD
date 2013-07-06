@@ -8,6 +8,6 @@
                         Force is only one factor in how much health the creep loses.
                         The type of creep, status effects, etc. could also play a roll.
                         Returns
-                          {:creep new creep
-                           :animation [new animations]}")
+                          {:creeps [new creeps]
+                           :animations [new animations]}")
   )

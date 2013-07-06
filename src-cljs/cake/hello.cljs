@@ -65,7 +65,7 @@
                 (fn [ev]
                   (let [[x y] (relative-mouse-pos ev)]
                     (when-not (line/point-on-thick-path? [x y] creep-path 50)
-                      (swap! towers (partial cons (construct-chargetower x y)))))))
+                      (swap! towers (partial cons (construct-lasertower x y)))))))
 
   (event/listen canvas "mousemove"
                 (fn [ev]

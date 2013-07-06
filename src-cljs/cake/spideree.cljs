@@ -50,14 +50,14 @@
     (let [hit (min force 300)
           new-health (- health hit)]
       (when (pos? new-health)
-        {:creep (Spideree. x y new-health path spawn-time)
-         :animation [(NumberAnimation. time hit x y)]})))
+        {:creeps [(Spideree. x y new-health path spawn-time)]
+         :animations [(NumberAnimation. time hit x y)]})))
   Point
   (get-point [this] [x y]))
 
 (defn spawn-spideree
   "Create and return a spideree with given params"
   [x y path]
-  (let [health 12000
+  (let [health 1200
         fudged-time (+ time (rand-int 1000))] ;; So not completely synchronized
         (Spideree. x y health path fudged-time)))
