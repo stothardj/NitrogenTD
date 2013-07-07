@@ -21,6 +21,7 @@
 (def max-force 400)
 
 (def ^:private map-merge (partial merge-with concat))
+(def ^:private in-attack-range? (partial tower/in-range? attack-range))
 
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
@@ -42,7 +43,7 @@
   (attack [this creeps]
     (if-not (time-passed? cooldown-start attack-cooldown)
       {:creeps creeps :tower this}
-      (let [[attacked safe] (tower/choose-targets this (partial tower/in-range? attack-range)
+      (let [[attacked safe] (tower/choose-targets this in-attack-range?
                                                   shuffle max-targets creeps)
             attacked-map (->> attacked
                               (map (partial attack-creep this))

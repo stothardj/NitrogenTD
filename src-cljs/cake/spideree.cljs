@@ -11,6 +11,8 @@
             )
   )
 
+(def max-damage 700)
+
 (defn- scuttle-now? [time]
   (< (mod time 2000) 1000))
 
@@ -47,7 +49,7 @@
                        path)]
         (Spideree. newx newy health new-path spawn-time))))
   (damage [this force]
-    (let [hit (min force 300)
+    (let [hit (min force max-damage)
           new-health (- health hit)]
       (when (pos? new-health)
         {:creeps [(Spideree. x y new-health path spawn-time)]
