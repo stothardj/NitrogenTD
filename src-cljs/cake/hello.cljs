@@ -3,6 +3,7 @@
         [cake.chargetower :only [construct-chargetower]]
         [cake.spawnling :only [spawn-spawnling]]
         [cake.spideree :only [spawn-spideree]]
+        [cake.roacher :only [spawn-roacher]]
         [cake.spawnlingpool :only [create-spawnling-pool]]
         [cake.spidereenest :only [create-spideree-nest]]
         [cake.drawing :only [canvas]]
@@ -31,6 +32,7 @@
 (def creeps (atom [(spawn-spawnling 150 100 creep-path)
                    (spawn-spawnling 100 200 creep-path)
                    (spawn-spideree 250 250 creep-path)
+                   (spawn-roacher 300 300 creep-path)
                    ]))
 (def animations (atom []))
 
