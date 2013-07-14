@@ -8,7 +8,11 @@
 (defn- menu [header & options]
   (list
    [:h2 header]
-   (map (fn [option] [:a {:href "#"} [:li option]]) options)))
+   [:form {:action ""}
+    (map (fn [option]
+           (list [:input {:type "radio" :name header :value option} option]
+                 [:br]))
+         options)]))
 
 (defn index-page []
   (html5
