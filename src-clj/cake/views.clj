@@ -8,9 +8,10 @@
 (defn- menu [header & options]
   (list
    [:h2 header]
-   [:form {:action ""}
+   [:form {:id (str "menu-" header) :action ""}
     (map (fn [option]
-           (list [:input {:type "radio" :name header :value option} option]
+           (list [:input {:type "radio" :name header :value option :id option}]
+                 [:label {:for option} option]
                  [:br]))
          options)]))
 
