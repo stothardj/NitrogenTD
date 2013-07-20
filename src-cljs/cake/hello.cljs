@@ -18,6 +18,7 @@
             [cake.point :as point]
             [cake.animation :as animation]
             [cake.gamestate :as gamestate]
+            [goog.dom.forms :as forms]
             )
   )
 
@@ -61,13 +62,18 @@
         :pools new-pools}))
    {} v))
 
+(defn construct-tower [x y]
+  (if (forms/getValue (util/by-id "Laser Tower"))
+    (construct-lasertower x y)
+    (construct-chargetower x y)))
+
 (when canvas
 
   (event/listen canvas "click"
                 (fn [ev]
                   (let [[x y] (relative-mouse-pos ev)]
                     (when-not (line/point-on-thick-path? [x y] creep-path 50)
-                      (swap! towers (partial cons (construct-chargetower x y)))))))
+                      (swap! towers (partial cons (construct-tower x y)))))))
 
   (event/listen canvas "mousemove"
                 (fn [ev]
