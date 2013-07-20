@@ -8,6 +8,7 @@ pom.xml.asc
 *.class
 *.js
 !/runners/phantomjs.js
+!/resources/public/js/bootstrap.min.js
 .*
 !.gitignore
 *~
