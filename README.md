@@ -1,6 +1,6 @@
 # cake
 
-A Clojure library designed to ... well, that part is up to you.
+A ClojureScript tower defense!
 
 ## Usage
 
