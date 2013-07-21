@@ -1,6 +1,6 @@
-(ns cake.drawing
-  (:require [cake.util :as util]
-            [cake.line :as line]
+(ns nitrogentd.drawing
+  (:require [nitrogentd.util :as util]
+            [nitrogentd.line :as line]
             )
   )
 

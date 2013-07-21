@@ -1,7 +1,7 @@
-(ns cake.test.test-line
+(ns nitrogentd.test.test-line
   (:require-macros [cemerick.cljs.test :refer (is deftest run-tests)])
   (:require [cemerick.cljs.test :as t]
-            [cake.line :as line]))
+            [nitrogentd.line :as line]))
 
 (def inf js/Infinity)
 

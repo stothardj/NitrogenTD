@@ -1,4 +1,4 @@
-(ns cake.views
+(ns nitrogentd.views
   (:require
    [hiccup
     [page :refer [html5]]
@@ -9,7 +9,7 @@
   [:div.navbar.navbar-inverse.navbar-fixed-top
    [:div.navbar-inner
     [:div.container
-     [:a.brand {:href "#"} "OpenTD"]
+     [:a.brand {:href "#"} "NitrogenTD"]
      [:ul.nav
       [:li [:a {:href "#"} "Game"]]]]]])
 
@@ -36,7 +36,7 @@
    [:head
     (include-css "/css/style.css")
     (include-css "/css/bootstrap.min.css")
-    [:title "OpenTD"]]
+    [:title "NitrogenTD"]]
    [:body
     (page-menu)
     [:div.container

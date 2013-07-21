@@ -1,4 +1,4 @@
-(ns cake.gamestate)
+(ns nitrogentd.gamestate)
 
 ;; General useful game state. Global state is evil. Here it is.
 

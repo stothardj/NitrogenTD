@@ -1,6 +1,6 @@
-(defproject cake "0.1.0-SNAPSHOT"
+(defproject nitrogentd "0.1.0-SNAPSHOT"
   :description "Clojurescript tower defense game"
-  :url "https://github.com/stothardj/OpenTD"
+  :url "https://github.com/stothardj/NitrogenTD"
   :source-paths ["src-clj"]
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
@@ -22,5 +22,5 @@
                                    :pretty-print true}}]
               :test-commands {"unit-tests" ["runners/phantomjs.js" "resources/public/js/main.js"]}
               }
-  :ring {:handler cake.routes/app}
+  :ring {:handler nitrogentd.routes/app}
   )

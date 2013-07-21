@@ -1,12 +1,12 @@
-(ns cake.laseranimation
-  (:use [cake.animation :only [Animation]]
-        [cake.drawing :only [ctx]]
-        [cake.gamestate :only [time]]
+(ns nitrogentd.laseranimation
+  (:use [nitrogentd.animation :only [Animation]]
+        [nitrogentd.drawing :only [ctx]]
+        [nitrogentd.gamestate :only [time]]
         )
-  (:require [cake.creep :as creep]
-            [cake.tower :as tower]
-            [cake.line :as line]
-            [cake.point :as point]
+  (:require [nitrogentd.creep :as creep]
+            [nitrogentd.tower :as tower]
+            [nitrogentd.line :as line]
+            [nitrogentd.point :as point]
             )
   )
 

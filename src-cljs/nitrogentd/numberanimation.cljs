@@ -1,7 +1,7 @@
-(ns cake.numberanimation
-  (:use [cake.animation :only [Animation]]
-        [cake.drawing :only [ctx]]
-        [cake.gamestate :only [time]]))
+(ns nitrogentd.numberanimation
+  (:use [nitrogentd.animation :only [Animation]]
+        [nitrogentd.drawing :only [ctx]]
+        [nitrogentd.gamestate :only [time]]))
 
 (def animation-length 1000)
 

@@ -1,4 +1,4 @@
-(ns cake.creep)
+(ns nitrogentd.creep)
 
 (defprotocol Creep
   "A creep to be killed by the towers"

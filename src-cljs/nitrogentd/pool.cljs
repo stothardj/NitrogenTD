@@ -1,4 +1,4 @@
-(ns cake.pool)
+(ns nitrogentd.pool)
 
 (defprotocol Pool
   "Spawns a creeps its position"

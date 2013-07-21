@@ -1,15 +1,15 @@
-(ns cake.chargetower
-  (:use [cake.tower :only [Tower]]
-        [cake.drawing :only [ctx]]
-        [cake.point :only [Point]]
-        [cake.gamestate :only [time time-passed?]]
-        [cake.chargeanimation :only [ChargeAnimation]])
-  (:require [cake.drawing :as drawing]
-            [cake.point :as point]
-            [cake.line :as line]
-            [cake.creep :as creep]
-            [cake.tower :as tower]
-            [cake.util :as util]))
+(ns nitrogentd.chargetower
+  (:use [nitrogentd.tower :only [Tower]]
+        [nitrogentd.drawing :only [ctx]]
+        [nitrogentd.point :only [Point]]
+        [nitrogentd.gamestate :only [time time-passed?]]
+        [nitrogentd.chargeanimation :only [ChargeAnimation]])
+  (:require [nitrogentd.drawing :as drawing]
+            [nitrogentd.point :as point]
+            [nitrogentd.line :as line]
+            [nitrogentd.creep :as creep]
+            [nitrogentd.tower :as tower]
+            [nitrogentd.util :as util]))
 
 (def attack-range 100)
 (def attack-cooldown 2500)

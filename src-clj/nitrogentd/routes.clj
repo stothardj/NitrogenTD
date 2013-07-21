@@ -1,6 +1,6 @@
-(ns cake.routes
+(ns nitrogentd.routes
   (:use compojure.core
-        cake.views
+        nitrogentd.views
         [hiccup.middleware :only (wrap-base-url)])
   (:require [compojure.route :as route]
             [compojure.handler :as handler]

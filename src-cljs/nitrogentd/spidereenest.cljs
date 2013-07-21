@@ -1,7 +1,7 @@
-(ns cake.spidereenest
-  (:use [cake.pool :only [Pool]]
-        [cake.spideree :only [spawn-spideree]]
-        [cake.gamestate :only [time time-passed?]]))
+(ns nitrogentd.spidereenest
+  (:use [nitrogentd.pool :only [Pool]]
+        [nitrogentd.spideree :only [spawn-spideree]]
+        [nitrogentd.gamestate :only [time time-passed?]]))
 
 (defn- add-noise-to-path [path]
   (map (fn [[x y]]

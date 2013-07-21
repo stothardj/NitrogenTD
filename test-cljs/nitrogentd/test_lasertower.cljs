@@ -1,10 +1,10 @@
-(ns cake.test.test-lasertower
+(ns nitrogentd.test.test-lasertower
   (:require-macros [cemerick.cljs.test :refer (is deftest run-tests)])
-  (:use [cake.creep :only [Creep]]
-        [cake.point :only [Point]]
+  (:use [nitrogentd.creep :only [Creep]]
+        [nitrogentd.point :only [Point]]
         )
   (:require [cemerick.cljs.test :as t]
-            [cake.lasertower :as lasertower]))
+            [nitrogentd.lasertower :as lasertower]))
 
 (deftype MockCreep [x y]
   Creep

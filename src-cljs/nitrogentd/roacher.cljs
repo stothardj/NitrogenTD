@@ -1,13 +1,13 @@
-(ns cake.roacher
-  (:use [cake.creep :only [Creep]]
-        [cake.drawing :only [ctx]]
-        [cake.point :only [Point]]
-        [cake.gamestate :only [time]]
-        [cake.numberanimation :only [NumberAnimation]]
+(ns nitrogentd.roacher
+  (:use [nitrogentd.creep :only [Creep]]
+        [nitrogentd.drawing :only [ctx]]
+        [nitrogentd.point :only [Point]]
+        [nitrogentd.gamestate :only [time]]
+        [nitrogentd.numberanimation :only [NumberAnimation]]
         )
-  (:require [cake.util :as util]
-            [cake.drawing :as drawing]
-            [cake.line :as line]
+  (:require [nitrogentd.util :as util]
+            [nitrogentd.drawing :as drawing]
+            [nitrogentd.line :as line]
             )
   )
 
