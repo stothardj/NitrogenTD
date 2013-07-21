@@ -1,3 +1,3 @@
-# Introduction to cake
+# Introduction to NitrogenTD
 
-TODO: write [great documentation](http://jacobian.org/writing/great-documentation/what-to-write/)
+NitrogenTD is a simple tower defense game. It is mostly a learning exercise.
