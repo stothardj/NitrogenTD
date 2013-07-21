@@ -1,7 +1,8 @@
 (ns cake.tower
   (:require [cake.creep :as creep]
             [cake.point :as point]
-            [cake.line :as line]))
+            [cake.line :as line]
+            [cake.util :as util]))
 
 (defprotocol Tower
   "A tower defense tower"

@@ -7,7 +7,7 @@
         [cake.spawnlingpool :only [create-spawnling-pool]]
         [cake.spidereenest :only [create-spideree-nest]]
         [cake.drawing :only [canvas]]
-        [domina.events :only [listen!]]
+        ;; [domina.events :only [listen!]]
         )
   (:require [clojure.browser.event :as event]
             [cake.drawing :as drawing]
@@ -81,11 +81,12 @@
                   (let [p (relative-mouse-pos ev)]
                     (reset! mouse-pos p))))
 
-  (listen! :click
-                (fn [ev]
-                  (util/log "Hi" "Jake")))
+  ;; (listen! :click
+  ;;               (fn [ev]
+  ;;                 (util/log "Hi" "Jake")))
 
   (util/crashingInterval
+   
    (fn []
      (gamestate/tick)
      (drawing/clear-canvas)

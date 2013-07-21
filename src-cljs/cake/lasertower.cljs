@@ -10,7 +10,7 @@
             [cake.point :as point]
             [cake.line :as line]
             [cake.creep :as creep]
-            [cake.tower :as tower]
+            [cake.tower :as t]
             )
   )
 
@@ -21,7 +21,10 @@
 (def max-force 400)
 
 (def ^:private map-merge (partial merge-with concat))
-(def in-attack-range? (partial tower/in-range? attack-range))
+(def in-attack-range? (partial t/in-range? attack-range))
+
+(defn choose-targets [tower creeps]
+  (t/choose-targets tower in-attack-range? shuffle max-targets creeps))
 
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
@@ -43,8 +46,7 @@
   (attack [this creeps]
     (if-not (time-passed? cooldown-start attack-cooldown)
       {:creeps creeps :tower this}
-      (let [[attacked safe] (tower/choose-targets this in-attack-range?
-                                                  shuffle max-targets creeps)
+      (let [[attacked safe] (choose-targets this creeps)
             attacked-map (->> attacked
                               (map (partial attack-creep this))
                               (apply map-merge))]

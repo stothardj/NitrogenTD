@@ -44,6 +44,7 @@
                        (set! (.-fillStyle ctx) "rgb(0, 200, 255)")
                        (.beginPath ctx)
                        (.arc ctx 0 -6 (/ (- time cooldown-start) 400) 0, (* 2 Math/PI) false)
+                       (.closePath ctx)
                        (.fill ctx)
                        )
                      x y)
@@ -51,7 +52,7 @@
   (attack [this creeps]
     (if-not (time-passed? cooldown-start attack-cooldown)
       {:creeps creeps :tower this}
-            (let [[attacked safe] (tower/choose-targets this in-attack-range?
+      (let [[attacked safe] (tower/choose-targets this in-attack-range?
                                                   shuffle max-targets creeps)
             attacked-map (->> attacked
                               (map (partial attack-creep this))
