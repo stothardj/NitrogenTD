@@ -2,7 +2,7 @@
   (:require-macros [cemerick.cljs.test :refer (is deftest run-tests)])
   (:use [cake.creep :only [Creep]]
         [cake.point :only [Point]]
-        [cake.lasertower :only [LaserTower]])
+        )
   (:require [cemerick.cljs.test :as t]
             [cake.lasertower :as lasertower]))
 
@@ -15,8 +15,8 @@
   (get-point [this] [x y]))
 
 (deftest basic-in-range
-  (is (lasertower/in-range?
-       (LaserTower. 0 0)
+  (is (lasertower/in-attack-range?
+       (lasertower/construct-lasertower 0 0)
        (MockCreep. 0 0))))
 
 (deftest horizontal-in-range
@@ -24,15 +24,7 @@
             cy    7
             tx    (+ cx lasertower/attack-range -1)
             ty    cy
-            tower (lasertower/LaserTower. tx ty)
+            tower (lasertower/construct-lasertower tx ty)
             creep (MockCreep. cx cy)
             ]
-        (lasertower/in-range? tower creep))))
-
-(deftest merging-attacks
-  (is (=
-       (lasertower/merge-attacks [{:creep 'c1}
-                                  {:creep 'c2 :animation ['a1]}
-                                  {:creep 'c3 :animation ['a2 'a3]}
-                                  {:creep nil :animation ['a4]}])
-       {:creeps ['c1 'c2 'c3] :animations ['a1 'a2 'a3 'a4]})))
+        (lasertower/in-attack-range? tower creep))))

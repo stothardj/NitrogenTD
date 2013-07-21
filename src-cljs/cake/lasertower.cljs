@@ -21,7 +21,7 @@
 (def max-force 400)
 
 (def ^:private map-merge (partial merge-with concat))
-(def ^:private in-attack-range? (partial tower/in-range? attack-range))
+(def in-attack-range? (partial tower/in-range? attack-range))
 
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"

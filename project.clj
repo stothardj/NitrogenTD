@@ -5,10 +5,13 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
+                 [org.clojure/clojurescript "0.0-1586"]
                  [compojure "1.1.5"]
                  [hiccup "1.0.3"]
-                 [com.cemerick/clojurescript.test "0.0.4"]]
-  :plugins [[lein-cljsbuild "0.3.0"]
+                 [com.cemerick/clojurescript.test "0.0.4"]
+                 [org.clojure/google-closure-library-third-party "0.0-2029"]
+                 [domina "1.0.0"]]
+  :plugins [[lein-cljsbuild "0.3.2"]
             [lein-ring "0.7.0"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {
