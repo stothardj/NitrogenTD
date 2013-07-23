@@ -21,8 +21,10 @@
   (is (eq-any-order? [] []))
   (is (not (eq-any-order? [] [1])))
   (is (not (eq-any-order? [1] [])))
-  (is (eq-any-order? [1 2 3] [3 1 2])))
-             
+  (is (eq-any-order? [1 2 3] [1 2 3]))
+  (is (eq-any-order? [1 2 3] [3 1 2]))
+  (is (not (eq-any-order? [1 2 4] [3 1 2])))
+  (is (not (eq-any-order? [1 1 2 3] [3 2 1 2]))))
 
 (deftype MockCreep [x y]
   Creep
