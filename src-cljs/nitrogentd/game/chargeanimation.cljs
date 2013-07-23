@@ -1,12 +1,12 @@
-(ns nitrogentd.chargeanimation
-  (:use [nitrogentd.animation :only [Animation]]
-        [nitrogentd.drawing :only [ctx]]
-        [nitrogentd.gamestate :only [time]]
+(ns nitrogentd.game.chargeanimation
+  (:use [nitrogentd.game.animation :only [Animation]]
+        [nitrogentd.game.drawing :only [ctx]]
+        [nitrogentd.game.gamestate :only [time]]
         )
-  (:require [nitrogentd.creep :as creep]
-            [nitrogentd.tower :as tower]
-            [nitrogentd.line :as line]
-            [nitrogentd.point :as point]
+  (:require [nitrogentd.game.creep :as creep]
+            [nitrogentd.game.tower :as tower]
+            [nitrogentd.game.line :as line]
+            [nitrogentd.game.point :as point]
             )
   )
 

@@ -1,10 +1,10 @@
-(ns nitrogentd.test.test-lasertower
+(ns nitrogentd.test.lasertower
   (:require-macros [cemerick.cljs.test :refer (is deftest run-tests)])
-  (:use [nitrogentd.creep :only [Creep]]
-        [nitrogentd.point :only [Point]]
+  (:use [nitrogentd.game.creep :only [Creep]]
+        [nitrogentd.game.point :only [Point]]
         )
   (:require [cemerick.cljs.test :as t]
-            [nitrogentd.lasertower :as lasertower]))
+            [nitrogentd.game.lasertower :as lasertower]))
 
 (deftype MockCreep [x y]
   Creep
@@ -14,12 +14,10 @@
   Point
   (get-point [this] [x y]))
 
-(deftest basic-in-range
+(deftest in-attack-range
   (is (lasertower/in-attack-range?
        (lasertower/construct-lasertower 0 0)
-       (MockCreep. 0 0))))
-
-(deftest horizontal-in-range
+       (MockCreep. 0 0)))
   (is (let [cx    5
             cy    7
             tx    (+ cx lasertower/attack-range -1)
@@ -28,3 +26,4 @@
             creep (MockCreep. cx cy)
             ]
         (lasertower/in-attack-range? tower creep))))
+

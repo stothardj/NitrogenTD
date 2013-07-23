@@ -1,16 +1,16 @@
-(ns nitrogentd.lasertower
-  (:use [nitrogentd.tower :only [Tower]]
-        [nitrogentd.drawing :only [ctx]]
-        [nitrogentd.point :only [Point]]
-        [nitrogentd.laseranimation :only [LaserAnimation]]
-        [nitrogentd.gamestate :only [time time-passed?]]
+(ns nitrogentd.game.lasertower
+  (:use [nitrogentd.game.tower :only [Tower]]
+        [nitrogentd.game.drawing :only [ctx]]
+        [nitrogentd.game.point :only [Point]]
+        [nitrogentd.game.laseranimation :only [LaserAnimation]]
+        [nitrogentd.game.gamestate :only [time time-passed?]]
         )
-  (:require [nitrogentd.util :as util]
-            [nitrogentd.drawing :as drawing]
-            [nitrogentd.point :as point]
-            [nitrogentd.line :as line]
-            [nitrogentd.creep :as creep]
-            [nitrogentd.tower :as t]
+  (:require [nitrogentd.game.util :as util]
+            [nitrogentd.game.drawing :as drawing]
+            [nitrogentd.game.point :as point]
+            [nitrogentd.game.line :as line]
+            [nitrogentd.game.creep :as creep]
+            [nitrogentd.game.tower :as t]
             )
   )
 

@@ -1,4 +1,4 @@
-(ns nitrogentd.pool)
+(ns nitrogentd.game.pool)
 
 (defprotocol Pool
   "Spawns a creeps its position"

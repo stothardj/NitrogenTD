@@ -1,4 +1,4 @@
-(ns nitrogentd.animation)
+(ns nitrogentd.game.animation)
 
 (defprotocol Animation
   "An animation to be played. Only to be pretty, does not affect anything"

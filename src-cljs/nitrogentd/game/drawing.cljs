@@ -1,6 +1,6 @@
-(ns nitrogentd.drawing
-  (:require [nitrogentd.util :as util]
-            [nitrogentd.line :as line]
+(ns nitrogentd.game.drawing
+  (:require [nitrogentd.game.util :as util]
+            [nitrogentd.game.line :as line]
             )
   )
 

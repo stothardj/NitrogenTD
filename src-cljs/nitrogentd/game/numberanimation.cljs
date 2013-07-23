@@ -1,7 +1,7 @@
-(ns nitrogentd.numberanimation
-  (:use [nitrogentd.animation :only [Animation]]
-        [nitrogentd.drawing :only [ctx]]
-        [nitrogentd.gamestate :only [time]]))
+(ns nitrogentd.game.numberanimation
+  (:use [nitrogentd.game.animation :only [Animation]]
+        [nitrogentd.game.drawing :only [ctx]]
+        [nitrogentd.game.gamestate :only [time]]))
 
 (def animation-length 1000)
 

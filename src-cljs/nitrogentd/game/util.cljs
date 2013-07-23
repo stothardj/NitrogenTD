@@ -1,4 +1,4 @@
-(ns nitrogentd.util)
+(ns nitrogentd.game.util)
 
 ;; Essentially misc
 

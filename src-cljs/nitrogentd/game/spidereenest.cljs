@@ -1,7 +1,7 @@
-(ns nitrogentd.spidereenest
-  (:use [nitrogentd.pool :only [Pool]]
-        [nitrogentd.spideree :only [spawn-spideree]]
-        [nitrogentd.gamestate :only [time time-passed?]]))
+(ns nitrogentd.game.spidereenest
+  (:use [nitrogentd.game.pool :only [Pool]]
+        [nitrogentd.game.spideree :only [spawn-spideree]]
+        [nitrogentd.game.gamestate :only [time time-passed?]]))
 
 (defn- add-noise-to-path [path]
   (map (fn [[x y]]

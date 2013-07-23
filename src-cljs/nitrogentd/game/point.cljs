@@ -1,4 +1,4 @@
-(ns nitrogentd.point)
+(ns nitrogentd.game.point)
 
 (defprotocol Point
   "An object which can usefully be thought of as a point"

@@ -1,4 +1,4 @@
-(ns nitrogentd.line)
+(ns nitrogentd.game.line)
 
 ;; All mathematics relating to lines that I'll need
 

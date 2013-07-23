@@ -1,8 +1,8 @@
-(ns nitrogentd.tower
-  (:require [nitrogentd.creep :as creep]
-            [nitrogentd.point :as point]
-            [nitrogentd.line :as line]
-            [nitrogentd.util :as util]))
+(ns nitrogentd.game.tower
+  (:require [nitrogentd.game.creep :as creep]
+            [nitrogentd.game.point :as point]
+            [nitrogentd.game.line :as line]
+            [nitrogentd.game.util :as util]))
 
 (defprotocol Tower
   "A tower defense tower"

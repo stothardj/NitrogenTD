@@ -1,15 +1,15 @@
-(ns nitrogentd.chargetower
-  (:use [nitrogentd.tower :only [Tower]]
-        [nitrogentd.drawing :only [ctx]]
-        [nitrogentd.point :only [Point]]
-        [nitrogentd.gamestate :only [time time-passed?]]
-        [nitrogentd.chargeanimation :only [ChargeAnimation]])
-  (:require [nitrogentd.drawing :as drawing]
-            [nitrogentd.point :as point]
-            [nitrogentd.line :as line]
-            [nitrogentd.creep :as creep]
-            [nitrogentd.tower :as tower]
-            [nitrogentd.util :as util]))
+(ns nitrogentd.game.chargetower
+  (:use [nitrogentd.game.tower :only [Tower]]
+        [nitrogentd.game.drawing :only [ctx]]
+        [nitrogentd.game.point :only [Point]]
+        [nitrogentd.game.gamestate :only [time time-passed?]]
+        [nitrogentd.game.chargeanimation :only [ChargeAnimation]])
+  (:require [nitrogentd.game.drawing :as drawing]
+            [nitrogentd.game.point :as point]
+            [nitrogentd.game.line :as line]
+            [nitrogentd.game.creep :as creep]
+            [nitrogentd.game.tower :as tower]
+            [nitrogentd.game.util :as util]))
 
 (def attack-range 100)
 (def attack-cooldown 2500)

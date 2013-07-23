@@ -1,13 +1,13 @@
-(ns nitrogentd.spideree
-  (:use [nitrogentd.creep :only [Creep]]
-        [nitrogentd.drawing :only [ctx]]
-        [nitrogentd.point :only [Point]]
-        [nitrogentd.gamestate :only [time]]
-        [nitrogentd.numberanimation :only [NumberAnimation]]
+(ns nitrogentd.game.spideree
+  (:use [nitrogentd.game.creep :only [Creep]]
+        [nitrogentd.game.drawing :only [ctx]]
+        [nitrogentd.game.point :only [Point]]
+        [nitrogentd.game.gamestate :only [time]]
+        [nitrogentd.game.numberanimation :only [NumberAnimation]]
         )
-  (:require [nitrogentd.util :as util]
-            [nitrogentd.drawing :as drawing]
-            [nitrogentd.line :as line]
+  (:require [nitrogentd.game.util :as util]
+            [nitrogentd.game.drawing :as drawing]
+            [nitrogentd.game.line :as line]
             )
   )
 

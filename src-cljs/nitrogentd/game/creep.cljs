@@ -1,4 +1,4 @@
-(ns nitrogentd.creep)
+(ns nitrogentd.game.creep)
 
 (defprotocol Creep
   "A creep to be killed by the towers"
