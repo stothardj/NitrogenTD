@@ -24,6 +24,7 @@
 (def in-attack-range? (partial t/in-range? attack-range))
 
 (defn choose-targets [tower creeps]
+  "Split creeps on whether they should be attacked. Returns [attacked safe]."
   (t/choose-targets tower in-attack-range? shuffle max-targets creeps))
 
 (defn attack-creep

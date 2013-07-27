@@ -11,7 +11,7 @@
             )
   )
 
-(deftype Spawnling [x y health path]
+(defrecord Spawnling [x y health path]
   Creep
   (draw [this]
     (set! (.-fillStyle ctx) "rgba(255, 0, 255, 0.3)")
