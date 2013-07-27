@@ -1,4 +1,4 @@
-(ns nitrogentd.test.line
+(ns nitrogentd.game.test-line
   (:require-macros [cemerick.cljs.test :refer (is deftest run-tests)])
   (:require [cemerick.cljs.test :as t]
             [nitrogentd.game.line :as line]))

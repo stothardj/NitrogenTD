@@ -1,4 +1,4 @@
-(ns nitrogentd.test.lasertower
+(ns nitrogentd.game.test-lasertower
   (:require-macros [cemerick.cljs.test :refer (is deftest run-tests)])
   (:use [nitrogentd.game.creep :only [Creep]]
         [nitrogentd.game.point :only [Point]])
