@@ -10,7 +10,7 @@
                  [hiccup "1.0.3"]
                  [com.cemerick/clojurescript.test "0.0.4"]
                  [org.clojure/google-closure-library-third-party "0.0-2029"]
-                 [domina "1.0.0"]]
+                 [domina "1.0.1"]]
   :plugins [[lein-cljsbuild "0.3.2"]
             [lein-ring "0.7.0"]]
   :hooks [leiningen.cljsbuild]

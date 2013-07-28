@@ -29,6 +29,16 @@
      (creep/damage creep force)
      {:animations [(ChargeAnimation. time tower creep)]})))
 
+(defn preview [x y]
+  (.beginPath ctx)
+  (.arc ctx x y attack-range 0 (* 2 Math/PI) false)
+  (.closePath ctx)
+  (set! (.-strokeStyle ctx) "rgb(0,200,255)")
+  (set! (.-lineWidth ctx) 2)
+  (.stroke ctx)
+  (set! (.-fillStyle ctx) "rgba(0,200,255,0.3)")
+  (.fill ctx))
+
 (deftype ChargeTower [x y cooldown-start]
   Tower
   (draw [this]
@@ -43,7 +53,7 @@
                        (.fill ctx)
                        (set! (.-fillStyle ctx) "rgb(0, 200, 255)")
                        (.beginPath ctx)
-                       (.arc ctx 0 -6 (/ (- time cooldown-start) 400) 0, (* 2 Math/PI) false)
+                       (.arc ctx 0 -6 (/ (- time cooldown-start) 400) 0 (* 2 Math/PI) false)
                        (.closePath ctx)
                        (.fill ctx)
                        )

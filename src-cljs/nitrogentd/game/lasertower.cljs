@@ -23,6 +23,16 @@
 (def ^:private map-merge (partial merge-with concat))
 (def in-attack-range? (partial t/in-range? attack-range))
 
+(defn preview [x y]
+  (.beginPath ctx)
+  (.arc ctx x y attack-range 0 (* 2 Math/PI) false)
+  (.closePath ctx)
+  (set! (.-strokeStyle ctx) "rgb(255,255,255)")
+  (set! (.-lineWidth ctx) 2)
+  (.stroke ctx)
+  (set! (.-fillStyle ctx) "rgba(255,255,255,0.3)")
+  (.fill ctx))
+
 (defn choose-targets [tower creeps]
   "Split creeps on whether they should be attacked. Returns [attacked safe]."
   (t/choose-targets tower in-attack-range? shuffle max-targets creeps))

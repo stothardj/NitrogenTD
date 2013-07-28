@@ -20,6 +20,8 @@
             [nitrogentd.game.point :as point]
             [nitrogentd.game.animation :as animation]
             [nitrogentd.game.gamestate :as gamestate]
+            [nitrogentd.game.lasertower :as lasertower]
+            [nitrogentd.game.chargetower :as chargetower]
             [goog.dom.forms :as forms]
             )
   )
@@ -69,6 +71,11 @@
     (construct-lasertower x y)
     (construct-chargetower x y)))
 
+(defn show-preview [x y]
+  (if (forms/getValue (util/by-id "Laser Tower"))
+    (lasertower/preview x y)
+    (chargetower/preview x y)))
+
 (when canvas
 
   (listen! (sel "#game") :click
@@ -93,6 +100,9 @@
        (creep/draw creep))
      (doseq [anim @animations]
        (animation/draw anim))
+
+     (apply show-preview @mouse-pos)
+
      
      (swap! creeps
             #(->> %
