@@ -7,7 +7,8 @@
         [nitrogentd.game.spawnlingpool :only [create-spawnling-pool]]
         [nitrogentd.game.spidereenest :only [create-spideree-nest]]
         [nitrogentd.game.drawing :only [canvas]]
-        ;; [domina.events :only [listen!]]
+        [domina.css :only [sel]]
+        [domina.events :only [listen!]]
         )
   (:require [clojure.browser.event :as event]
             [nitrogentd.game.drawing :as drawing]
@@ -46,8 +47,8 @@
 (defn relative-mouse-pos
   [ev]
   (let [rect (.getBoundingClientRect canvas)
-        x (- (.-clientX ev) (.-left rect))
-        y (- (.-clientY ev) (.-top rect))]
+        x (- (:clientX ev) (.-left rect))
+        y (- (:clientY ev) (.-top rect))]
     [x y]))
 
 (defn- combine-spawns
@@ -70,23 +71,18 @@
 
 (when canvas
 
-  (event/listen canvas "click"
+  (listen! (sel "#game") :click
                 (fn [ev]
                   (let [[x y] (relative-mouse-pos ev)]
                     (when-not (line/point-on-thick-path? [x y] creep-path 50)
                       (swap! towers (partial cons (construct-tower x y)))))))
 
-  (event/listen canvas "mousemove"
+  (listen! (sel "#game") :mousemove
                 (fn [ev]
                   (let [p (relative-mouse-pos ev)]
                     (reset! mouse-pos p))))
 
-  ;; (listen! :click
-  ;;               (fn [ev]
-  ;;                 (util/log "Hi" "Jake")))
-
   (util/crashingInterval
-   
    (fn []
      (gamestate/tick)
      (drawing/clear-canvas)
@@ -118,6 +114,5 @@
        (swap! creeps (partial concat new-creeps))
        (reset! pools new-pools))
      )
-   40)
-  )
+   40))
 
