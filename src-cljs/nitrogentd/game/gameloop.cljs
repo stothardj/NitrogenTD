@@ -6,6 +6,7 @@
         [nitrogentd.game.roacher :only [spawn-roacher]]
         [nitrogentd.game.spawnlingpool :only [create-spawnling-pool]]
         [nitrogentd.game.spidereenest :only [create-spideree-nest]]
+        [nitrogentd.game.roachernest :only [create-roacher-nest]]
         [nitrogentd.game.drawing :only [canvas]]
         [nitrogentd.game.pause-screen :only [toggle-pause]]
         [domina :only [by-id set-text!]]
@@ -41,7 +42,8 @@
 (def animations (atom []))
 
 (def pools (atom [(create-spideree-nest 23 creep-path)
-                  (create-spawnling-pool 8 creep-path)]))
+                  (create-spawnling-pool 8 creep-path)
+                  (create-roacher-nest 3 creep-path)]))
 
 (def mouse-pos (atom nil))
 

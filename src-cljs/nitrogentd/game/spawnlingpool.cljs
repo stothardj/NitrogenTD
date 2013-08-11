@@ -12,7 +12,7 @@
       {:pool this :creep []}
       (let [creep-left (dec n)
             new-creep (let [[[cx cy]] path]
-                        [(spawn-spawnling. cx cy path)])
+                        [(spawn-spawnling cx cy path)])
             ]
         (if (zero? creep-left)
           {:creep new-creep}
