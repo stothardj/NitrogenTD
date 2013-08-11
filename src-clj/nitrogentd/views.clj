@@ -44,6 +44,7 @@
       [:div#center-container
        [:canvas#game {:width "800" :height "600"}]]
       [:div#right-container
+       [:button#pause "Pause"]
        (game-radio-buttons "Build" "Laser Tower" "Charge Tower")]]]
     (include-js "/js/bootstrap.min.js")
     (include-js "/js/main.js")

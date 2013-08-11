@@ -8,7 +8,7 @@
         [nitrogentd.game.spidereenest :only [create-spideree-nest]]
         [nitrogentd.game.drawing :only [canvas]]
         [domina.css :only [sel]]
-        [domina.events :only [listen!]]
+        [domina.events :only [listen! unlisten!]]
         )
   (:require [clojure.browser.event :as event]
             [nitrogentd.game.drawing :as drawing]
@@ -76,53 +76,85 @@
     (lasertower/preview x y)
     (chargetower/preview x y)))
 
-(when canvas
+(defn game-loop []
+  (gamestate/tick)
+  (drawing/clear-canvas)
+  (drawing/draw-creep-path creep-path)
+  (doseq [tower @towers]
+    (tower/draw tower))
+  (doseq [creep @creeps]
+    (creep/draw creep))
+  (doseq [anim @animations]
+    (animation/draw anim))
 
+  (apply show-preview @mouse-pos)
+  
+  (swap! creeps
+         #(->> %
+               (map creep/move)
+               (filter (complement nil?))))
+
+  (let [{na :animations
+         nc :creeps
+         nt :towers} (tower/attack-all @towers @creeps)]
+    (reset! towers nt)
+    (reset! creeps nc)
+    (swap! animations (partial concat na)))
+
+  (swap! animations (partial filter animation/continues?))
+
+  (let [{new-creeps :creeps
+         new-pools :pools} (-> (map pool/spawn-creep @pools)
+                               (combine-spawns))]
+    (swap! creeps (partial concat new-creeps))
+    (reset! pools new-pools)))
+
+(def paused (atom false))
+(def events-registered (atom false))
+
+(declare start-game)
+
+(defn deregister-events []
+  "Deregister all event listeners which should only take place during gameplay.
+   Does not deregister the pause button otherwise unpausing would never happen.
+   Deregistering pause is done separately right before start-game registers it
+   again with the new handle."
+  (unlisten! (sel "#game")))
+
+(defn toggle-pause [handle]
+  "Toggle the game being paused"
+  (if @paused
+    (do (gamestate/unpause-time)
+        (reset! paused false)
+        (unlisten! (sel "#pause"))
+        (start-game))
+    (do (gamestate/pause-time)
+        (deregister-events)
+        (js/clearInterval handle)
+        (reset! paused true))))
+
+(defn register-events [handle]
+  "Register all event listeners for during gameplay"
   (listen! (sel "#game") :click
-                (fn [ev]
-                  (let [[x y] (relative-mouse-pos ev)]
-                    (when-not (line/point-on-thick-path? [x y] creep-path 50)
-                      (swap! towers (partial cons (construct-tower x y)))))))
+           (fn [ev]
+             (let [[x y] (relative-mouse-pos ev)]
+               (when-not (line/point-on-thick-path? [x y] creep-path 50)
+                 (swap! towers (partial cons (construct-tower x y)))))))
 
   (listen! (sel "#game") :mousemove
-                (fn [ev]
-                  (let [p (relative-mouse-pos ev)]
-                    (reset! mouse-pos p))))
+           (fn [ev]
+             (let [p (relative-mouse-pos ev)]
+               (reset! mouse-pos p))))
+  (listen! (sel "#pause") :click
+           (fn [ev] (toggle-pause handle))))
 
-  (util/crashingInterval
-   (fn []
-     (gamestate/tick)
-     (drawing/clear-canvas)
-     (drawing/draw-creep-path creep-path)
-     (doseq [tower @towers]
-       (tower/draw tower))
-     (doseq [creep @creeps]
-       (creep/draw creep))
-     (doseq [anim @animations]
-       (animation/draw anim))
+(defn start-game []
+  (let [handle (util/crashingInterval game-loop 40)]
+    (register-events handle)))
 
-     (apply show-preview @mouse-pos)
-
-     
-     (swap! creeps
-            #(->> %
-                  (map creep/move)
-                  (filter (complement nil?))))
-
-     (let [{na :animations
-            nc :creeps
-            nt :towers} (tower/attack-all @towers @creeps)]
-       (reset! towers nt)
-       (reset! creeps nc)
-       (swap! animations (partial concat na)))
-
-     (swap! animations (partial filter animation/continues?))
-
-     (let [{new-creeps :creeps
-            new-pools :pools} (-> (map pool/spawn-creep @pools)
-                                  (combine-spawns))]
-       (swap! creeps (partial concat new-creeps))
-       (reset! pools new-pools))
-     )
-   40))
+;; Only attempts to start the game on browsers which actually support the canvas
+;; element. Note phantomjs does not support canvas so the game is not started when
+;; running unit tests.
+(when canvas
+  (start-game))
 
