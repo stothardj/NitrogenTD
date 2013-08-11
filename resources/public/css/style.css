@@ -34,3 +34,7 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
+#pause {
+    width: 200px;
+    height: 50px;
+}

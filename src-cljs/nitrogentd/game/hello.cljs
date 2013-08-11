@@ -7,7 +7,7 @@
         [nitrogentd.game.spawnlingpool :only [create-spawnling-pool]]
         [nitrogentd.game.spidereenest :only [create-spideree-nest]]
         [nitrogentd.game.drawing :only [canvas]]
-        [domina.css :only [sel]]
+        [domina :only [by-id set-text!]]
         [domina.events :only [listen! unlisten!]]
         )
   (:require [clojure.browser.event :as event]
@@ -119,33 +119,41 @@
    Does not deregister the pause button otherwise unpausing would never happen.
    Deregistering pause is done separately right before start-game registers it
    again with the new handle."
-  (unlisten! (sel "#game")))
+  (unlisten! (by-id "game")))
+
+(defn unpause []
+  (gamestate/unpause-time)
+  (set-text! (by-id "pause") "Pause")
+  (reset! paused false)
+  (unlisten! (by-id "pause"))
+  (start-game))
+
+(defn pause [handle]
+  (gamestate/pause-time)
+  (set-text! (by-id "pause") "Unpause")
+  (deregister-events)
+  (js/clearInterval handle)
+  (reset! paused true))
 
 (defn toggle-pause [handle]
   "Toggle the game being paused"
   (if @paused
-    (do (gamestate/unpause-time)
-        (reset! paused false)
-        (unlisten! (sel "#pause"))
-        (start-game))
-    (do (gamestate/pause-time)
-        (deregister-events)
-        (js/clearInterval handle)
-        (reset! paused true))))
+    (unpause)
+    (pause handle)))
 
 (defn register-events [handle]
   "Register all event listeners for during gameplay"
-  (listen! (sel "#game") :click
+  (listen! (by-id "game") :click
            (fn [ev]
              (let [[x y] (relative-mouse-pos ev)]
                (when-not (line/point-on-thick-path? [x y] creep-path 50)
                  (swap! towers (partial cons (construct-tower x y)))))))
 
-  (listen! (sel "#game") :mousemove
+  (listen! (by-id "game") :mousemove
            (fn [ev]
              (let [p (relative-mouse-pos ev)]
                (reset! mouse-pos p))))
-  (listen! (sel "#pause") :click
+  (listen! (by-id "pause") :click
            (fn [ev] (toggle-pause handle))))
 
 (defn start-game []
