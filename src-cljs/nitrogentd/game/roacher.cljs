@@ -4,12 +4,15 @@
         [nitrogentd.game.point :only [Point]]
         [nitrogentd.game.gamestate :only [time]]
         [nitrogentd.game.numberanimation :only [NumberAnimation]]
+        [nitrogentd.game.creepstats :only [map->CreepStats]]
         )
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.line :as line]
             )
   )
+
+(def stats (map->CreepStats {:health 2000 :speed 1}))
 
 (deftype Roacher [x y health path facing last-shot]
   Creep
@@ -38,7 +41,7 @@
   (move [this]
     (when-not (empty? path)
       (let [goal (first path)
-            move-speed (if (< (- time last-shot) 1000) 4 1)
+            move-speed (if (< (- time last-shot) 1000) 4 (:speed stats))
             [newx newy :as newp] (line/move-towards [x y] goal move-speed)
             new-facing (if (> newx x) 'right 'left)
             sq-dist (line/sq-point-to-point-dist newp goal)
@@ -58,5 +61,5 @@
 (defn spawn-roacher
   "Create and return Roacher with given params."
   [x y path]
-  (let [health 10000]
+  (let [health (:health stats)]
     (Roacher. x y health path 'right 0)))

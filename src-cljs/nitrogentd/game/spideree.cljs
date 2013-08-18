@@ -4,12 +4,15 @@
         [nitrogentd.game.point :only [Point]]
         [nitrogentd.game.gamestate :only [time]]
         [nitrogentd.game.numberanimation :only [NumberAnimation]]
+        [nitrogentd.game.creepstats :only [map->CreepStats]]
         )
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.line :as line]
             )
   )
+
+(def stats (map->CreepStats {:health 1200 :speed 3}))
 
 (def max-damage 700)
 
@@ -41,7 +44,7 @@
     (when-not (empty? path)
       (let [goal (first path)
             [newx newy :as newp] (if (scuttle-now? (- time spawn-time))
-                                   (line/move-towards [x y] goal 3)
+                                   (line/move-towards [x y] goal (:speed stats))
                                    [x y])
             sq-dist (line/sq-point-to-point-dist newp goal)
             new-path (if (< sq-dist 100)
@@ -60,6 +63,6 @@
 (defn spawn-spideree
   "Create and return a spideree with given params"
   [x y path]
-  (let [health 1200
+  (let [health (:health stats)
         fudged-time (+ time (rand-int 1000))] ;; So not completely synchronized
         (Spideree. x y health path fudged-time)))

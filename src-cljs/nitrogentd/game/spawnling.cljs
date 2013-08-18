@@ -4,12 +4,15 @@
         [nitrogentd.game.point :only [Point]]
         [nitrogentd.game.gamestate :only [time]]
         [nitrogentd.game.numberanimation :only [NumberAnimation]]
+        [nitrogentd.game.creepstats :only [map->CreepStats]]
         )
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.line :as line]
             )
   )
+
+(def stats (map->CreepStats {:health 1000 :speed 1}))
 
 (defrecord Spawnling [x y health path]
   Creep
@@ -23,7 +26,7 @@
   (move [this]
     (when-not (empty? path)
       (let [goal (first path)
-            [newx newy :as newp] (line/move-towards [x y] goal 1)
+            [newx newy :as newp] (line/move-towards [x y] goal (:speed stats))
             sq-dist (line/sq-point-to-point-dist newp goal)
             new-path (if (< sq-dist 100)
                        (rest path)
@@ -41,5 +44,5 @@
 (defn spawn-spawnling
   "Create and return Spawnling with given params."
   [x y path]
-  (let [health 1000]
+  (let [health (:health stats)]
     (Spawnling. x y health path)))
