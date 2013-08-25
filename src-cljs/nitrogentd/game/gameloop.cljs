@@ -1,7 +1,5 @@
 (ns nitrogentd.game.gameloop
-  (:use [nitrogentd.game.lasertower :only [construct-lasertower]]
-        [nitrogentd.game.chargetower :only [construct-chargetower]]
-        [nitrogentd.game.spawnling :only [spawn-spawnling]]
+  (:use [nitrogentd.game.spawnling :only [spawn-spawnling]]
         [nitrogentd.game.spideree :only [spawn-spideree]]
         [nitrogentd.game.roacher :only [spawn-roacher]]
         [nitrogentd.game.spawnlingpool :only [create-spawnling-pool]]
@@ -23,16 +21,18 @@
             [nitrogentd.game.gamestate :as gamestate]
             [nitrogentd.game.lasertower :as lasertower]
             [nitrogentd.game.chargetower :as chargetower]
-            [goog.dom.forms :as forms]))
+            [nitrogentd.game.concussivetower :as concussivetower]
+            [goog.dom.forms :as forms]
+            [domina :as d]))
 
 ;; Setup time so creation has valid times to look at. Necessary for pools.
 (gamestate/tick)
 
 (def creep-path '((30 40) (70 90) (70 200) (300 200) (500 400) (600 500) (700 250) (600 100) (500 200)  ))
 
-(def towers (atom [(construct-lasertower 290 240)
-                   (construct-lasertower 100 400)
-                   (construct-chargetower 150 150)
+(def towers (atom [(lasertower/construct 290 240)
+                   (lasertower/construct 100 400)
+                   (chargetower/construct 150 150)
                    ]))
 (def creeps (atom [(spawn-spawnling 150 100 creep-path)
                    (spawn-spawnling 100 200 creep-path)
@@ -67,15 +67,25 @@
         :pools new-pools}))
    {} v))
 
+(defn- selected-radio [& choices]
+  "Returns selected radio button id if any selected"
+  (some (comp d/value by-id) choices))
+
+(defn selected-tower [] (selected-radio "Laser Tower" "Charge Tower" "Concussive Tower"))
+
 (defn construct-tower [x y]
-  (if (forms/getValue (util/by-id "Laser Tower"))
-    (construct-lasertower x y)
-    (construct-chargetower x y)))
+  (case (selected-tower)
+    "Laser Tower" (lasertower/construct x y)
+    "Charge Tower" (chargetower/construct x y)
+    "Concussive Tower" (concussivetower/construct x y)
+    nil))
 
 (defn show-preview [x y]
-  (if (forms/getValue (util/by-id "Laser Tower"))
-    (lasertower/preview x y)
-    (chargetower/preview x y)))
+  (case (selected-tower)
+    "Laser Tower" (lasertower/preview x y)
+    "Charge Tower" (chargetower/preview x y)
+    "Concussive Tower" (concussivetower/preview x y)
+    nil))
 
 (defn game-loop []
   (gamestate/tick)

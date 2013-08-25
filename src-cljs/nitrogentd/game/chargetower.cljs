@@ -73,7 +73,7 @@
   Point
   (get-point [this] [x y]))
 
-(defn construct-chargetower
+(defn construct
   "Constructs and returns a charge tower"
   [x y]
   (let [cooldown-start 0]

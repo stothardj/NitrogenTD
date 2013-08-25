@@ -45,7 +45,7 @@
        [:canvas#game {:width "800" :height "600"}]]
       [:div#right-container
        [:button#pause.btn.btn-default "Pause"]
-       (game-radio-buttons "Build" "Laser Tower" "Charge Tower")]]]
+       (game-radio-buttons "Build" "Laser Tower" "Charge Tower" "Concussive Tower")]]]
     (include-js "/js/bootstrap.min.js")
     (include-js "/js/main.js")
     ]))
