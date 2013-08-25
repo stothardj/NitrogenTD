@@ -5,16 +5,18 @@
         [nitrogentd.game.gamestate :only [time]]
         [nitrogentd.game.numberanimation :only [NumberAnimation]]
         [nitrogentd.game.creepstats :only [map->CreepStats]]
+        [nitrogentd.game.fright :only [Fright]]
         )
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.line :as line]
+            [nitrogentd.game.statuseffect :as statuseffect]
             )
   )
 
 (def stats (map->CreepStats {:health 2000 :speed 1}))
 
-(deftype Roacher [x y health path facing last-shot]
+(deftype Roacher [x y health path facing status-effects]
   Creep
   (draw [this]
     (set! (.-fillStyle ctx) "rgba(0, 200, 0, 0.3)")
@@ -41,18 +43,22 @@
   (move [this]
     (when-not (empty? path)
       (let [goal (first path)
-            move-speed (if (< (- time last-shot) 1000) 4 (:speed stats))
+            current-status-effects (statuseffect/continuing-status-effects status-effects)
+            current-stats (statuseffect/apply-status-effects stats current-status-effects)
+            move-speed (:speed current-stats)
             [newx newy :as newp] (line/move-towards [x y] goal move-speed)
             new-facing (if (> newx x) 'right 'left)
             sq-dist (line/sq-point-to-point-dist newp goal)
             new-path (if (< sq-dist 100)
                        (rest path)
                        path)]
-        (Roacher. newx newy health new-path new-facing last-shot))))
+        (Roacher. newx newy health new-path new-facing current-status-effects))))
   (damage [this force]
-    (let [new-health (- health force)]
+    (let [new-health (- health force)
+          current-status-effects (statuseffect/continuing-status-effects status-effects)
+          new-status-effects (conj current-status-effects (Fright. time))]
       (when (pos? new-health)
-        {:creeps [(Roacher. x y new-health path facing time)]
+        {:creeps [(Roacher. x y new-health path facing new-status-effects)]
          :animations [(NumberAnimation. time force x y)]})))
   Point
   (get-point [this] [x y])
@@ -62,4 +68,4 @@
   "Create and return Roacher with given params."
   [x y path]
   (let [health (:health stats)]
-    (Roacher. x y health path 'right 0)))
+    (Roacher. x y health path 'right [])))

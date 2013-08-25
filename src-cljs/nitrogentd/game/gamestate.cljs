@@ -40,7 +40,7 @@
     (set! time (- now @total-paused))))
 
 (defn time-passed?
-  "Returns true if duration time has passed since start-time"
+  "Returns true if duration time has passed since start-time. Duration in milliseconds."
   [start-time duration]
   (< (+ start-time duration) time))
 
