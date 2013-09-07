@@ -2,6 +2,7 @@
   (:use [nitrogentd.game.tower :only [Tower]]
         [nitrogentd.game.point :only [Point]]
         [nitrogentd.game.slow :only [Slow]]
+        [nitrogentd.game.quakeanimation :only [QuakeAnimation]]
         [nitrogentd.game.gamestate :only [time time-passed?]]
         [nitrogentd.game.drawing :only [ctx]])
   (:require [nitrogentd.game.drawing :as drawing]
@@ -35,8 +36,7 @@
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
   [tower creep]
-  (let [force (util/rand-between min-force max-force)
-        slow (Slow. time)]
+  (let [slow (Slow. time)]
     (creep/apply-effect creep slow)))
 
 (deftype ConcussiveTower [x y cooldown-start]
@@ -56,7 +56,8 @@
                               (map (partial attack-creep this))
                               (apply map-merge))]
         (assoc (map-merge attacked-map
-                          {:creeps safe})
+                          {:creeps safe
+                           :animations [(QuakeAnimation. time x y attack-range)]})
           :tower (ConcussiveTower. x y time)))))
   Point
   (get-point [this] [x y]))

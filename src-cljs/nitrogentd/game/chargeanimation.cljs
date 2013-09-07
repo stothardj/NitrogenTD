@@ -1,7 +1,7 @@
 (ns nitrogentd.game.chargeanimation
   (:use [nitrogentd.game.animation :only [Animation]]
         [nitrogentd.game.drawing :only [ctx]]
-        [nitrogentd.game.gamestate :only [time]]
+        [nitrogentd.game.gamestate :only [time time-passed?]]
         )
   (:require [nitrogentd.game.creep :as creep]
             [nitrogentd.game.tower :as tower]
@@ -28,5 +28,4 @@
       (.moveTo ctx tx ty)
       (.lineTo ctx cx cy)
       (.stroke ctx)))
-  (continues? [this] (< time (+ start-time animation-length)))
-  )
+  (continues? [this] (not (time-passed? start-time animation-length))))
