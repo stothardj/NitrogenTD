@@ -9,12 +9,13 @@
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.line :as line]
+            [nitrogentd.game.statuseffect :as statuseffect]
             )
   )
 
 (def stats (map->CreepStats {:health 1000 :speed 1}))
 
-(defrecord Spawnling [x y health path]
+(defrecord Spawnling [x y health path status-effects]
   Creep
   (draw [this]
     (set! (.-fillStyle ctx) "rgba(255, 0, 255, 0.3)")
@@ -26,17 +27,22 @@
   (move [this]
     (when-not (empty? path)
       (let [goal (first path)
-            [newx newy :as newp] (line/move-towards [x y] goal (:speed stats))
+            current-stats (statuseffect/apply-effects status-effects stats)
+            move-speed (:speed current-stats)
+            [newx newy :as newp] (line/move-towards [x y] goal move-speed)
             sq-dist (line/sq-point-to-point-dist newp goal)
             new-path (if (< sq-dist 100)
                        (rest path)
                        path)]
-        (Spawnling. newx newy health new-path))))
+        (Spawnling. newx newy health new-path status-effects))))
   (damage [this force]
     (let [new-health (- health force)]
       (when (pos? new-health)
-        {:creeps [(Spawnling. x y new-health path)]
+        {:creeps [(Spawnling. x y new-health path status-effects)]
          :animations [(NumberAnimation. time force x y)]})))
+  (apply-effect [this effect]
+    (let [new-effects (statuseffect/add-effect status-effects effect)]
+      {:creeps [(Spawnling. x y health path new-effects)]}))
   Point
   (get-point [this] [x y])
   )
@@ -45,4 +51,4 @@
   "Create and return Spawnling with given params."
   [x y path]
   (let [health (:health stats)]
-    (Spawnling. x y health path)))
+    (Spawnling. x y health path [])))

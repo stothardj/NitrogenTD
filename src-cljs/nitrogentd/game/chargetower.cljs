@@ -23,8 +23,7 @@
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
   [tower creep]
-  (let [[x y] (point/get-point creep)
-        force (util/rand-between min-force max-force)]
+  (let [force (util/rand-between min-force max-force)]
     (map-merge
      (creep/damage creep force)
      {:animations [(ChargeAnimation. time tower creep)]})))

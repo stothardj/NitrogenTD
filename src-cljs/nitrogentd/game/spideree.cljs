@@ -9,6 +9,7 @@
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.line :as line]
+            [nitrogentd.game.statuseffect :as statuseffect]
             )
   )
 
@@ -19,7 +20,7 @@
 (defn- scuttle-now? [time]
   (< (mod time 2000) 1000))
 
-(deftype Spideree [x y health path spawn-time]
+(deftype Spideree [x y health path spawn-time status-effects]
   Creep
   (draw [this]
     (set! (.-fillStyle ctx) "rgba(255, 0, 0, 0.3)")
@@ -43,20 +44,24 @@
   (move [this]
     (when-not (empty? path)
       (let [goal (first path)
+            current-stats (statuseffect/apply-effects status-effects stats)
             [newx newy :as newp] (if (scuttle-now? (- time spawn-time))
-                                   (line/move-towards [x y] goal (:speed stats))
+                                   (line/move-towards [x y] goal (:speed current-stats))
                                    [x y])
             sq-dist (line/sq-point-to-point-dist newp goal)
             new-path (if (< sq-dist 100)
                        (rest path)
                        path)]
-        (Spideree. newx newy health new-path spawn-time))))
+        (Spideree. newx newy health new-path spawn-time status-effects))))
   (damage [this force]
     (let [hit (min force max-damage)
           new-health (- health hit)]
       (when (pos? new-health)
-        {:creeps [(Spideree. x y new-health path spawn-time)]
+        {:creeps [(Spideree. x y new-health path spawn-time status-effects)]
          :animations [(NumberAnimation. time hit x y)]})))
+  (apply-effect [this effect]
+    (let [new-effects (statuseffect/add-effect status-effects effect)]
+      {:creeps [(Spideree. x y health path spawn-time new-effects)]}))
   Point
   (get-point [this] [x y]))
 
@@ -65,4 +70,4 @@
   [x y path]
   (let [health (:health stats)
         fudged-time (+ time (rand-int 1000))] ;; So not completely synchronized
-        (Spideree. x y health path fudged-time)))
+        (Spideree. x y health path fudged-time [])))

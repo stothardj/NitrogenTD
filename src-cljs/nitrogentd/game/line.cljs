@@ -112,6 +112,6 @@
         [sx sy] src
         [dx dy] dest
         dir [(Math/cos angle) (Math/sin angle)]
-        move (map (partial * dist ) dir)]
+        move (map (partial * dist) dir)]
     (map + src move)))
         
