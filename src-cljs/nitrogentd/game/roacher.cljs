@@ -54,12 +54,12 @@
         (Roacher. newx newy health new-path new-facing status-effects))))
   (damage [this force]
     (let [new-health (- health force)
-          new-status-effects (statuseffect/add-effect status-effects (Fright. time))]
+          new-status-effects (statuseffect/add-effect (Fright. time) status-effects)]
       (when (pos? new-health)
         {:creeps [(Roacher. x y new-health path facing new-status-effects)]
          :animations [(NumberAnimation. time force x y)]})))
   (apply-effect [this effect]
-    (let [new-effects (statuseffect/add-effect status-effects effect)]
+    (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Roacher. x y health path facing new-effects)]}))
   Point
   (get-point [this] [x y])

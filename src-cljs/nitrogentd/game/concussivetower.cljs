@@ -11,7 +11,7 @@
             [nitrogentd.game.tower :as t]))
 
 (def attack-range 65)
-(def attack-cooldown 700)
+(def attack-cooldown 2000)
 
 (def ^:private map-merge (partial merge-with concat))
 (def in-attack-range? (partial t/in-range? attack-range))

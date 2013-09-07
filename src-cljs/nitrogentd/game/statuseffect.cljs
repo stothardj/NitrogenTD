@@ -3,6 +3,7 @@
 (defprotocol StatusEffect
   "A status effect on a creep"
   (apply-effect [this stats] "Applies the effect to stats, returning a new stats object")
+  (add-effect [this effects] "Adds effect to other effects. May stack, replace other effects, or refuse to be applied. Returns new effects.")
   (continues? [this] "Returns true if the status effect should remain"))
 
 (defn- twirl-args [f]
@@ -14,7 +15,3 @@
 (defn apply-effects [effects stats]
   "Applies all status effects sequentially, so they do stack."
   (reduce (twirl-args apply-effect) stats (filter continues? effects)))
-
-(defn add-effect [effects effect]
-  "Adds status effect. Also removes ones that no longer apply since no longer need to track."
-  (conj (filter continues? effects) effect))

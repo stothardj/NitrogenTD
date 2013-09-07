@@ -60,7 +60,7 @@
         {:creeps [(Spideree. x y new-health path spawn-time status-effects)]
          :animations [(NumberAnimation. time hit x y)]})))
   (apply-effect [this effect]
-    (let [new-effects (statuseffect/add-effect status-effects effect)]
+    (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Spideree. x y health path spawn-time new-effects)]}))
   Point
   (get-point [this] [x y]))
