@@ -11,10 +11,10 @@
     (let [new-args (concat [y x] args)]
       (apply f new-args))))
 
-(defn apply-status-effects [stats status-effects]
+(defn apply-effects [effects stats]
   "Applies all status effects sequentially, so they do stack."
-  (reduce (twirl-args apply-effect) stats status-effects))
+  (reduce (twirl-args apply-effect) stats (filter continues? effects)))
 
-(defn continuing-status-effects [status-effects]
-  "Returns status effects which still apply."
-  (filter continues? status-effects))
+(defn add-effect [effects effect]
+  "Adds status effect. Also removes ones that no longer apply since no longer need to track."
+  (conj (filter continues? effects) effect))

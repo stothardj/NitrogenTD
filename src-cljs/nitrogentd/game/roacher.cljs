@@ -43,8 +43,7 @@
   (move [this]
     (when-not (empty? path)
       (let [goal (first path)
-            current-status-effects (statuseffect/continuing-status-effects status-effects)
-            current-stats (statuseffect/apply-status-effects stats current-status-effects)
+            current-stats (statuseffect/apply-effects status-effects stats)
             move-speed (:speed current-stats)
             [newx newy :as newp] (line/move-towards [x y] goal move-speed)
             new-facing (if (> newx x) 'right 'left)
@@ -52,11 +51,10 @@
             new-path (if (< sq-dist 100)
                        (rest path)
                        path)]
-        (Roacher. newx newy health new-path new-facing current-status-effects))))
+        (Roacher. newx newy health new-path new-facing status-effects))))
   (damage [this force]
     (let [new-health (- health force)
-          current-status-effects (statuseffect/continuing-status-effects status-effects)
-          new-status-effects (conj current-status-effects (Fright. time))]
+          new-status-effects (statuseffect/add-effect status-effects (Fright. time))]
       (when (pos? new-health)
         {:creeps [(Roacher. x y new-health path facing new-status-effects)]
          :animations [(NumberAnimation. time force x y)]})))
