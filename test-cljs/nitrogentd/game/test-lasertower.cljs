@@ -1,6 +1,8 @@
 (ns nitrogentd.game.test-lasertower
   (:require-macros [cemerick.cljs.test :refer (is deftest run-tests)])
-  (:use [nitrogentd.testing.asserts :only [eq-any-order?]])
+  (:use [nitrogentd.testing.asserts :only [eq-any-order?]]
+        [nitrogentd.game.laseranimation :only [LaserAnimation]]
+        [nitrogentd.game.numberanimation :only [NumberAnimation]])
   (:require [cemerick.cljs.test :as t]
             [nitrogentd.game.lasertower :as l]
             [nitrogentd.game.spawnling :as s]))
@@ -57,3 +59,13 @@
         [attacked safe] (l/choose-targets tower creeps)]
     (is (= l/max-targets (count attacked)))
     (is (= 7 (count safe)))))
+
+(deftest attack-creep
+  (let [tower (l/construct 0 0)
+        creep (simple-creep 0 0)
+        {:keys [creeps animations]} (l/attack-creep tower creep)]
+    (is (= 1 (count creeps)))
+    (is (= 2 (count animations)))
+    (is (not= creep (first creeps)))
+    (is (some (partial instance? NumberAnimation) animations))
+    (is (some (partial instance? LaserAnimation) animations))))

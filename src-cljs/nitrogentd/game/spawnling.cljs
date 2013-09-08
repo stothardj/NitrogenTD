@@ -44,8 +44,7 @@
     (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Spawnling. x y health path new-effects)]}))
   Point
-  (get-point [this] [x y])
-  )
+  (get-point [this] [x y]))
 
 (defn spawn-spawnling
   "Create and return Spawnling with given params."
