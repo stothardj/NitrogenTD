@@ -37,7 +37,7 @@
   "Attack a single creep. Returns new creep and animations"
   [tower creep]
   (let [slow (Slow. time)]
-    (creep/apply-effect creep slow)))
+    (creep/add-effect creep slow)))
 
 (deftype ConcussiveTower [x y cooldown-start]
   Tower

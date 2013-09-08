@@ -10,10 +10,9 @@
                         Returns
                           {:creeps [new creeps]
                            :animations [new animations]}")
-  (apply-effect [this effect] "Attempts to apply status effect to creep.
-                               Not guarenteed to be added because creep could have
-                               certain immunities or the effect may not be allowed
-                               to stack.
-                               Returns
-                                 {:creeps [new creeps]
-                                  :animations [new animations]}"))
+  (add-effect [this effect] "Attempts to add status effect to creep.
+                             Not guarenteed to be added because creep could have certain
+                             immunities or the effect may not be allowed to stack.
+                             Returns
+                               {:creeps [new creeps]
+                                :animations [new animations]}"))

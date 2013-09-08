@@ -13,9 +13,10 @@
           new-speed (* 4 old-speed)]
       (assoc stats :speed new-speed)))
   (add-effect [this effects]
-    (let [existing-frights (filter (partial instance? Fright) effects)
+    (let [current-effects (filter s/continues? effects)
+          existing-frights (filter (partial instance? Fright) current-effects)
           num-frights (count existing-frights)]
       (if (< num-frights max-stacking)
-        (conj (filter s/continues? effects) this)
-        effects)))
+        (conj current-effects this)
+        current-effects)))
   (continues? [this] (not (time-passed? start-time 2000))))
