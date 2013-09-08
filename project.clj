@@ -15,11 +15,24 @@
             [lein-ring "0.7.0"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {
-              :builds [{:source-paths ["src-cljs" "test-cljs"]
-                        :compiler {:output-to "resources/public/js/main.js"
+              :builds {
+                       :dev
+                       {:source-paths ["src-cljs"]
+                        :compiler {:output-to "resources/public/js/main-debug.js"
                                    :optimizations :whitespace
-                                   :pretty-print true}}]
-              :test-commands {"unit-tests" ["runners/phantomjs.js" "resources/public/js/main.js"]}
+                                   :pretty-print true}}
+                       :prod
+                       {:source-paths ["src-cljs"]
+                        :compiler {:output-to "resources/public/js/main.js"
+                                   :optimizations :advanced
+                                   :pretty-print false}}
+                       :test
+                       {:source-paths ["src-cljs" "test-cljs"]
+                        :compiler {:output-to "resources/private/js/unit-test.js"
+                                   :optimizations :whitespace
+                                   :pretty-print true}}}
+              :test-commands {"unit-tests" ["runners/phantomjs.js"
+                                            "resources/private/js/unit-test.js"]}
               }
   :ring {:handler nitrogentd.routes/app}
   )

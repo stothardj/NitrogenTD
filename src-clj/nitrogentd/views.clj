@@ -47,6 +47,6 @@
        [:button#pause.btn.btn-default "Pause"]
        (game-radio-buttons "Build" "Laser Tower" "Charge Tower" "Concussive Tower")]]]
     (include-js "/js/bootstrap.min.js")
-    (include-js "/js/main.js")
+    (include-js "/js/main-debug.js")
     ]))
 
