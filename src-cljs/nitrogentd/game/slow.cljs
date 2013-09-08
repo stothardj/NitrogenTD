@@ -4,6 +4,7 @@
   (:require [nitrogentd.game.statuseffect :as s]))
 
 (def max-stacking 4)
+(def effect-duration 2000)
 
 ;; Slow causes a creep to run slower
 (deftype Slow [start-time]
@@ -19,4 +20,4 @@
       (if (< num-slows max-stacking)
         (conj current-effects this)
         current-effects)))
-  (continues? [this] (not (time-passed? start-time 2000))))
+  (continues? [this] (not (time-passed? start-time effect-duration))))

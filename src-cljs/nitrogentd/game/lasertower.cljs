@@ -64,8 +64,7 @@
                           {:creeps safe})
           :tower (LaserTower. x y time)))))
   Point
-  (get-point [this] [x y])
-  )
+  (get-point [this] [x y]))
 
 (defn construct
   "Constructs and returns a laser tower"
