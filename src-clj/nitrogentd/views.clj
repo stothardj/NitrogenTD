@@ -7,11 +7,11 @@
 
 (defn page-menu []
   [:div.navbar.navbar-inverse.navbar-fixed-top
-   [:div.navbar-inner
-    [:div.container
-     [:a.brand {:href "#"} "NitrogenTD"]
-     [:ul.nav
-      [:li [:a {:href "#"} "Game"]]]]]])
+   [:div.container
+    [:div.navbar-header
+     [:a.navbar-brand {:href "#"} "NitrogenTD"]]
+    [:ul.nav.navbar-nav
+     [:li [:a {:href "#"} "Game"]]]]])
 
 (defn- game-radio-buttons [header & options]
   (list
