@@ -10,7 +10,7 @@
   (let [effect (Slow. time)
         old-stats {:speed 2}
         new-stats (statuseffect/apply-effect effect old-stats)]
-    (is (= 1 (:speed new-stats)))))
+    (is (< (:speed new-stats) (:speed old-stats)))))
 
 (deftest add-effect
   (let [effect (Slow. time)

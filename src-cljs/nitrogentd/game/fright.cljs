@@ -4,6 +4,7 @@
   (:require [nitrogentd.game.statuseffect :as s]))
 
 (def max-stacking 2)
+(def effect-duration 2000)
 
 ;; Fright causes a creep to run faster
 (deftype Fright [start-time]
@@ -19,4 +20,4 @@
       (if (< num-frights max-stacking)
         (conj current-effects this)
         current-effects)))
-  (continues? [this] (not (time-passed? start-time 2000))))
+  (continues? [this] (not (time-passed? start-time effect-duration))))
