@@ -20,7 +20,7 @@
 (defn- scuttle-now? [time]
   (< (mod time 2000) 1000))
 
-(deftype Spideree [x y health path spawn-time status-effects]
+(defrecord Spideree [x y health path spawn-time status-effects]
   Creep
   (draw [this]
     (set! (.-fillStyle ctx) "rgba(255, 0, 0, 0.3)")
