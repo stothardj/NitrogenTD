@@ -1,4 +1,5 @@
-(ns nitrogentd.game.creep)
+(ns nitrogentd.game.creep
+  (:require [nitrogentd.game.line :as line]))
 
 (defprotocol Creep
   "A creep to be killed by the towers"
@@ -16,3 +17,21 @@
                              Returns
                                {:creeps [new creeps]
                                 :animations [new animations]}"))
+
+(defn move-along-path
+  "Moves a creep some distance along it's path. If the creep gets within corner dist
+   to a turn it moves onto looking at the next turn
+   Returns
+    {:x new point x coord
+     :y new point y coord
+     :path new path. nil if at the end}"
+  [start-point move-speed corner-dist path]
+  (let [goal (first path)
+        [newx newy :as new-point] (line/move-towards start-point goal move-speed)
+        sq-dist (line/sq-point-to-point-dist new-point goal)
+        new-path (if (< sq-dist corner-dist)
+                   (rest path)
+                   path)]
+    {:x newx
+     :y newy
+     :path new-path}))

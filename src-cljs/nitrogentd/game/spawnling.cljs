@@ -8,7 +8,7 @@
         )
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
-            [nitrogentd.game.line :as line]
+            [nitrogentd.game.creep :as creep]
             [nitrogentd.game.statuseffect :as statuseffect]
             )
   )
@@ -26,15 +26,10 @@
       (drawing/draw-at #(.fillRect ctx (- u) -4 w 8) x y)))
   (move [this]
     (when-not (empty? path)
-      (let [goal (first path)
-            current-stats (statuseffect/apply-effects status-effects stats)
+      (let [current-stats (statuseffect/apply-effects status-effects stats)
             move-speed (:speed current-stats)
-            [newx newy :as newp] (line/move-towards [x y] goal move-speed)
-            sq-dist (line/sq-point-to-point-dist newp goal)
-            new-path (if (< sq-dist 100)
-                       (rest path)
-                       path)]
-        (Spawnling. newx newy health new-path status-effects))))
+            {:keys [x y path]} (creep/move-along-path [x y] move-speed 100 path)]
+        (Spawnling. x y health path status-effects))))
   (damage [this force]
     (let [new-health (- health force)]
       (when (pos? new-health)

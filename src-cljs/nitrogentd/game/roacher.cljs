@@ -9,7 +9,7 @@
         )
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
-            [nitrogentd.game.line :as line]
+            [nitrogentd.game.creep :as creep]
             [nitrogentd.game.statuseffect :as statuseffect]
             )
   )
@@ -45,12 +45,8 @@
       (let [goal (first path)
             current-stats (statuseffect/apply-effects status-effects stats)
             move-speed (:speed current-stats)
-            [newx newy :as newp] (line/move-towards [x y] goal move-speed)
-            new-facing (if (> newx x) 'right 'left)
-            sq-dist (line/sq-point-to-point-dist newp goal)
-            new-path (if (< sq-dist 100)
-                       (rest path)
-                       path)]
+            {newx :x newy :y new-path :path} (creep/move-along-path [x y] move-speed 100 path)
+            new-facing (if (> newx x) 'right 'left)]
         (Roacher. newx newy health new-path new-facing status-effects))))
   (damage [this force]
     (let [new-health (- health force)

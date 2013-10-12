@@ -8,7 +8,7 @@
         )
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
-            [nitrogentd.game.line :as line]
+            [nitrogentd.game.creep :as creep]
             [nitrogentd.game.statuseffect :as statuseffect]
             )
   )
@@ -45,14 +45,9 @@
     (when-not (empty? path)
       (let [goal (first path)
             current-stats (statuseffect/apply-effects status-effects stats)
-            [newx newy :as newp] (if (scuttle-now? (- time spawn-time))
-                                   (line/move-towards [x y] goal (:speed current-stats))
-                                   [x y])
-            sq-dist (line/sq-point-to-point-dist newp goal)
-            new-path (if (< sq-dist 100)
-                       (rest path)
-                       path)]
-        (Spideree. newx newy health new-path spawn-time status-effects))))
+            move-speed (if (scuttle-now? (- time spawn-time)) (:speed current-stats) 0)
+            {:keys [x y path]} (creep/move-along-path [x y] move-speed 100 path)]
+        (Spideree. x y health path spawn-time status-effects))))
   (damage [this force]
     (let [hit (min force max-damage)
           new-health (- health hit)]

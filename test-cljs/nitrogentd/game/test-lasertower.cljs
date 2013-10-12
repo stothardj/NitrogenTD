@@ -19,7 +19,7 @@
 (deftest in-attack-range
   (is (l/in-attack-range?
        (l/construct 0 0)
-       (s/spawn-spawnling 0 0 nil)))
+       (simple-creep 0 0)))
   (is (let [cx    5
             cy    7
             tx    (+ cx l/attack-range -1)
