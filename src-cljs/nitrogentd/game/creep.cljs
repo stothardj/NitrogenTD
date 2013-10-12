@@ -25,11 +25,11 @@
     {:x new point x coord
      :y new point y coord
      :path new path. nil if at the end}"
-  [start-point move-speed corner-dist path]
+  [start-point move-speed sq-corner-dist path]
   (let [goal (first path)
         [newx newy :as new-point] (line/move-towards start-point goal move-speed)
         sq-dist (line/sq-point-to-point-dist new-point goal)
-        new-path (if (< sq-dist corner-dist)
+        new-path (if (< sq-dist sq-corner-dist)
                    (rest path)
                    path)]
     {:x newx
