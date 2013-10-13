@@ -20,8 +20,11 @@
 (defrecord Splitter [x y health path status-effects incarnation]
   Creep
   (draw [this]
-    (set! (.-fillStyle ctx) "rgb(255,0,0)")
-    (drawing/draw-at #(.fillRect ctx -5 -5 10 10) x y))
+    (set! (.-fillStyle ctx) "rgb(100,0,0)")
+    (let [half-size (- 5 incarnation)
+          nh (- half-size)
+          size (* 2 half-size)]
+      (drawing/draw-at #(.fillRect ctx nh nh size size) x y)))
   (move [this]
     (when-not (empty? path)
       (let [current-stats (statuseffect/apply-effects status-effects stats)
