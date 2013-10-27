@@ -2,15 +2,17 @@
   (:use [nitrogentd.game.spawnling :only [spawn-spawnling]]
         [nitrogentd.game.spideree :only [spawn-spideree]]
         [nitrogentd.game.roacher :only [spawn-roacher]]
-        [nitrogentd.game.spawnlingpool :only [create-spawnling-pool]]
-        [nitrogentd.game.spidereenest :only [create-spideree-nest]]
-        [nitrogentd.game.roachernest :only [create-roacher-nest]]
-        [nitrogentd.game.splitterpool :only [create-splitter-pool]]
         [nitrogentd.game.drawing :only [canvas]]
         [nitrogentd.game.pause-screen :only [toggle-pause]]
         [domina :only [by-id set-text!]]
         [domina.events :only [listen! unlisten!]])
   (:require [clojure.browser.event :as event]
+
+            [nitrogentd.game.spawnlingpool :as spawnlingpool]
+            [nitrogentd.game.spidereenest :as spidereenest]
+            [nitrogentd.game.roachernest :as roachernest]
+            [nitrogentd.game.splitterpool :as splitterpool]
+
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.creep :as creep]
             [nitrogentd.game.tower :as tower]
@@ -42,10 +44,10 @@
                    ]))
 (def animations (atom []))
 
-(def pools (atom [(create-spideree-nest 23 creep-path)
-                  (create-spawnling-pool 8 creep-path)
-                  (create-splitter-pool 12 creep-path)
-                  (create-roacher-nest 3 creep-path)]))
+(def pools (atom [(spidereenest/construct 23 creep-path)
+                  (spawnlingpool/construct 8 creep-path)
+                  (splitterpool/construct 12 creep-path)
+                  (roachernest/construct 3 creep-path)]))
 
 (def mouse-pos (atom nil))
 

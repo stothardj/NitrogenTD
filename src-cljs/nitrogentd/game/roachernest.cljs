@@ -17,7 +17,7 @@
           {:creep new-creep
            :pool (RoacherNest. creep-left path time)})))))
 
-(defn create-roacher-nest
+(defn construct
   [n path]
   (let [last-spawn time]
     (RoacherNest. n path last-spawn)))

@@ -23,7 +23,7 @@
           {:creep creep
            :pool (SpawnlingPool. creep-left path time)})))))
 
-(defn create-spawnling-pool
+(defn construct
   [n path]
   (let [last-spawn time]
     (SpawnlingPool. n path last-spawn)))

@@ -22,7 +22,7 @@
           {:creep creep
            :pool (SplitterPool. creep-left path time)})))))
 
-(defn create-splitter-pool
+(defn construct
   [n path]
   (let [last-spawn time]
     (SplitterPool. n path last-spawn)))
