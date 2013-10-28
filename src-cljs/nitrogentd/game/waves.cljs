@@ -5,18 +5,15 @@
             [nitrogentd.game.roachernest :as roachernest]
             [nitrogentd.game.paths :as paths]))
 
-(def wave-1-3 (map->Wave
-               {:name "And another"
-                :pools [(roachernest/construct 2 paths/path-1)
-                        (spawnlingpool/construct 6 paths/path-1)]
-                :next nil}))
+(def wave-1-1 (map->Wave
+               {:name "The beginning"
+                :pools [(spawnlingpool/construct 8 paths/path-1)]}))
 
 (def wave-1-2 (map->Wave
                {:name "The next one"
-                :pools [(spidereenest/construct 4 paths/path-1)]
-                :next wave-1-3}))
+                :pools [(spidereenest/construct 4 paths/path-1)]}))
 
-(def wave-1-1 (map->Wave
-               {:name "The beginning"
-                :pools [(spawnlingpool/construct 8 paths/path-1)]
-                :next wave-1-2}))
+(def wave-1-3 (map->Wave
+               {:name "And another"
+                :pools [(roachernest/construct 2 paths/path-1)
+                        (spawnlingpool/construct 6 paths/path-1)]}))
