@@ -7,4 +7,5 @@
 (def level-1 (map->Level
               {:name "Intro"
                :path paths/path-1
-               :waves [waves/wave-1-1]}))
+               :waves [waves/wave-1-1]
+               :next nil}))

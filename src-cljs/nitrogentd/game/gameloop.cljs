@@ -15,6 +15,8 @@
             
             [nitrogentd.game.level :as level]
             [nitrogentd.game.levels :as levels]
+            [nitrogentd.game.wave :as wave]
+            [nitrogentd.game.waves :as waves]
 
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.creep :as creep]
@@ -82,8 +84,13 @@
     "Concussive Tower" (concussivetower/preview x y)
     nil))
 
+(defn check-end-wave []
+  (if (and (empty? @pools) (empty? @creeps))
+    (wave/load-wave waves/wave-1-2 pools)))
+
 (defn game-loop []
   (gamestate/tick)
+  (check-end-wave)
   (drawing/clear-canvas)
   (drawing/draw-creep-path @creep-path)
   (doseq [tower @towers]
