@@ -33,14 +33,14 @@
             [goog.dom.forms :as forms]
             [domina :as d]))
 
-(def creep-path (atom))
-(def pools (atom))
-(def towers (atom []))
-(def creeps (atom []))
-(def animations (atom []))
-(level/load-level levels/level-1 creep-path pools)
-
-(.log js/console "Pools" (clj->js @pools))
+;; Shared between gameloop and event handlers
+(def ^:private creep-path (atom))
+(def ^:private pools (atom))
+(def ^:private towers (atom []))
+(def ^:private creeps (atom []))
+(def ^:private animations (atom []))
+;; TODO: level-info should probably be defined as a record
+(def ^:private level-info (atom (level/load-level levels/level-1 creep-path pools)))
 
 (def mouse-pos (atom nil))
 
@@ -84,9 +84,22 @@
     "Concussive Tower" (concussivetower/preview x y)
     nil))
 
+(defn load-next
+  "Takes the current level info, not as an atom.
+   Loads the next level/wave and returns the corresponding level-info.
+   If there are no levels and waves left returns nil."
+  [info]
+  (let [next-wave (:next (:wave info))
+        next-level (:next (:level info))]
+    (cond next-wave (wave/load-wave next-wave info pools)
+          next-level (level/load-level next-level creep-path pools))))
+
 (defn check-end-wave []
-  (if (and (empty? @pools) (empty? @creeps))
-    (wave/load-wave waves/wave-1-2 pools)))
+  (when (and (empty? @pools) (empty? @creeps))
+    (let [new-info (load-next @level-info)]
+      (if new-info
+        (reset! level-info new-info)
+        (reset! level-info (level/load-level levels/level-1 creep-path pools))))))
 
 (defn game-loop []
   (gamestate/tick)

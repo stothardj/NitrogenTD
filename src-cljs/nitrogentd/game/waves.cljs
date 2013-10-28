@@ -2,12 +2,19 @@
   (:use [nitrogentd.game.wave :only [map->Wave]])
   (:require [nitrogentd.game.spawnlingpool :as spawnlingpool]
             [nitrogentd.game.spidereenest :as spidereenest]
+            [nitrogentd.game.roachernest :as roachernest]
             [nitrogentd.game.paths :as paths]))
+
+(def wave-1-3 (map->Wave
+               {:name "And another"
+                :pools [(roachernest/construct 2 paths/path-1)
+                        (spawnlingpool/construct 6 paths/path-1)]
+                :next nil}))
 
 (def wave-1-2 (map->Wave
                {:name "The next one"
                 :pools [(spidereenest/construct 4 paths/path-1)]
-                :next nil}))
+                :next wave-1-3}))
 
 (def wave-1-1 (map->Wave
                {:name "The beginning"

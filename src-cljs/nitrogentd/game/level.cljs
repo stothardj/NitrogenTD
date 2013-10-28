@@ -4,7 +4,11 @@
 (defrecord Level [name path waves next])
 
 (defn load-level
-  "Sets atoms to starting values defined by level and first wave"
+  "Sets atoms to starting values defined by level and first wave
+   Returns the new level-info"
   [level path pools]
   (reset! path (:path level))
-  (load-wave (first (:waves level)) pools))
+  (let [first-wave (first (:waves level))
+        level-info {:level level
+                    :wave first-wave}]
+    (load-wave first-wave level-info pools)))
