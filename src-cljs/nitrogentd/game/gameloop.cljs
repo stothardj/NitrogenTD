@@ -12,6 +12,9 @@
             [nitrogentd.game.spidereenest :as spidereenest]
             [nitrogentd.game.roachernest :as roachernest]
             [nitrogentd.game.splitterpool :as splitterpool]
+            
+            [nitrogentd.game.level :as level]
+            [nitrogentd.game.levels :as levels]
 
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.creep :as creep]
@@ -31,23 +34,25 @@
 ;; Setup time so creation has valid times to look at. Necessary for pools.
 (gamestate/tick)
 
-(def creep-path '((30 40) (70 90) (70 200) (300 200) (500 400) (600 500) (700 250) (600 100) (500 200)  ))
+(def creep-path (atom))
 
 (def towers (atom [(lasertower/construct 290 240)
                    (lasertower/construct 100 400)
                    (chargetower/construct 150 150)
                    ]))
-(def creeps (atom [(spawn-spawnling 150 100 creep-path)
-                   (spawn-spawnling 100 200 creep-path)
-                   (spawn-spideree 250 250 creep-path)
-                   (spawn-roacher 300 300 creep-path)
+(def creeps (atom [(spawn-spawnling 150 100 @creep-path)
+                   (spawn-spawnling 100 200 @creep-path)
+                   (spawn-spideree 250 250 @creep-path)
+                   (spawn-roacher 300 300 @creep-path)
                    ]))
 (def animations (atom []))
 
-(def pools (atom [(spidereenest/construct 23 creep-path)
-                  (spawnlingpool/construct 8 creep-path)
-                  (splitterpool/construct 12 creep-path)
-                  (roachernest/construct 3 creep-path)]))
+(def pools (atom [(spidereenest/construct 23 @creep-path)
+                  (spawnlingpool/construct 8 @creep-path)
+                  (splitterpool/construct 12 @creep-path)
+                  (roachernest/construct 3 @creep-path)]))
+
+(level/load-level levels/level-1 creep-path)
 
 (def mouse-pos (atom nil))
 
@@ -94,7 +99,7 @@
 (defn game-loop []
   (gamestate/tick)
   (drawing/clear-canvas)
-  (drawing/draw-creep-path creep-path)
+  (drawing/draw-creep-path @creep-path)
   (doseq [tower @towers]
     (tower/draw tower))
   (doseq [creep @creeps]
@@ -149,7 +154,7 @@
   (listen! (by-id "game") :click
            (fn [ev]
              (let [[x y] (relative-mouse-pos ev)]
-               (when-not (line/point-on-thick-path? [x y] creep-path 50)
+               (when-not (line/point-on-thick-path? [x y] @creep-path 50)
                  (swap! towers (partial cons (construct-tower x y)))))))
 
   (listen! (by-id "game") :mousemove
