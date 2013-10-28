@@ -31,28 +31,14 @@
             [goog.dom.forms :as forms]
             [domina :as d]))
 
-;; Setup time so creation has valid times to look at. Necessary for pools.
-(gamestate/tick)
-
 (def creep-path (atom))
-
-(def towers (atom [(lasertower/construct 290 240)
-                   (lasertower/construct 100 400)
-                   (chargetower/construct 150 150)
-                   ]))
-(def creeps (atom [(spawn-spawnling 150 100 @creep-path)
-                   (spawn-spawnling 100 200 @creep-path)
-                   (spawn-spideree 250 250 @creep-path)
-                   (spawn-roacher 300 300 @creep-path)
-                   ]))
+(def pools (atom))
+(def towers (atom []))
+(def creeps (atom []))
 (def animations (atom []))
+(level/load-level levels/level-1 creep-path pools)
 
-(def pools (atom [(spidereenest/construct 23 @creep-path)
-                  (spawnlingpool/construct 8 @creep-path)
-                  (splitterpool/construct 12 @creep-path)
-                  (roachernest/construct 3 @creep-path)]))
-
-(level/load-level levels/level-1 creep-path)
+(.log js/console "Pools" (clj->js @pools))
 
 (def mouse-pos (atom nil))
 

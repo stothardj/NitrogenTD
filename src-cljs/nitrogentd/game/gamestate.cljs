@@ -39,10 +39,15 @@
   (let [now (system-time)]
     (set! time (- now @total-paused))))
 
+;; If start-time is undefined then time is reported to have passed to
+;; get various things moving. Otherwise need to set time before constructing
+;; things
 (defn time-passed?
   "Returns true if duration time has passed since start-time. Duration in milliseconds."
   [start-time duration]
-  (< (+ start-time duration) time))
+  (if start-time
+    (< (+ start-time duration) time)
+    true))
 
 (defn pause-time []
   "Pause game time. Make it so time appears not to be passing. Idempotent."
