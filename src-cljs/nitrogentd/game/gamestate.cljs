@@ -16,8 +16,11 @@
 ;;
 ;; Note that this is meant to be game time, not wall time, and so will lie.
 ;; For example when the game has been paused it will make it seem that no
-;; time actually passed. Time is guarenteed never to go backwards.
-(def ^:dynamic time)
+;; time actually passed. Time is guarenteed never to go backwards. Time starts
+;; at zero to avoid potentially funny things happening with undefined time for
+;; objects created before tick is called. This includes tests and pools. system-time
+;; cannot (and should not) be retrieved for tests.
+(def ^:dynamic time 0)
 
 (defn- system-time []
   (.getTime (js/Date.)))
@@ -39,15 +42,10 @@
   (let [now (system-time)]
     (set! time (- now @total-paused))))
 
-;; If start-time is undefined then time is reported to have passed to
-;; get various things moving. Otherwise need to set time before constructing
-;; things
 (defn time-passed?
   "Returns true if duration time has passed since start-time. Duration in milliseconds."
   [start-time duration]
-  (if start-time
-    (< (+ start-time duration) time)
-    true))
+  (< (+ start-time duration) time))
 
 (defn pause-time []
   "Pause game time. Make it so time appears not to be passing. Idempotent."

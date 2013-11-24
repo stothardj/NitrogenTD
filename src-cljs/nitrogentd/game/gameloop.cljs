@@ -39,13 +39,13 @@
   (levelinfo/LevelInfo. [levels/level-1] (:waves levels/level-1)))
 
 ;; Shared between gameloop and event handlers
-(def ^:private creep-path (atom))
+(def ^:private paths (atom))
 (def ^:private pools (atom))
 (def ^:private towers (atom []))
 (def ^:private creeps (atom []))
 (def ^:private animations (atom []))
 (def ^:private level-info (atom starting-level-info))
-(levelinfo/load @level-info creep-path pools)
+(levelinfo/load @level-info paths pools)
 
 (def mouse-pos (atom nil))
 
@@ -95,13 +95,14 @@
       (if new-info
         (reset! level-info new-info)
         (reset! level-info starting-level-info))
-      (levelinfo/load @level-info creep-path pools))))
+      (levelinfo/load @level-info paths pools))))
 
 (defn game-loop []
   (gamestate/tick)
   (check-end-wave)
   (drawing/clear-canvas)
-  (drawing/draw-creep-path @creep-path)
+  (doseq [path @paths]
+    (drawing/draw-creep-path path))
   (doseq [tower @towers]
     (tower/draw tower))
   (doseq [creep @creeps]
@@ -151,12 +152,15 @@
   (unlisten! (by-id "pause"))
   (run-game))
 
+(defn on-creep-path? [x y path]
+  (line/point-on-thick-path? [x y] path 50))
+
 (defn register-events [handle]
   "Register all event listeners for during gameplay"
   (listen! (by-id "game") :click
            (fn [ev]
              (let [[x y] (relative-mouse-pos ev)]
-               (when-not (line/point-on-thick-path? [x y] @creep-path 50)
+               (when (not-any? (partial on-creep-path? x y) @paths)
                  (swap! towers (partial cons (construct-tower x y)))))))
 
   (listen! (by-id "game") :mousemove

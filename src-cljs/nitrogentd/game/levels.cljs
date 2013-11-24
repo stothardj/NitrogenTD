@@ -5,5 +5,5 @@
 
 (def level-1 (map->Level
               {:name "Intro"
-               :path paths/path-1
+               :paths [paths/path-1a paths/path-1b]
                :waves [waves/wave-1-1 waves/wave-1-2 waves/wave-1-3]}))
