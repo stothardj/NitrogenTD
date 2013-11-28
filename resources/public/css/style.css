@@ -35,6 +35,16 @@ body {
     margin-right: auto;
 }
 #pause {
-    width: 200px;
     height: 50px;
+}
+#selected-info {
+    border: 1px solid grey;
+    padding: 5px;
+}
+
+.right-item {
+    float: right;
+    clear: right;
+    margin: 5px;
+    width: 200px;
 }

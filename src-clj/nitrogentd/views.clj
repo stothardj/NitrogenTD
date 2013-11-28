@@ -44,9 +44,17 @@
       [:div#center-container
        [:canvas#game {:width "800" :height "600"}]]
       [:div#right-container
-       [:button#pause.btn.btn-default "Pause"]
-       (game-radio-buttons "Build" "Laser Tower" "Charge Tower" "Concussive Tower")]]]
+       [:button#pause.btn.btn-default.right-item {:data-toggle "button"} "Pause"]
+       [:div.btn-group-vertical.right-item {:data-toggle "buttons"}
+        [:label#laser-tower.btn.btn-default.active [:input {:name "towers" :type "radio"} "Laser Tower"]]
+        [:label#charge-tower.btn.btn-default [:input {:name "towers" :type "radio"} "Charge Tower"]]
+        [:label#concussive-tower.btn.btn-default [:input {:name "towers" :type "radio"} "Concussive Tower"]]
+        ]
+       [:div#selected-info.right-item "Laser tower is awesome"]]]]
+    ;; The game does not use jquery but it's required for the bootstrap plugins
+    [:script {:src "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}]
     (include-js "/js/bootstrap.min.js")
+    [:script "$('.btn-group').button()"]
     (include-js "/js/main-debug.js")
     ]))
 

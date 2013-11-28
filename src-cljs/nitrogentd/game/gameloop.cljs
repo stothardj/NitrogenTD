@@ -69,24 +69,24 @@
         :pools new-pools}))
    {} v))
 
-(defn- selected-radio [& choices]
-  "Returns selected radio button id if any selected"
-  (some (comp d/value by-id) choices))
+(defn- selected-button [& choices]
+  "Returns selected button id if any selected"
+  (first (filter #(d/has-class? (by-id %) "active") choices)))
 
-(defn selected-tower [] (selected-radio "Laser Tower" "Charge Tower" "Concussive Tower"))
+(defn selected-tower [] (selected-button "laser-tower" "charge-tower" "concussive-tower"))
 
 (defn construct-tower [x y]
   (case (selected-tower)
-    "Laser Tower" (lasertower/construct x y)
-    "Charge Tower" (chargetower/construct x y)
-    "Concussive Tower" (concussivetower/construct x y)
+    "laser-tower" (lasertower/construct x y)
+    "charge-tower" (chargetower/construct x y)
+    "concussive-tower" (concussivetower/construct x y)
     nil))
 
 (defn show-preview [x y]
   (case (selected-tower)
-    "Laser Tower" (lasertower/preview x y)
-    "Charge Tower" (chargetower/preview x y)
-    "Concussive Tower" (concussivetower/preview x y)
+    "laser-tower" (lasertower/preview x y)
+    "charge-tower" (chargetower/preview x y)
+    "concussive-tower" (concussivetower/preview x y)
     nil))
 
 (defn check-end-wave []
