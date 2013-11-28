@@ -50,7 +50,7 @@
         [:label#charge-tower.btn.btn-default [:input {:name "towers" :type "radio"} "Charge Tower"]]
         [:label#concussive-tower.btn.btn-default [:input {:name "towers" :type "radio"} "Concussive Tower"]]
         ]
-       [:div#selected-info.right-item "Laser tower is awesome"]]]]
+       [:div#selected-info.right-item "Fires 3 weak lasers at a time. Short range."]]]]
     ;; The game does not use jquery but it's required for the bootstrap plugins
     [:script {:src "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}]
     (include-js "/js/bootstrap.min.js")

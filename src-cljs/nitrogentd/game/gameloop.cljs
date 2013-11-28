@@ -154,6 +154,9 @@
 (defn on-creep-path? [x y path]
   (line/point-on-thick-path? [x y] path 50))
 
+(defn update-info [desc]
+  (set-text! (by-id "selected-info") desc))
+
 (defn register-events [handle]
   "Register all event listeners for during gameplay"
   (listen! (by-id "game") :click
@@ -167,7 +170,13 @@
              (let [p (relative-mouse-pos ev)]
                (reset! mouse-pos p))))
   (listen! (by-id "pause") :click
-           (fn [ev] (toggle-pause (create-pause-action handle) unpause-action))))
+           (fn [ev] (toggle-pause (create-pause-action handle) unpause-action)))
+  (listen! (by-id "laser-tower") :click
+           #(update-info "Fires 3 weak lasers at a time. Short range."))
+  (listen! (by-id "charge-tower") :click
+           #(update-info "Fires one powerful shot. Long range."))
+  (listen! (by-id "concussive-tower") :click
+           #(update-info "Slows creep. Area of effect.")))
 
 (defn run-game []
   (let [handle (util/crashingInterval game-loop 40)]
