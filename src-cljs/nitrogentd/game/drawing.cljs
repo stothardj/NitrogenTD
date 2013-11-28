@@ -36,13 +36,13 @@
      (.translate ctx (- x) (- y)))
   )
 
-(defn draw-creep-path
-  [path]
-  (draw-path path)
-  (set! (.-strokeStyle ctx) "rgb(255,255,255)")
-  (set! (.-lineWidth ctx) 50)
-  (.stroke ctx)
-  (set! (.-strokeStyle ctx) "rgb(20,20,50)")
-  (set! (.-lineWidth ctx) 45)
-  (.stroke ctx)
-  )
+(defn draw-creep-paths
+  [paths]
+  (doseq [path paths]  (draw-path path)
+         (set! (.-strokeStyle ctx) "rgb(255,255,255)")
+         (set! (.-lineWidth ctx) 50)
+         (.stroke ctx))  
+  (doseq [path paths]  (draw-path path)
+         (set! (.-strokeStyle ctx) "rgb(20,20,50)")
+         (set! (.-lineWidth ctx) 45)
+         (.stroke ctx)))

@@ -101,8 +101,7 @@
   (gamestate/tick)
   (check-end-wave)
   (drawing/clear-canvas)
-  (doseq [path @paths]
-    (drawing/draw-creep-path path))
+  (drawing/draw-creep-paths @paths)
   (doseq [tower @towers]
     (tower/draw tower))
   (doseq [creep @creeps]
