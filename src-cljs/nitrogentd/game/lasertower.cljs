@@ -16,9 +16,9 @@
             {:cost 100
              :attack-range 40
              :attack-cooldown 1000
+             :max-targets 3
              :description "Fires 3 weak lasers at a time. Short range."}))
 
-(def max-targets 3)
 (def min-force 200)
 (def max-force 400)
 
@@ -37,7 +37,7 @@
 
 (defn choose-targets [tower creeps]
   "Split creeps on whether they should be attacked. Returns [attacked safe]."
-  (t/choose-targets tower in-attack-range? shuffle max-targets creeps))
+  (t/choose-targets tower in-attack-range? shuffle (:max-targets stats) creeps))
 
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"

@@ -16,9 +16,9 @@
             {:cost 100
              :attack-range 100
              :attack-cooldown 2500
+             :max-targets 1
              :description "Fires one powerful shot. Long range."}))
 
-(def max-targets 1)
 (def min-force 600)
 (def max-force 1400)
 
@@ -67,7 +67,7 @@
     (if-not (time-passed? cooldown-start (:attack-cooldown stats))
       {:creeps creeps :tower this}
       (let [[attacked safe] (tower/choose-targets this in-attack-range?
-                                                  shuffle max-targets creeps)
+                                                  shuffle (:max-targets stats) creeps)
             attacked-map (->> attacked
                               (map (partial attack-creep this))
                               (apply map-merge))]

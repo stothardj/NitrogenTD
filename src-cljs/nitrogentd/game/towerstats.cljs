@@ -8,9 +8,13 @@
   [stats]
   [:div.stat-surround
    [:table.stats-table
-    [:tr [:th "Cost"] [:td.stats-data (:cost stats)]]
-    [:tr [:th "Range"] [:td.stats-data (:attack-range stats)]]
-    [:tr [:th "Cooldown"] [:td.stats-data (:attack-cooldown stats)]]
+    (for [[s k] [["Cost" :cost]
+                 ["Range" :attack-range]
+                 ["Max Targets" :max-targets]
+                 ["Cooldown" :attack-cooldown]]
+          :let [val (k stats)]
+          :when val]
+      [:tr [:th s] [:td.stats-data val]])
     [:tr [:td (:description stats)]]]])
 
 (defn show
