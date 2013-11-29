@@ -12,24 +12,6 @@
      [:a.navbar-brand {:href "#"} "NitrogenTD"]]
     [:ul.nav.navbar-nav
      [:li [:a {:href "#"} "Game"]]]]])
-
-(defn- game-radio-buttons [header & options]
-  (list
-   [:h3 header]
-   (when options
-     (letfn [(first-option [option]
-               [:label.radio
-                [:input {:type "radio" :name header :value option :id option :checked true}]
-                option])
-             (rest-options [option]
-               [:label.radio
-                [:input {:type "radio" :name header :value option :id option}]
-                option])]
-       (let [[f & r] options]
-         [:form {:id (str "menu-" header) :action ""}]
-         (cons
-          (first-option f)
-          (map rest-options r)))))))
         
 (defn index-page []
   (html5
@@ -44,13 +26,15 @@
       [:div#center-container
        [:canvas#game {:width "800" :height "600"}]]
       [:div#right-container
+       [:div#player-stats.right-item.thumbnail
+        [:table.stats-table
+         [:tr [:th "Gold"] [:td.stats-data "600"]]]]
        [:button#pause.btn.btn-default.right-item {:data-toggle "button"} "Pause"]
        [:div.btn-group-vertical.right-item {:data-toggle "buttons"}
         [:label#laser-tower.btn.btn-default.active [:input {:name "towers" :type "radio"} "Laser Tower"]]
         [:label#charge-tower.btn.btn-default [:input {:name "towers" :type "radio"} "Charge Tower"]]
-        [:label#concussive-tower.btn.btn-default [:input {:name "towers" :type "radio"} "Concussive Tower"]]
-        ]
-       [:div#selected-info.right-item "Fires 3 weak lasers at a time. Short range."]]]]
+        [:label#concussive-tower.btn.btn-default [:input {:name "towers" :type "radio"} "Concussive Tower"]]]
+       [:div#selected-info.right-item.thumbnail "Fires 3 weak lasers at a time. Short range."]]]]
     ;; The game does not use jquery but it's required for the bootstrap plugins
     [:script {:src "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}]
     (include-js "/js/bootstrap.min.js")

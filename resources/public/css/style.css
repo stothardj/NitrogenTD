@@ -37,9 +37,8 @@ body {
 #pause {
     height: 50px;
 }
-#selected-info {
-    border: 1px solid grey;
-    padding: 5px;
+#player-stats {
+    padding: 15px;
 }
 
 .right-item {
@@ -47,4 +46,10 @@ body {
     clear: right;
     margin: 5px;
     width: 200px;
+}
+.stats-table {
+    width: 100%
+}
+.stats-data {
+    text-align: right;
 }
