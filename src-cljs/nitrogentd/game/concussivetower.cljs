@@ -4,11 +4,14 @@
         [nitrogentd.game.slow :only [Slow]]
         [nitrogentd.game.quakeanimation :only [QuakeAnimation]]
         [nitrogentd.game.gamestate :only [time time-passed?]]
-        [nitrogentd.game.drawing :only [ctx]])
+        [nitrogentd.game.drawing :only [ctx]]
+        [nitrogentd.game.towerstats :only [map->TowerStats]])
   (:require [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.util :as util]
             [nitrogentd.game.creep :as creep]
             [nitrogentd.game.tower :as t]))
+
+(def stats (map->TowerStats {:cost 100}))
 
 (def attack-range 65)
 (def attack-cooldown 2000)

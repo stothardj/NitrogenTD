@@ -50,3 +50,14 @@
         invalid-creep (remove valid-for-tower? creeps)
         [attacked safe] (split-at max-targets (prioritize valid-creep))]
     [attacked (concat safe invalid-creep)]))
+
+(defn pay-for-tower
+  "Attempts to pay for the tower.
+   Returns
+   {:player new-player
+    :tower (optional) new tower if sucessfully paid for}"
+  [player cost construct]
+  (if (< (:gold player) cost)
+    {:player player}
+    {:player (assoc player :gold (- (:gold player) cost))
+     :tower (construct)}))

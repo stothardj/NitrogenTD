@@ -4,15 +4,15 @@
         [nitrogentd.game.point :only [Point]]
         [nitrogentd.game.laseranimation :only [LaserAnimation]]
         [nitrogentd.game.gamestate :only [time time-passed?]]
-        )
+        [nitrogentd.game.towerstats :only [map->TowerStats]])
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.point :as point]
             [nitrogentd.game.line :as line]
             [nitrogentd.game.creep :as creep]
-            [nitrogentd.game.tower :as t]
-            )
-  )
+            [nitrogentd.game.tower :as t]))
+
+(def stats (map->TowerStats {:cost 100}))
 
 (def attack-range 40)
 (def attack-cooldown 1000)

@@ -19,6 +19,7 @@
             [nitrogentd.game.waves :as waves]
             [nitrogentd.game.levelinfo :as levelinfo]
 
+            [nitrogentd.game.player :as player]
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.creep :as creep]
             [nitrogentd.game.tower :as tower]
@@ -47,6 +48,7 @@
 (def ^:private level-info (atom starting-level-info))
 (levelinfo/load @level-info paths pools)
 
+(def ^:private player (atom (player/construct)))
 (def mouse-pos (atom nil))
 
 (defn relative-mouse-pos
@@ -76,11 +78,21 @@
 (defn selected-tower [] (selected-button "laser-tower" "charge-tower" "concussive-tower"))
 
 (defn construct-tower [x y]
-  (case (selected-tower)
-    "laser-tower" (lasertower/construct x y)
-    "charge-tower" (chargetower/construct x y)
-    "concussive-tower" (concussivetower/construct x y)
-    nil))
+  "Attempts to construct a tower based on the tower selected in the UI. Returns nil if new
+   tower could not be afforded"
+  (let [construct-cost (case (selected-tower)
+                          "laser-tower" [#(lasertower/construct x y)
+                                         (:cost lasertower/stats)]
+                          "charge-tower" [#(chargetower/construct x y)
+                                          (:cost chargetower/stats)]
+                          "concussive-tower" [#(concussivetower/construct x y)
+                                              (:cost concussivetower/stats)]
+                          nil)]
+    (when construct-cost
+      (let [[cnstr cst] construct-cost
+            {new-player :player new-tower :tower} (tower/pay-for-tower @player cst cnstr)]
+        (reset! player new-player)
+        new-tower))))
 
 (defn show-preview [x y]
   (case (selected-tower)
@@ -163,7 +175,10 @@
            (fn [ev]
              (let [[x y] (relative-mouse-pos ev)]
                (when (not-any? (partial on-creep-path? x y) @paths)
-                 (swap! towers (partial cons (construct-tower x y)))))))
+                 (swap! towers (let [new-tower (construct-tower x y)]
+                                 (if new-tower
+                                   (partial cons new-tower)
+                                   identity)))))))
 
   (listen! (by-id "game") :mousemove
            (fn [ev]
