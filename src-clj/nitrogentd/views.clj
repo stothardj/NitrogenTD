@@ -26,9 +26,10 @@
       [:div#center-container
        [:canvas#game {:width "800" :height "600"}]]
       [:div#right-container
-       [:div#player-stats.right-item.thumbnail.stat-surround
-        [:table.stats-table
-         [:tr [:th "Gold"] [:td#gold-stat.stats-data "600"]]]]
+       [:div#player-stats.right-item.thumbnail
+        [:div.stat-surround
+         [:table.stats-table
+          [:tr [:th "Gold"] [:td#gold-stat.stats-data "600"]]]]]
        [:button#pause.btn.btn-default.right-item {:data-toggle "button"} "Pause"]
        [:div.btn-group-vertical.right-item {:data-toggle "buttons"}
         [:label#laser-tower.btn.btn-default.active [:input {:name "towers" :type "radio"} "Laser Tower"]]
