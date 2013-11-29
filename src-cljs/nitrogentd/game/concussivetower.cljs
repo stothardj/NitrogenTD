@@ -11,17 +11,17 @@
             [nitrogentd.game.creep :as creep]
             [nitrogentd.game.tower :as t]))
 
-(def stats (map->TowerStats {:cost 100}))
-
-(def attack-range 65)
-(def attack-cooldown 2000)
+(def stats (map->TowerStats
+            {:cost 100
+             :attack-range 65
+             :attack-cooldown 2000}))
 
 (def ^:private map-merge (partial merge-with concat))
-(def in-attack-range? (partial t/in-range? attack-range))
+(def in-attack-range? (partial t/in-range? (:attack-range stats)))
 
 (defn preview [x y]
   (.beginPath ctx)
-  (.arc ctx x y attack-range 0 (* 2 Math/PI) false)
+  (.arc ctx x y (:attack-range stats) 0 (* 2 Math/PI) false)
   (.closePath ctx)
   (set! (.-strokeStyle ctx) "rgb(255,200,0)")
   (set! (.-lineWidth ctx) 2)
@@ -52,7 +52,7 @@
                        (.closePath ctx)
                        (.fill ctx)) x y))
   (attack [this creeps]
-    (if-not (time-passed? cooldown-start attack-cooldown)
+    (if-not (time-passed? cooldown-start (:attack-cooldown stats))
       {:creeps creeps :tower this}
       (let [[attacked safe] (choose-targets this creeps)
             attacked-map (->> attacked
@@ -60,7 +60,7 @@
                               (apply map-merge))]
         (assoc (map-merge attacked-map
                           {:creeps safe
-                           :animations [(QuakeAnimation. time x y attack-range)]})
+                           :animations [(QuakeAnimation. time x y (:attack-range stats))]})
           :tower (ConcussiveTower. x y time)))))
   Point
   (get-point [this] [x y]))

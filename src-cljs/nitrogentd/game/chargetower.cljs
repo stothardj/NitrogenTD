@@ -12,16 +12,17 @@
             [nitrogentd.game.tower :as tower]
             [nitrogentd.game.util :as util]))
 
-(def stats (map->TowerStats {:cost 100}))
+(def stats (map->TowerStats
+            {:cost 100
+             :attack-range 100
+             :attack-cooldown 2500}))
 
-(def attack-range 100)
-(def attack-cooldown 2500)
 (def max-targets 1)
 (def min-force 600)
 (def max-force 1400)
 
 (def ^:private map-merge (partial merge-with concat))
-(def ^:private in-attack-range? (partial tower/in-range? attack-range))
+(def ^:private in-attack-range? (partial tower/in-range? (:attack-range stats)))
 
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
@@ -33,7 +34,7 @@
 
 (defn preview [x y]
   (.beginPath ctx)
-  (.arc ctx x y attack-range 0 (* 2 Math/PI) false)
+  (.arc ctx x y (:attack-range stats) 0 (* 2 Math/PI) false)
   (.closePath ctx)
   (set! (.-strokeStyle ctx) "rgb(0,200,255)")
   (set! (.-lineWidth ctx) 2)
@@ -62,7 +63,7 @@
                      x y)
     )
   (attack [this creeps]
-    (if-not (time-passed? cooldown-start attack-cooldown)
+    (if-not (time-passed? cooldown-start (:attack-cooldown stats))
       {:creeps creeps :tower this}
       (let [[attacked safe] (tower/choose-targets this in-attack-range?
                                                   shuffle max-targets creeps)

@@ -1,3 +1,3 @@
 (ns nitrogentd.game.towerstats)
 
-(defrecord TowerStats [cost])
+(defrecord TowerStats [cost attack-range attack-cooldown])
