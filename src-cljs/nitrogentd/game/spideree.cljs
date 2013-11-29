@@ -23,9 +23,9 @@
 (defrecord Spideree [x y health path spawn-time status-effects]
   Creep
   (draw [this]
-    (set! (.-fillStyle ctx) "rgba(255, 0, 0, 0.3)")
+    (set! (.-fillStyle ctx) "rgba(255, 100, 0, 0.7)")
     (set! (.-lineWidth ctx) 2)
-    (set! (.-strokeStyle ctx) "rgba(255, 0, 0, 0.3)")
+    (set! (.-strokeStyle ctx) "rgba(255, 100, 0, 0.7)")
     (drawing/draw-at (fn []
                        (let [body (- (Math/sin (/ time 70)) 4)
                              llegx (* 2 (inc (Math/sin (/ time 65))))

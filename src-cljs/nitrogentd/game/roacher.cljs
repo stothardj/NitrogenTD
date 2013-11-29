@@ -19,9 +19,9 @@
 (deftype Roacher [x y health path facing status-effects]
   Creep
   (draw [this]
-    (set! (.-fillStyle ctx) "rgba(0, 200, 0, 0.3)")
+    (set! (.-fillStyle ctx) "rgba(0, 200, 0, 0.7)")
     (set! (.-lineWidth ctx) 2)
-    (set! (.-strokeStyle ctx) "rgba(0, 200, 0, 0.3)")
+    (set! (.-strokeStyle ctx) "rgba(0, 200, 0, 0.7)")
     (let [fleg (+ (* 3 (Math/sin (/ time 100))) 4)
           bleg (- (* 3 (Math/cos (/ time 100))) 4)]
       (drawing/draw-at (fn []

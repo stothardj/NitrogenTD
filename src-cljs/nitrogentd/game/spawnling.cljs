@@ -18,7 +18,7 @@
 (defrecord Spawnling [x y health path status-effects]
   Creep
   (draw [this]
-    (set! (.-fillStyle ctx) "rgba(255, 0, 255, 0.3)")
+    (set! (.-fillStyle ctx) "rgba(255, 0, 255, 0.7)")
     (let [t (util/to-radians (mod (/ time 3) 360))
           u (* 4 (Math/sin t))
           w (* 2 u) ;; pun
