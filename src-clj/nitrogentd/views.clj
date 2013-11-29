@@ -26,7 +26,7 @@
       [:div#center-container
        [:canvas#game {:width "800" :height "600"}]]
       [:div#right-container
-       [:div#player-stats.right-item.thumbnail
+       [:div#player-stats.right-item.thumbnail.stat-surround
         [:table.stats-table
          [:tr [:th "Gold"] [:td#gold-stat.stats-data "600"]]]]
        [:button#pause.btn.btn-default.right-item {:data-toggle "button"} "Pause"]
@@ -34,7 +34,7 @@
         [:label#laser-tower.btn.btn-default.active [:input {:name "towers" :type "radio"} "Laser Tower"]]
         [:label#charge-tower.btn.btn-default [:input {:name "towers" :type "radio"} "Charge Tower"]]
         [:label#concussive-tower.btn.btn-default [:input {:name "towers" :type "radio"} "Concussive Tower"]]]
-       [:div#selected-info.right-item.thumbnail "Fires 3 weak lasers at a time. Short range."]]]]
+       [:div#selected-info.right-item.thumbnail]]]]
     ;; The game does not use jquery but it's required for the bootstrap plugins
     [:script {:src "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}]
     (include-js "/js/bootstrap.min.js")

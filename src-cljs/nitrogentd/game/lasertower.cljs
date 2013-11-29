@@ -15,7 +15,8 @@
 (def stats (map->TowerStats
             {:cost 100
              :attack-range 40
-             :attack-cooldown 1000}))
+             :attack-cooldown 1000
+             :description "Fires 3 weak lasers at a time. Short range."}))
 
 (def max-targets 3)
 (def min-force 200)

@@ -32,6 +32,7 @@
             [nitrogentd.game.lasertower :as lasertower]
             [nitrogentd.game.chargetower :as chargetower]
             [nitrogentd.game.concussivetower :as concussivetower]
+            [nitrogentd.game.towerstats :as towerstats]
             [goog.dom.forms :as forms]
             [domina :as d]))
 
@@ -167,8 +168,10 @@
 (defn on-creep-path? [x y path]
   (line/point-on-thick-path? [x y] path 50))
 
-(defn update-info [desc]
-  (set-text! (by-id "selected-info") desc))
+(defn update-info [info]
+  (let [selected-info (by-id "selected-info")]
+    (d/destroy-children! selected-info)
+    (d/append! (by-id "selected-info") info)))
 
 (defn register-events [handle]
   "Register all event listeners for during gameplay"
@@ -188,11 +191,13 @@
   (listen! (by-id "pause") :click
            (fn [ev] (toggle-pause (create-pause-action handle) unpause-action)))
   (listen! (by-id "laser-tower") :click
-           #(update-info "Fires 3 weak lasers at a time. Short range."))
+           #(update-info (towerstats/show lasertower/stats)))
   (listen! (by-id "charge-tower") :click
-           #(update-info "Fires one powerful shot. Long range."))
+           #(update-info (towerstats/show chargetower/stats)))
   (listen! (by-id "concussive-tower") :click
-           #(update-info "Slows creep. Area of effect.")))
+           #(update-info (towerstats/show concussivetower/stats))))
+
+(update-info (towerstats/show lasertower/stats))
 
 (defn run-game []
   (let [handle (util/crashingInterval game-loop 40)]

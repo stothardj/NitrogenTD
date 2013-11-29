@@ -37,15 +37,15 @@ body {
 #pause {
     height: 50px;
 }
-#player-stats {
-    padding: 15px;
-}
 
 .right-item {
     float: right;
     clear: right;
     margin: 5px;
     width: 200px;
+}
+.stat-surround {
+    padding: 15px;
 }
 .stats-table {
     width: 100%

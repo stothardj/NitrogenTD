@@ -8,6 +8,8 @@
                  [org.clojure/clojurescript "0.0-1843"]
                  [compojure "1.1.5"]
                  [hiccup "1.0.3"]
+                 [crate "0.2.4"]
+                 ;; [prismatic/dommy "0.1.1"]
                  [com.cemerick/clojurescript.test "0.0.4"]
                  [org.clojure/google-closure-library-third-party "0.0-2029"]
                  [domina "1.0.1"]]

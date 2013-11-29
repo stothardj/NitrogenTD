@@ -15,7 +15,8 @@
 (def stats (map->TowerStats
             {:cost 100
              :attack-range 100
-             :attack-cooldown 2500}))
+             :attack-cooldown 2500
+             :description "Fires one powerful shot. Long range."}))
 
 (def max-targets 1)
 (def min-force 600)

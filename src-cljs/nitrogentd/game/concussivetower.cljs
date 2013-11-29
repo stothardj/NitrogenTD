@@ -14,7 +14,8 @@
 (def stats (map->TowerStats
             {:cost 100
              :attack-range 65
-             :attack-cooldown 2000}))
+             :attack-cooldown 2000
+             :description "Slows creep. Area of effect."}))
 
 (def ^:private map-merge (partial merge-with concat))
 (def in-attack-range? (partial t/in-range? (:attack-range stats)))
