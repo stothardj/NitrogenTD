@@ -28,7 +28,7 @@
       [:div#right-container
        [:div#player-stats.right-item.thumbnail
         [:table.stats-table
-         [:tr [:th "Gold"] [:td.stats-data "600"]]]]
+         [:tr [:th "Gold"] [:td#gold-stat.stats-data "600"]]]]
        [:button#pause.btn.btn-default.right-item {:data-toggle "button"} "Pause"]
        [:div.btn-group-vertical.right-item {:data-toggle "buttons"}
         [:label#laser-tower.btn.btn-default.active [:input {:name "towers" :type "radio"} "Laser Tower"]]

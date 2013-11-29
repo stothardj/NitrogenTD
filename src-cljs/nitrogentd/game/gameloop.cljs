@@ -92,6 +92,7 @@
       (let [[cnstr cst] construct-cost
             {new-player :player new-tower :tower} (tower/pay-for-tower @player cst cnstr)]
         (reset! player new-player)
+        (set-text! (by-id "gold-stat") (:gold @player))
         new-tower))))
 
 (defn show-preview [x y]
