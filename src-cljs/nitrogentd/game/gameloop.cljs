@@ -128,7 +128,7 @@
   (swap! creeps
          #(->> %
                (map creep/move)
-               (filter (complement nil?))))
+               (remove nil?)))
 
   (let [{na :animations
          nc :creeps
