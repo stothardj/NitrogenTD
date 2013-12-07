@@ -4,6 +4,9 @@
 
 (defrecord TowerStats [cost attack-range attack-cooldown])
 
+(defn format-time [ms]
+  (str (/ ms 1000) "s"))
+
 (defpartial tower-stat-table
   [stats]
   [:div.stat-surround
@@ -11,7 +14,7 @@
     (for [[s k] [["Cost" :cost]
                  ["Range" :attack-range]
                  ["Max Targets" :max-targets]
-                 ["Cooldown" :attack-cooldown]]
+                 ["Cooldown" (comp format-time :attack-cooldown)]]
           :let [val (k stats)]
           :when val]
       [:tr [:th s] [:td.stats-data val]])

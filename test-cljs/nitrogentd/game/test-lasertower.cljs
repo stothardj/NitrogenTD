@@ -14,7 +14,7 @@
 
 ;; Otherwise change other tests too
 (deftest max-targets
-  (is (= 3 l/max-targets)))
+  (is (= 3 (:max-targets l/stats))))
 
 (deftest in-attack-range
   (is (l/in-attack-range?
@@ -22,7 +22,7 @@
        (simple-creep 0 0)))
   (is (let [cx    5
             cy    7
-            tx    (+ cx l/attack-range -1)
+            tx    (+ cx (:attack-range l/stats) -1)
             ty    cy
             tower (l/construct tx ty)
             creep (simple-creep cx cy)
@@ -46,18 +46,18 @@
         creeps [(simple-creep 0 0)
                 (simple-creep 1 0)
                 (simple-creep 0 1)
-                (simple-creep l/attack-range 1)]
+                (simple-creep (:attack-range l/stats) 1)]
         valid-creeps [(simple-creep 0 0)
                       (simple-creep 1 0)
                       (simple-creep 0 1)]
-        invalid-creeps [(simple-creep l/attack-range 1)]
+        invalid-creeps [(simple-creep (:attack-range l/stats) 1)]
         [attacked safe] (l/choose-targets tower creeps)]
     (is (eq-any-order? attacked valid-creeps))
     (is (eq-any-order? safe invalid-creeps)))
   (let [tower (l/construct 0 0)
-        creeps (repeat (+ l/max-targets 7) (simple-creep 0 0))
+        creeps (repeat (+ (:max-targets l/stats) 7) (simple-creep 0 0))
         [attacked safe] (l/choose-targets tower creeps)]
-    (is (= l/max-targets (count attacked)))
+    (is (= (:max-targets l/stats) (count attacked)))
     (is (= 7 (count safe)))))
 
 (deftest attack-creep
