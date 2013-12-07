@@ -16,11 +16,9 @@
             {:cost 100
              :attack-range 40
              :attack-cooldown 1000
+             :force {:min 200 :max 400}
              :max-targets 3
              :description "Fires 3 weak lasers at a time. Short range."}))
-
-(def min-force 200)
-(def max-force 400)
 
 (def ^:private map-merge (partial merge-with concat))
 (def in-attack-range? (partial t/in-range? (:attack-range stats)))
@@ -42,7 +40,8 @@
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
   [tower creep]
-  (let [force (util/rand-between min-force max-force)]
+  (let [force-range (:force stats)
+        force (util/rand-between (:min force-range) (:max force-range))]
     (map-merge
      (creep/damage creep force)
      {:animations [(LaserAnimation. time tower creep)]})))

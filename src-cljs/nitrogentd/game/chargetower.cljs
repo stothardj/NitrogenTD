@@ -16,11 +16,9 @@
             {:cost 100
              :attack-range 100
              :attack-cooldown 2500
+             :force {:min 600 :max 1400}
              :max-targets 1
              :description "Fires one powerful shot. Long range."}))
-
-(def min-force 600)
-(def max-force 1400)
 
 (def ^:private map-merge (partial merge-with concat))
 (def ^:private in-attack-range? (partial tower/in-range? (:attack-range stats)))
@@ -28,7 +26,8 @@
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
   [tower creep]
-  (let [force (util/rand-between min-force max-force)]
+  (let [force-range (:force stats)
+        force (util/rand-between (:min force-range) (:max force-range))]
     (map-merge
      (creep/damage creep force)
      {:animations [(ChargeAnimation. time tower creep)]})))
