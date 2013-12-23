@@ -13,7 +13,7 @@
             )
   )
 
-(def stats (map->CreepStats {:health 200 :speed 1}))
+(def stats (map->CreepStats {:health 200 :speed 1 :reward 10}))
 
 (def max-incarnation 3)
 
@@ -36,9 +36,13 @@
       (if (pos? new-health)
         {:creeps [(Splitter. x y new-health path status-effects incarnation)]
          :animations [(NumberAnimation. time force x y)]}
-        (when (< incarnation max-incarnation)
-          {:creeps [(Splitter. (+ x 10) (+ y 10) (:health stats) path [] (inc incarnation))
-                    (Splitter. (- x 10) (- y 10) (:health stats) path [] (inc incarnation))]
+        (let [new-creeps (if (< incarnation max-incarnation)
+                           [(Splitter. (+ x 10) (+ y 10) (:health stats) path []
+                                       (inc incarnation))
+                            (Splitter. (- x 10) (- y 10) (:health stats) path []
+                                       (inc incarnation))]
+                           [])]
+          {:creeps new-creeps
            :animations [(NumberAnimation. time health x y)]}))))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]

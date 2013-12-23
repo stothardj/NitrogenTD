@@ -14,7 +14,7 @@
             )
   )
 
-(def stats (map->CreepStats {:health 2000 :speed 1}))
+(def stats (map->CreepStats {:health 2000 :speed 1 :reward 60}))
 
 (deftype Roacher [x y health path facing status-effects]
   Creep
@@ -50,10 +50,12 @@
         (Roacher. newx newy health new-path new-facing status-effects))))
   (damage [this force]
     (let [new-health (- health force)
-          new-status-effects (statuseffect/add-effect (Fright. time) status-effects)]
-      (when (pos? new-health)
-        {:creeps [(Roacher. x y new-health path facing new-status-effects)]
-         :animations [(NumberAnimation. time force x y)]})))
+          new-status-effects (statuseffect/add-effect (Fright. time) status-effects)
+          new-creeps (if (pos? new-health)
+                       [(Roacher. x y new-health path facing new-status-effects)]
+                       [])]
+      {:creeps new-creeps
+       :animations [(NumberAnimation. time force x y)]}))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Roacher. x y health path facing new-effects)]}))

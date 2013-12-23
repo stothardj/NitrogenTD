@@ -13,7 +13,7 @@
             )
   )
 
-(def stats (map->CreepStats {:health 1000 :speed 1}))
+(def stats (map->CreepStats {:health 1000 :speed 1 :reward 30}))
 
 (defrecord Spawnling [x y health path status-effects]
   Creep
@@ -31,10 +31,12 @@
             {:keys [x y path]} (creep/move-along-path [x y] move-speed 100 path)]
         (Spawnling. x y health path status-effects))))
   (damage [this force]
-    (let [new-health (- health force)]
-      (when (pos? new-health)
-        {:creeps [(Spawnling. x y new-health path status-effects)]
-         :animations [(NumberAnimation. time force x y)]})))
+    (let [new-health (- health force)
+          new-creeps (if (pos? new-health)
+                       [(Spawnling. x y new-health path status-effects)]
+                       [])]
+      {:creeps new-creeps
+       :animations [(NumberAnimation. time force x y)]}))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Spawnling. x y health path new-effects)]}))

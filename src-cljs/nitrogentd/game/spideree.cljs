@@ -13,7 +13,7 @@
             )
   )
 
-(def stats (map->CreepStats {:health 1200 :speed 3}))
+(def stats (map->CreepStats {:health 1200 :speed 3 :reward 45}))
 
 (def max-damage 700)
 
@@ -50,10 +50,12 @@
         (Spideree. x y health path spawn-time status-effects))))
   (damage [this force]
     (let [hit (min force max-damage)
-          new-health (- health hit)]
-      (when (pos? new-health)
-        {:creeps [(Spideree. x y new-health path spawn-time status-effects)]
-         :animations [(NumberAnimation. time hit x y)]})))
+          new-health (- health hit)
+          new-creeps (if (pos? new-health)
+                       [(Spideree. x y new-health path spawn-time status-effects)]
+                       [])]
+      {:creeps new-creeps
+       :animations [(NumberAnimation. time hit x y)]}))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Spideree. x y health path spawn-time new-effects)]}))
