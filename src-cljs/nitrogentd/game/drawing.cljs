@@ -17,7 +17,8 @@
   (let [[x y] (first points)]
     (.moveTo ctx x y))
   (doseq [[x y] (rest points)]
-    (.lineTo ctx x y)))
+    (.lineTo ctx x y))
+  (.stroke ctx))
 
 (defn clear-canvas
   []
@@ -38,11 +39,21 @@
 
 (defn draw-creep-paths
   [paths]
+  (set! (.-strokeStyle ctx) "rgb(255,255,255)")
+  (set! (.-fillStyle ctx) "rgb(255,255,255)")
+  (set! (.-lineWidth ctx) 50)
   (doseq [path paths]  (draw-path path)
-         (set! (.-strokeStyle ctx) "rgb(255,255,255)")
-         (set! (.-lineWidth ctx) 50)
-         (.stroke ctx))  
+         (let [[x y] (last path)]
+           (.beginPath ctx)
+           (.arc ctx x y 57 0 (* 2 Math/PI) false)
+           (.closePath ctx)
+           (.fill ctx)))
+  (set! (.-strokeStyle ctx) "rgb(20,20,50)")
+  (set! (.-fillStyle ctx) "rgb(20,20,50)")
+  (set! (.-lineWidth ctx) 45)
   (doseq [path paths]  (draw-path path)
-         (set! (.-strokeStyle ctx) "rgb(20,20,50)")
-         (set! (.-lineWidth ctx) 45)
-         (.stroke ctx)))
+         (let [[x y] (last path)]
+           (.beginPath ctx)
+           (.arc ctx x y 55 0 (* 2 Math/PI) false)
+           (.closePath ctx)
+           (.fill ctx))))
