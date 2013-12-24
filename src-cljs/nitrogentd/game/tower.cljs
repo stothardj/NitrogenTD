@@ -22,16 +22,13 @@
          c creeps
          animations []
          reward 0]
-    (.log js/console "Loop reward" reward)
     (if-let [tseq (seq unprocessed)]
       (let [[tf & tr] tseq
             {nc :creeps
              nt :tower
              na :animations
              nr :rewards} (attack tf c)
-             _ (.log js/console "nr" (clj->js nr))
-             new-reward (+ reward (apply + nr))
-             _ (.log js/console "new-reward" new-reward)]
+             new-reward (+ reward (apply + nr))]
         (recur tr (conj processed nt) nc (concat animations na) new-reward))
       {:creeps c :towers processed :animations animations :reward reward})))
 
