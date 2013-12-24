@@ -11,6 +11,7 @@
                          Returns a map
                           :animations Optional. Any new animations
                           :creeps Updated creeps. Killed creeps removed.
+                          :rewards Rewards gained from killing creeps.
                           :tower The updated tower to handle charging, cooldown, etc."))
 
 (defn attack-all
@@ -20,14 +21,19 @@
          processed []
          c creeps
          animations []
-         ]
+         reward 0]
+    (.log js/console "Loop reward" reward)
     (if-let [tseq (seq unprocessed)]
       (let [[tf & tr] tseq
             {nc :creeps
              nt :tower
-             na :animations} (attack tf c)]
-        (recur tr (conj processed nt) nc (concat animations na)))
-      {:creeps c :towers processed :animations animations})))
+             na :animations
+             nr :rewards} (attack tf c)
+             _ (.log js/console "nr" (clj->js nr))
+             new-reward (+ reward (apply + nr))
+             _ (.log js/console "new-reward" new-reward)]
+        (recur tr (conj processed nt) nc (concat animations na) new-reward))
+      {:creeps c :towers processed :animations animations :reward reward})))
 
 (defn in-range?
   "Return true if creep with within attack-range of tower"

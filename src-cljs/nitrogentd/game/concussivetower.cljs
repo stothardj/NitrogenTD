@@ -54,7 +54,7 @@
                        (.fill ctx)) x y))
   (attack [this creeps]
     (if-not (time-passed? cooldown-start (:attack-cooldown stats))
-      {:creeps creeps :tower this}
+      {:creeps creeps :tower this :reward 0}
       (let [[attacked safe] (choose-targets this creeps)
             attacked-map (->> attacked
                               (map (partial attack-creep this))

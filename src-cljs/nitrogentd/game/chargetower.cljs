@@ -64,7 +64,7 @@
     )
   (attack [this creeps]
     (if-not (time-passed? cooldown-start (:attack-cooldown stats))
-      {:creeps creeps :tower this}
+      {:creeps creeps :tower this :reward 0}
       (let [[attacked safe] (tower/choose-targets this in-attack-range?
                                                   shuffle (:max-targets stats) creeps)
             attacked-map (->> attacked

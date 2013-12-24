@@ -53,9 +53,11 @@
           new-health (- health hit)
           new-creeps (if (pos? new-health)
                        [(Spideree. x y new-health path spawn-time status-effects)]
-                       [])]
+                       [])
+          new-reward (if (pos? new-health) 0 (:reward stats))]
       {:creeps new-creeps
-       :animations [(NumberAnimation. time hit x y)]}))
+       :animations [(NumberAnimation. time hit x y)]
+       :rewards [new-reward]}))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Spideree. x y health path spawn-time new-effects)]}))

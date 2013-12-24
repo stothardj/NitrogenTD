@@ -34,9 +34,11 @@
     (let [new-health (- health force)
           new-creeps (if (pos? new-health)
                        [(Spawnling. x y new-health path status-effects)]
-                       [])]
+                       [])
+          new-reward (if (pos? new-health) 0 (:reward stats))]
       {:creeps new-creeps
-       :animations [(NumberAnimation. time force x y)]}))
+       :animations [(NumberAnimation. time force x y)]
+       :rewards [new-reward]}))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Spawnling. x y health path new-effects)]}))

@@ -10,7 +10,8 @@
                         The type of creep, status effects, etc. could also play a roll.
                         Returns
                           {:creeps [new creeps]
-                           :animations [new animations]}")
+                           :animations [new animations]
+                           :rewards [new rewards (for now just a number for gold}")
   (add-effect [this effect] "Attempts to add status effect to creep.
                              Not guarenteed to be added because creep could have certain
                              immunities or the effect may not be allowed to stack.

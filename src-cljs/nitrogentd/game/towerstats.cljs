@@ -22,7 +22,7 @@
           :let [val (k stats)]
           :when val]
       [:tr [:th s] [:td.stats-data val]])
-    [:tr [:td (:description stats)]]]])
+    [:tr [:td {:colspan "2"} (:description stats)]]]])
 
 (defn show
   "Returns the dom to set in the UI to show tower stats"

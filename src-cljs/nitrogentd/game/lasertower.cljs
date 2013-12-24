@@ -56,7 +56,7 @@
       (drawing/draw-at #(.fillRect ctx -5 -5 10 10) x y (- angle))))
   (attack [this creeps]
     (if-not (time-passed? cooldown-start (:attack-cooldown stats))
-      {:creeps creeps :tower this}
+      {:creeps creeps :tower this :reward 0}
       (let [[attacked safe] (choose-targets this creeps)
             attacked-map (->> attacked
                               (map (partial attack-creep this))

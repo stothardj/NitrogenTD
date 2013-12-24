@@ -132,10 +132,14 @@
 
   (let [{na :animations
          nc :creeps
-         nt :towers} (tower/attack-all @towers @creeps)]
+         nt :towers
+         nr :reward} (tower/attack-all @towers @creeps)]
     (reset! towers nt)
     (reset! creeps nc)
-    (swap! animations (partial concat na)))
+    (swap! animations (partial concat na))
+    (swap! player #(assoc % :gold (+ (:gold %) nr)))
+    (when-not (zero? nr)
+      (set-text! (by-id "gold-stat") (:gold @player))))
 
   (swap! animations (partial filter animation/continues?))
 
