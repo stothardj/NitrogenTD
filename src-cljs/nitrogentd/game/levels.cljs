@@ -11,4 +11,4 @@
 (def level-2 (map->Level
               {:name "Crawling"
                :paths [paths/path-2a]
-               :waves [waves/wave-2-1]}))
+               :waves [waves/wave-2-1 waves/wave-2-2]}))

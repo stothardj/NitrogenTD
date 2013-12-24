@@ -15,7 +15,7 @@
     (if-not (time-passed? last-spawn time-between-spawns)
       {:pool this :creep []}
       (let [[x y] (first path)
-            
+
             {:keys [creep creep-left]}
             (pool/spawn-n spawn-at-a-time n #(spawn-spawnling x y path))]
         (if (zero? creep-left)
