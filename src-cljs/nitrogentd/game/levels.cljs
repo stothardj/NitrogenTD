@@ -6,4 +6,9 @@
 (def level-1 (map->Level
               {:name "Intro"
                :paths [paths/path-1a paths/path-1b]
-               :waves [waves/wave-1-1 waves/wave-1-2 waves/wave-1-3]}))
+               :waves [waves/wave-1-1 waves/wave-1-2 waves/wave-1-3 waves/wave-1-4]}))
+
+(def level-2 (map->Level
+              {:name "Crawling"
+               :paths [paths/path-2a]
+               :waves [waves/wave-2-1]}))

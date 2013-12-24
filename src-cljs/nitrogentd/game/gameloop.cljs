@@ -38,7 +38,7 @@
 
 
 (def ^:private starting-level-info
-  (levelinfo/LevelInfo. [levels/level-1] (:waves levels/level-1)))
+  (levelinfo/LevelInfo. [levels/level-1 levels/level-2] (:waves levels/level-1)))
 
 ;; Shared between gameloop and event handlers
 (def ^:private paths (atom))
@@ -105,11 +105,15 @@
 
 (defn check-end-wave []
   (when (and (empty? @pools) (empty? @creeps))
-    (let [new-info (levelinfo/following @level-info)]
+    (let [old-info @level-info
+          new-info (levelinfo/following old-info)]
       (if new-info
         (reset! level-info new-info)
         (reset! level-info starting-level-info))
-      (levelinfo/load @level-info paths pools))))
+      (levelinfo/load @level-info paths pools)
+      (when-not (= (:levels old-info) (:levels new-info))
+        ;; New level, not just new wave
+        (reset! towers [])))))
 
 (defn game-loop []
   (gamestate/tick)

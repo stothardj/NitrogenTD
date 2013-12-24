@@ -18,8 +18,9 @@
         (not-empty (:levels info)) (let [next-levels (rest (:levels info))
                                          next-waves (:waves (first next-levels))]
                                      (when-not (and (empty? next-levels) (empty? next-waves))
-                                       {:levels next-levels
-                                        :waves next-waves}))))
+                                       (map->LevelInfo
+                                        {:levels next-levels
+                                         :waves next-waves})))))
 
 (defn load
   "Sets atoms to starting values defined by the level info"

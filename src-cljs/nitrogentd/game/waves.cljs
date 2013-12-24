@@ -17,3 +17,13 @@
                {:name "And another"
                 :pools [(roachernest/construct 2 paths/path-1a)
                         (spawnlingpool/construct 6 paths/path-1b)]}))
+
+(def wave-1-4 (map->Wave
+               {:name "Last wave of first level"
+                :pools [(spawnlingpool/construct 5 paths/path-1a)
+                        (spawnlingpool/construct 5 paths/path-1b)
+                        (spidereenest/construct 6 paths/path-1a)]}))
+
+(def wave-2-1 (map->Wave
+               {:name "And so begins the second level"
+                :pools [(spawnlingpool/construct 3 paths/path-2a)]}))
