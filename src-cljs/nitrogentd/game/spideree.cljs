@@ -64,7 +64,7 @@
   Point
   (get-point [this] [x y]))
 
-(defn spawn-spideree
+(defn spawn
   "Create and return a spideree with given params"
   [x y path]
   (let [health (:health stats)

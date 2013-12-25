@@ -4,14 +4,11 @@
         [nitrogentd.game.point :only [Point]]
         [nitrogentd.game.gamestate :only [time]]
         [nitrogentd.game.numberanimation :only [NumberAnimation]]
-        [nitrogentd.game.creepstats :only [map->CreepStats]]
-        )
+        [nitrogentd.game.creepstats :only [map->CreepStats]])
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.creep :as creep]
-            [nitrogentd.game.statuseffect :as statuseffect]
-            )
-  )
+            [nitrogentd.game.statuseffect :as statuseffect]))
 
 (def stats (map->CreepStats {:health 200 :speed 1 :reward 10}))
 
@@ -70,7 +67,7 @@
   Point
   (get-point [this] [x y]))
 
-(defn spawn-splitter
+(defn spawn
   "Create and return Splitter with given params."
   [x y path]
   (let [health (:health stats)

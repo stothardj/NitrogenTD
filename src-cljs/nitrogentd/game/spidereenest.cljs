@@ -1,6 +1,6 @@
 (ns nitrogentd.game.spidereenest
   (:use [nitrogentd.game.pool :only [Pool]]
-        [nitrogentd.game.spideree :only [spawn-spideree]]
+        [nitrogentd.game.spideree :only [spawn]]
         [nitrogentd.game.gamestate :only [time time-passed?]])
   (:require [nitrogentd.game.pool :as pool]))
 
@@ -27,11 +27,12 @@
                                  nx (+ cx -25 (rand-int 50))
                                  ny (+ cy -25 (rand-int 50))
                                  p (add-noise-to-path path)]
-                             (spawn-spideree nx ny p)))]
+                             (spawn nx ny p)))]
         (if (zero? creep-left)
           {:creep creep}
           {:creep creep
-           :pool (SpidereeNest. creep-left path time)})))))
+           :pool (SpidereeNest. creep-left path time)}))))
+  (get-path [this] path))
 
 (defn construct
   [n path]

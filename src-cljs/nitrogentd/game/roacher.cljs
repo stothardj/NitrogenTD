@@ -65,7 +65,7 @@
   (get-point [this] [x y])
   )
 
-(defn spawn-roacher
+(defn spawn
   "Create and return Roacher with given params."
   [x y path]
   (let [health (:health stats)]
