@@ -10,7 +10,7 @@
 (defn simple-creep
   "Construct a simple creep for testing"
   [x y]
-  (s/spawn-spawnling x y nil))
+  (s/spawn x y nil))
 
 ;; Otherwise change other tests too
 (deftest max-targets

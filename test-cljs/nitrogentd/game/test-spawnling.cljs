@@ -9,15 +9,15 @@
             [nitrogentd.game.point :as p]))
 
 (deftest value-type
-  (is (= (s/spawn-spawnling 1 2 nil) (s/spawn-spawnling 1 2 nil)))
-  (is (not= (s/spawn-spawnling 1 2 nil) (s/spawn-spawnling 1 3 nil))))
+  (is (= (s/spawn 1 2 nil) (s/spawn 1 2 nil)))
+  (is (not= (s/spawn 1 2 nil) (s/spawn 1 3 nil))))
 
 (deftest get-point
-  (is (= [5 7] (p/get-point (s/spawn-spawnling 5 7 nil)))))
+  (is (= [5 7] (p/get-point (s/spawn 5 7 nil)))))
 
 (deftest move
   (let [path '((5 7) (1 3))
-        creep (s/spawn-spawnling 1 2 path)
+        creep (s/spawn 1 2 path)
         begin-sq-dist (l/sq-point-to-point-dist (first path)
                                                 (p/get-point creep))
         moved (c/move creep)
@@ -26,20 +26,20 @@
     (is (< end-sq-dist begin-sq-dist))))
 
 (deftest damage
-  (let [creep (s/spawn-spawnling 1 2 nil)
+  (let [creep (s/spawn 1 2 nil)
         force 7 ;; Not enough to kill a spawnling
         {:keys [creeps animations]} (c/damage creep force)]
     (is (= 1 (count creeps)))
     (is (= 1 (count animations)))
     (is (= force (- (:health creep) (:health (first creeps)))))
     (is (instance? NumberAnimation (first animations))))
-  (let [creep (s/spawn-spawnling 1 2 nil)
+  (let [creep (s/spawn 1 2 nil)
         force (:health s/stats)
         {:keys [creeps]} (c/damage creep force)]
     (is (empty? creeps))))
 
 (deftest add-effect
-  (let [creep (s/spawn-spawnling 1 2 nil)
+  (let [creep (s/spawn 1 2 nil)
         effect (Slow. 0)
         {:keys [creeps]} (c/add-effect creep effect)]
     (is (= 1 (count creeps)))

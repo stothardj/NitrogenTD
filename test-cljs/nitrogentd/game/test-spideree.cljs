@@ -28,7 +28,7 @@
   (is (not (s/scuttle-now? stand-time))))
 
 (deftest get-point
-  (is (= [5 7] (p/get-point (s/spawn-spideree 5 7 nil)))))
+  (is (= [5 7] (p/get-point (s/spawn 5 7 nil)))))
 
 (deftest move
   (binding [g/time (+ move-time 700)]
@@ -49,21 +49,21 @@
       (is (= old-pos new-pos)))))
 
 (deftest damage
-  (let [creep (s/spawn-spideree 1 2 nil)
+  (let [creep (s/spawn 1 2 nil)
         force 7 ;; Not enough to kill a spideree
         {:keys [creeps animations]} (c/damage creep force)]
     (is (= 1 (count creeps)))
     (is (= 1 (count animations)))
     (is (= force (- (:health creep) (:health (first creeps)))))
     (is (instance? NumberAnimation (first animations))))
-  (let [creep (s/spawn-spideree 1 2 nil)
+  (let [creep (s/spawn 1 2 nil)
         force (:health s/stats)
         {:keys [creeps]} (c/damage creep force)]
     (is (= 1 (count creeps)))
     (is (= s/max-damage (- (:health creep) (:health (first creeps)))))))
 
 (deftest add-effect
-  (let [creep (s/spawn-spideree 1 2 nil)
+  (let [creep (s/spawn 1 2 nil)
         effect (Slow. 0)
         {:keys [creeps]} (c/add-effect creep effect)]
     (is (= 1 (count creeps)))
