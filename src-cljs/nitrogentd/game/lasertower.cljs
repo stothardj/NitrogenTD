@@ -48,7 +48,7 @@
      (creep/damage creep force)
      {:animations [(LaserAnimation. time tower creep)]})))
 
-(deftype LaserTower [x y cooldown-start]
+(defrecord LaserTower [x y cooldown-start]
   Tower
   (draw [this]
     (let [angle (util/to-radians (mod (/ time 5) 360))]
@@ -69,7 +69,7 @@
         (tower/map->AttackResult
          {:damage-result (map-merge attacked-map
                                     {:creeps safe})
-          :tower (LaserTower. x y time)}))))
+          :tower (assoc this :cooldown-start time)}))))
   Point
   (get-point [this] [x y]))
 

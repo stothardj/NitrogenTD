@@ -16,7 +16,7 @@
 
 (def stats (map->CreepStats {:health 2000 :speed 1 :reward 60}))
 
-(deftype Roacher [x y health path facing status-effects]
+(defrecord Roacher [x y health path facing status-effects]
   Creep
   (draw [this]
     (set! (.-fillStyle ctx) "rgba(0, 200, 0, 0.7)")
@@ -47,13 +47,13 @@
             move-speed (:speed current-stats)
             {newx :x newy :y new-path :path} (creep/move-along-path [x y] move-speed 100 path)
             new-facing (if (> newx x) 'right 'left)]
-        (Roacher. newx newy health new-path new-facing status-effects))))
+        (assoc this :x newx :y newy :path new-path :facing new-facing))))
   (damage [this force]
     {:post [(instance? creep/DamageResult %)]}
     (let [new-health (- health force)
           new-status-effects (statuseffect/add-effect (Fright. time) status-effects)
           new-creeps (if (pos? new-health)
-                       [(Roacher. x y new-health path facing new-status-effects)]
+                       [(assoc this :health new-health :status-effects new-status-effects)]
                        [])
           new-reward (if (pos? new-health) 0 (:reward stats))]
       (creep/map->DamageResult
@@ -62,7 +62,7 @@
         :reward new-reward})))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
-      {:creeps [(Roacher. x y health path facing new-effects)]}))
+      {:creeps [(assoc this :status-effects new-effects)]}))
   Point
   (get-point [this] [x y])
   )

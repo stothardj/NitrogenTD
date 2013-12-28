@@ -47,13 +47,13 @@
             current-stats (statuseffect/apply-effects status-effects stats)
             move-speed (if (scuttle-now? (- time spawn-time)) (:speed current-stats) 0)
             {:keys [x y path]} (creep/move-along-path [x y] move-speed 100 path)]
-        (Spideree. x y health path spawn-time status-effects))))
+        (assoc this :x x :y y :path path))))
   (damage [this force]
     {:post [(instance? creep/DamageResult %)]}    
     (let [hit (min force max-damage)
           new-health (- health hit)
           new-creeps (if (pos? new-health)
-                       [(Spideree. x y new-health path spawn-time status-effects)]
+                       [(assoc this :health new-health)]
                        [])
           new-reward (if (pos? new-health) 0 (:reward stats))]
       (creep/map->DamageResult
@@ -62,7 +62,7 @@
         :reward new-reward})))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
-      {:creeps [(Spideree. x y health path spawn-time new-effects)]}))
+      {:creeps [(assoc this :status-effects new-effects)]}))
   Point
   (get-point [this] [x y]))
 

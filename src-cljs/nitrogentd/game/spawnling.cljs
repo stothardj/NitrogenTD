@@ -29,12 +29,12 @@
       (let [current-stats (statuseffect/apply-effects status-effects stats)
             move-speed (:speed current-stats)
             {:keys [x y path]} (creep/move-along-path [x y] move-speed 100 path)]
-        (Spawnling. x y health path status-effects))))
+        (assoc this :x x :y y :path path))))
   (damage [this force]
     {:post [(instance? creep/DamageResult %)]}
     (let [new-health (- health force)
           new-creeps (if (pos? new-health)
-                       [(Spawnling. x y new-health path status-effects)]
+                       [(assoc this :health new-health)]
                        [])
           new-reward (if (pos? new-health) 0 (:reward stats))]
       (creep/map->DamageResult
@@ -43,7 +43,7 @@
         :reward new-reward})))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
-      {:creeps [(Spawnling. x y health path new-effects)]}))
+      {:creeps [(assoc this :status-effects new-effects)]}))
   Point
   (get-point [this] [x y]))
 

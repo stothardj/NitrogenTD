@@ -45,7 +45,7 @@
   (let [slow (Slow. time)]
     (creep/add-effect creep slow)))
 
-(deftype ConcussiveTower [x y cooldown-start]
+(defrecord ConcussiveTower [x y cooldown-start]
   Tower
   (draw [this]
     (set! (.-fillStyle ctx) "rgb(255,200,0)")
@@ -69,7 +69,7 @@
           (map-merge attacked-map
                      {:creeps safe
                       :animations [(QuakeAnimation. time x y (:attack-range stats))]})
-          :tower (ConcussiveTower. x y time)}))))
+          :tower (assoc this :cooldown-start time)}))))
   Point
   (get-point [this] [x y]))
 

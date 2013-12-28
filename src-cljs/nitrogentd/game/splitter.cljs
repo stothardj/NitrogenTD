@@ -45,13 +45,13 @@
             t (util/to-radians (mod (/ (- time spawn-time) 3) 360))
             new-x (+ x (Math/sin t))
             new-y (+ y (Math/cos t))]
-        (Splitter. new-x new-y health path status-effects incarnation spawn-time))))
+        (assoc this :x new-x :y new-y :path path))))
   (damage [this force]
     {:post [(instance? creep/DamageResult %)]}
     (let [new-health (- health force)]
       (if (pos? new-health)
         (creep/map->DamageResult
-         {:creeps [(Splitter. x y new-health path status-effects incarnation spawn-time)]
+         {:creeps [(assoc this :health new-health)]
           :animations [(NumberAnimation. time force x y)]
           :reward 0})
         (let [new-creeps (if (< incarnation max-incarnation)
@@ -66,7 +66,7 @@
             :rewards [(:reward stats)]})))))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
-      {:creeps [(Splitter. x y health path new-effects incarnation spawn-time)]}))
+      {:creeps [(assoc this :status-effects new-effects)]}))
   Point
   (get-point [this] [x y]))
 

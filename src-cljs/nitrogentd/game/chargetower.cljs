@@ -44,7 +44,7 @@
   (set! (.-fillStyle ctx) "rgba(0,200,255,0.3)")
   (.fill ctx))
 
-(deftype ChargeTower [x y cooldown-start]
+(defrecord ChargeTower [x y cooldown-start]
   Tower
   (draw [this]
     (set! (.-fillStyle ctx) "rgba(0, 200, 255, 0.3)")
@@ -78,7 +78,7 @@
         (tower/map->AttackResult
          {:damage-result (map-merge attacked-map
                                     {:creeps safe})
-          :tower (ChargeTower. x y time)}))))
+          :tower (assoc this :cooldown-start time)}))))
   Point
   (get-point [this] [x y]))
 
