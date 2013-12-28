@@ -33,4 +33,4 @@
       (if (zero? creep-left)
         {:creep creep}
         {:creep creep
-         :pool (new-pool-fn creep-left path)}))))
+         :pool (new-pool-fn creep-left)}))))

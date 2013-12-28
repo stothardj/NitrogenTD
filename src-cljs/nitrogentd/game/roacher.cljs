@@ -49,15 +49,17 @@
             new-facing (if (> newx x) 'right 'left)]
         (Roacher. newx newy health new-path new-facing status-effects))))
   (damage [this force]
+    {:post [(instance? creep/DamageResult %)]}
     (let [new-health (- health force)
           new-status-effects (statuseffect/add-effect (Fright. time) status-effects)
           new-creeps (if (pos? new-health)
                        [(Roacher. x y new-health path facing new-status-effects)]
                        [])
           new-reward (if (pos? new-health) 0 (:reward stats))]
-      {:creeps new-creeps
-       :animations [(NumberAnimation. time force x y)]
-       :rewards [new-reward]}))
+      (creep/map->DamageResult
+       {:creeps new-creeps
+        :animations [(NumberAnimation. time force x y)]
+        :reward new-reward})))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Roacher. x y health path facing new-effects)]}))

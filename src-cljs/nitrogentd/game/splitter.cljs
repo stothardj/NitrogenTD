@@ -47,20 +47,23 @@
             new-y (+ y (Math/cos t))]
         (Splitter. new-x new-y health path status-effects incarnation spawn-time))))
   (damage [this force]
+    {:post [(instance? creep/DamageResult %)]}
     (let [new-health (- health force)]
       (if (pos? new-health)
-        {:creeps [(Splitter. x y new-health path status-effects incarnation spawn-time)]
-         :animations [(NumberAnimation. time force x y)]
-         :rewards []}
+        (creep/map->DamageResult
+         {:creeps [(Splitter. x y new-health path status-effects incarnation spawn-time)]
+          :animations [(NumberAnimation. time force x y)]
+          :reward 0})
         (let [new-creeps (if (< incarnation max-incarnation)
                            [(Splitter. (+ x 10) (+ y 10) (:health stats) path []
                                        (inc incarnation) time)
                             (Splitter. (- x 10) (- y 10) (:health stats) path []
                                        (inc incarnation) time)]
                            [])]
-          {:creeps new-creeps
-           :animations [(NumberAnimation. time health x y)]
-           :rewards [(:reward stats)]}))))
+          (creep/map->DamageResult
+           {:creeps new-creeps
+            :animations [(NumberAnimation. time health x y)]
+            :rewards [(:reward stats)]})))))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Splitter. x y health path new-effects incarnation spawn-time)]}))

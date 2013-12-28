@@ -1,4 +1,6 @@
 (ns nitrogentd.game.creep
+  (:use [nitrogentd.game.selfmerge :only [self-merge]]
+        [nitrogentd.game.simple :only [simple]])
   (:require [nitrogentd.game.line :as line]))
 
 (defprotocol Creep
@@ -8,10 +10,7 @@
   (damage [this force] "Does damage of a certain amount of force.
                         Force is only one factor in how much health the creep loses.
                         The type of creep, status effects, etc. could also play a roll.
-                        Returns
-                          {:creeps [new creeps]
-                           :animations [new animations]
-                           :rewards [new rewards (for now just a number for gold}")
+                        Returns DamageResult")
   (add-effect [this effect] "Attempts to add status effect to creep.
                              Not guarenteed to be added because creep could have certain
                              immunities or the effect may not be allowed to stack.
@@ -36,3 +35,20 @@
     {:x newx
      :y newy
      :path new-path}))
+
+(defrecord DamageResult [creeps animations reward])
+
+(defn merge-damage-result [& results]
+  "Function for merging damage results together. Relies on order of DamageResult args."
+  (apply ->DamageResult ((juxt #(apply concat (map :creeps %))
+                               #(apply concat (map :animations %))
+                               #(apply + (map :reward %))) results)))
+
+(defmethod self-merge DamageResult [t items]
+  (apply merge-damage-result items))
+
+(defmethod simple DamageResult [t]
+  (map->DamageResult
+   {:creeps []
+    :animations []
+    :reward 0}))

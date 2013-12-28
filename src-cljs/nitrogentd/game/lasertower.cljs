@@ -2,15 +2,17 @@
   (:use [nitrogentd.game.tower :only [Tower]]
         [nitrogentd.game.drawing :only [ctx]]
         [nitrogentd.game.point :only [Point]]
+        [nitrogentd.game.simple :only [simple]]
         [nitrogentd.game.laseranimation :only [LaserAnimation]]
         [nitrogentd.game.gamestate :only [time time-passed?]]
-        [nitrogentd.game.towerstats :only [map->TowerStats]])
+        [nitrogentd.game.towerstats :only [map->TowerStats]]
+        [nitrogentd.game.selfmerge :only [self-merge]])
   (:require [nitrogentd.game.util :as util]
             [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.point :as point]
             [nitrogentd.game.line :as line]
             [nitrogentd.game.creep :as creep]
-            [nitrogentd.game.tower :as t]))
+            [nitrogentd.game.tower :as tower]))
 
 (def stats (map->TowerStats
             {:cost 100
@@ -21,7 +23,7 @@
              :description "Fires 3 weak lasers at a time. Short range."}))
 
 (def ^:private map-merge (partial merge-with concat))
-(def in-attack-range? (partial t/in-range? (:attack-range stats)))
+(def in-attack-range? (partial tower/in-range? (:attack-range stats)))
 
 (defn preview [x y]
   (.beginPath ctx)
@@ -35,7 +37,7 @@
 
 (defn choose-targets [tower creeps]
   "Split creeps on whether they should be attacked. Returns [attacked safe]."
-  (t/choose-targets tower in-attack-range? shuffle (:max-targets stats) creeps))
+  (tower/choose-targets tower in-attack-range? shuffle (:max-targets stats) creeps))
 
 (defn attack-creep
   "Attack a single creep. Returns new creep and animations"
@@ -55,15 +57,19 @@
       (set! (.-fillStyle ctx) "rgba(255, 255, 255, 0.5)")
       (drawing/draw-at #(.fillRect ctx -5 -5 10 10) x y (- angle))))
   (attack [this creeps]
+    {:post [(instance? tower/AttackResult %)]}
     (if-not (time-passed? cooldown-start (:attack-cooldown stats))
-      {:creeps creeps :tower this :reward 0}
+      (tower/map->AttackResult
+       {:damage-result (assoc (simple creep/DamageResult) :creeps creeps)
+        :tower this})
       (let [[attacked safe] (choose-targets this creeps)
             attacked-map (->> attacked
                               (map (partial attack-creep this))
-                              (apply map-merge))]
-        (assoc (map-merge attacked-map
-                          {:creeps safe})
-          :tower (LaserTower. x y time)))))
+                              (self-merge creep/DamageResult))]
+        (tower/map->AttackResult
+         {:damage-result (map-merge attacked-map
+                                    {:creeps safe})
+          :tower (LaserTower. x y time)}))))
   Point
   (get-point [this] [x y]))
 

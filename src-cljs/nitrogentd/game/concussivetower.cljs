@@ -2,14 +2,16 @@
   (:use [nitrogentd.game.tower :only [Tower]]
         [nitrogentd.game.point :only [Point]]
         [nitrogentd.game.slow :only [Slow]]
+        [nitrogentd.game.simple :only [simple]]
         [nitrogentd.game.quakeanimation :only [QuakeAnimation]]
         [nitrogentd.game.gamestate :only [time time-passed?]]
         [nitrogentd.game.drawing :only [ctx]]
-        [nitrogentd.game.towerstats :only [map->TowerStats]])
+        [nitrogentd.game.towerstats :only [map->TowerStats]]
+        [nitrogentd.game.selfmerge :only [self-merge]])
   (:require [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.util :as util]
             [nitrogentd.game.creep :as creep]
-            [nitrogentd.game.tower :as t]))
+            [nitrogentd.game.tower :as tower]))
 
 (def stats (map->TowerStats
             {:cost 100
@@ -18,7 +20,7 @@
              :description "Slows creep. Area of effect."}))
 
 (def ^:private map-merge (partial merge-with concat))
-(def in-attack-range? (partial t/in-range? (:attack-range stats)))
+(def in-attack-range? (partial tower/in-range? (:attack-range stats)))
 
 (defn preview [x y]
   (.beginPath ctx)
@@ -53,16 +55,21 @@
                        (.closePath ctx)
                        (.fill ctx)) x y))
   (attack [this creeps]
+    {:post [(instance? tower/AttackResult %)]}
     (if-not (time-passed? cooldown-start (:attack-cooldown stats))
-      {:creeps creeps :tower this :reward 0}
+      (tower/map->AttackResult
+       {:damage-result (assoc (simple creep/DamageResult) :creeps creeps)
+        :tower this})
       (let [[attacked safe] (choose-targets this creeps)
             attacked-map (->> attacked
                               (map (partial attack-creep this))
-                              (apply map-merge))]
-        (assoc (map-merge attacked-map
-                          {:creeps safe
-                           :animations [(QuakeAnimation. time x y (:attack-range stats))]})
-          :tower (ConcussiveTower. x y time)))))
+                              (self-merge creep/DamageResult))]
+        (tower/map->AttackResult
+         {:damage-result
+          (map-merge attacked-map
+                     {:creeps safe
+                      :animations [(QuakeAnimation. time x y (:attack-range stats))]})
+          :tower (ConcussiveTower. x y time)}))))
   Point
   (get-point [this] [x y]))
 

@@ -3,8 +3,10 @@
         [nitrogentd.game.drawing :only [ctx]]
         [nitrogentd.game.point :only [Point]]
         [nitrogentd.game.gamestate :only [time time-passed?]]
+        [nitrogentd.game.simple :only [simple]]
         [nitrogentd.game.chargeanimation :only [ChargeAnimation]]
-        [nitrogentd.game.towerstats :only [map->TowerStats]])
+        [nitrogentd.game.towerstats :only [map->TowerStats]]
+        [nitrogentd.game.selfmerge :only [self-merge]])
   (:require [nitrogentd.game.drawing :as drawing]
             [nitrogentd.game.point :as point]
             [nitrogentd.game.line :as line]
@@ -63,16 +65,20 @@
                      x y)
     )
   (attack [this creeps]
+    {:post [(instance? tower/AttackResult %)]}
     (if-not (time-passed? cooldown-start (:attack-cooldown stats))
-      {:creeps creeps :tower this :reward 0}
+      (tower/map->AttackResult
+       {:damage-result (assoc (simple creep/DamageResult) :creeps creeps)
+        :tower this})
       (let [[attacked safe] (tower/choose-targets this in-attack-range?
                                                   shuffle (:max-targets stats) creeps)
             attacked-map (->> attacked
                               (map (partial attack-creep this))
-                              (apply map-merge))]
-        (assoc (map-merge attacked-map
-                          {:creeps safe})
-          :tower (ChargeTower. x y time)))))
+                              (self-merge creep/DamageResult))]
+        (tower/map->AttackResult
+         {:damage-result (map-merge attacked-map
+                                    {:creeps safe})
+          :tower (ChargeTower. x y time)}))))
   Point
   (get-point [this] [x y]))
 

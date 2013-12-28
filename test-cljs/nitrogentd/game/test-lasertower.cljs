@@ -5,6 +5,8 @@
         [nitrogentd.game.numberanimation :only [NumberAnimation]])
   (:require [cemerick.cljs.test :as t]
             [nitrogentd.game.lasertower :as l]
+            [nitrogentd.game.tower :as tow]
+            [nitrogentd.game.creep :as creep]
             [nitrogentd.game.spawnling :as s]))
 
 (defn simple-creep
@@ -69,3 +71,14 @@
     (is (not= creep (first creeps)))
     (is (some (partial instance? NumberAnimation) animations))
     (is (some (partial instance? LaserAnimation) animations))))
+
+(deftest attack
+  (let [tower (l/construct 0 0)]
+    (is (= (tow/map->AttackResult
+            {:damage-result
+             (creep/map->DamageResult
+              {:creeps []
+               :animations []
+               :reward 0})
+             :tower tower})
+           (tow/attack tower [])))))

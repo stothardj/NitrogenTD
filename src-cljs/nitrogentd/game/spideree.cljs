@@ -49,15 +49,17 @@
             {:keys [x y path]} (creep/move-along-path [x y] move-speed 100 path)]
         (Spideree. x y health path spawn-time status-effects))))
   (damage [this force]
+    {:post [(instance? creep/DamageResult %)]}    
     (let [hit (min force max-damage)
           new-health (- health hit)
           new-creeps (if (pos? new-health)
                        [(Spideree. x y new-health path spawn-time status-effects)]
                        [])
           new-reward (if (pos? new-health) 0 (:reward stats))]
-      {:creeps new-creeps
-       :animations [(NumberAnimation. time hit x y)]
-       :rewards [new-reward]}))
+      (creep/map->DamageResult
+       {:creeps new-creeps
+        :animations [(NumberAnimation. time hit x y)]
+        :reward new-reward})))
   (add-effect [this effect]
     (let [new-effects (statuseffect/add-effect effect status-effects)]
       {:creeps [(Spideree. x y health path spawn-time new-effects)]}))
