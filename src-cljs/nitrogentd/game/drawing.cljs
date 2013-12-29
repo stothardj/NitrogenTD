@@ -1,8 +1,6 @@
 (ns nitrogentd.game.drawing
   (:require [nitrogentd.game.util :as util]
-            [nitrogentd.game.line :as line]
-            )
-  )
+            [nitrogentd.game.line :as line]))
 
 ;; These don't really need to be dynamic, but ctx seems similar
 ;; enought to *out* for stdout that it seemed like a good idea

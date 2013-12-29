@@ -1,41 +1,32 @@
 (ns nitrogentd.game.gameloop
-  (:use [nitrogentd.game.spawnling :only [spawn-spawnling]]
-        [nitrogentd.game.spideree :only [spawn-spideree]]
-        [nitrogentd.game.roacher :only [spawn-roacher]]
-        [nitrogentd.game.drawing :only [canvas]]
+  (:use [nitrogentd.game.drawing :only [canvas]]
         [nitrogentd.game.pause-screen :only [toggle-pause]]
         [domina :only [by-id set-text!]]
         [domina.events :only [listen! unlisten!]])
   (:require [clojure.browser.event :as event]
-
-            [nitrogentd.game.spawnlingpool :as spawnlingpool]
-            [nitrogentd.game.spidereenest :as spidereenest]
-            [nitrogentd.game.roachernest :as roachernest]
-            [nitrogentd.game.splitterpool :as splitterpool]
             
             [nitrogentd.game.level :as level]
-            [nitrogentd.game.levels :as levels]
+            [nitrogentd.game.data.levels :as levels]
             [nitrogentd.game.wave :as wave]
-            [nitrogentd.game.waves :as waves]
+            [nitrogentd.game.data.waves :as waves]
             [nitrogentd.game.levelinfo :as levelinfo]
 
             [nitrogentd.game.player :as player]
             [nitrogentd.game.drawing :as drawing]
-            [nitrogentd.game.creep :as creep]
-            [nitrogentd.game.tower :as tower]
-            [nitrogentd.game.pool :as pool]
+            [nitrogentd.game.creep.creep :as creep]
+            [nitrogentd.game.tower.tower :as tower]
+            [nitrogentd.game.pool.pool :as pool]
             [nitrogentd.game.util :as util]
             [nitrogentd.game.line :as line]
             [nitrogentd.game.point :as point]
-            [nitrogentd.game.animation :as animation]
+            [nitrogentd.game.animation.animation :as animation]
             [nitrogentd.game.gamestate :as gamestate]
-            [nitrogentd.game.lasertower :as lasertower]
-            [nitrogentd.game.chargetower :as chargetower]
-            [nitrogentd.game.concussivetower :as concussivetower]
+            [nitrogentd.game.tower.lasertower :as lasertower]
+            [nitrogentd.game.tower.chargetower :as chargetower]
+            [nitrogentd.game.tower.concussivetower :as concussivetower]
             [nitrogentd.game.towerstats :as towerstats]
             [goog.dom.forms :as forms]
             [domina :as d]))
-
 
 (def ^:private starting-level-info
   (levelinfo/LevelInfo. [levels/level-1 levels/level-2] (:waves levels/level-1)))
