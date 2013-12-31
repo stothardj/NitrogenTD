@@ -1,7 +1,7 @@
 (ns nitrogentd.game.animation.numberanimation
   (:use [nitrogentd.game.animation.animation :only [Animation]]
         [nitrogentd.game.drawing :only [ctx]]
-        [nitrogentd.game.gamestate :only [time]]))
+        [nitrogentd.game.gamestate :only [time time-passed?]]))
 
 (def animation-length 1000)
 
@@ -17,6 +17,4 @@
       (set! (.-fillStyle ctx) "rgba(255, 255, 255, 0.4)")
       (set! (.-font ctx) font)
       (.fillText ctx number cx cy)))
-  (continues? [this] (< time (+ start-time animation-length))))
-      
-          
+  (continues? [this] (not (time-passed? start-time animation-length))))
